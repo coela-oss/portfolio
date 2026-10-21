@@ -24,19 +24,19 @@
     "source": "https://github.com/zixcel/cli",
     "sections": [
       {
-        "title": "The dispatcher boundary",
-        "text": "Separate specification input, explicitly selected operations, source hashes and provider execution contracts. The recorded run parses a synthetic OpenAPI document and extracts the GET /inspection route."
+        "title": "Where it helps",
+        "text": "A common local entry point for working with APIs. Inspect the operation, input and destination before execution."
       },
       {
-        "title": "Parsing does not grant authority",
-        "text": "Catalog projection and route inspection are local operations. An unbound operation is not silently connected to authentication or network execution. A real provider action requires a separate explicit contract."
+        "title": "Architecture and responsibilities",
+        "text": "Separate specification selection from provider-specific communication."
       },
       {
-        "title": "Trade-off",
-        "text": "Keep common admission logic separate from provider-specific implementations instead of collecting every integration into one large CLI. Generality must not silently broaden authority, and parsing a specification is not proof that a live operation is safe."
+        "title": "Design decisions",
+        "text": "Keep provider-specific authentication and transport out of the common CLI. Preserve the meaning of the reviewed selection. Review candidates without cloud credentials."
       },
       {
-        "title": "Verification with a released binary",
+        "title": "Verified behavior",
         "text": "Run version, api project and api routes with v0.2.2 and retain actual inputs and outputs in examples/zix. The observation uses no credential, external request or live data mutation. Group-writable catalog input was refused as designed."
       }
     ]
@@ -66,19 +66,19 @@
     "source": "https://github.com/nuxtjp/website",
     "sections": [
       {
-        "title": "Information architecture",
-        "text": "I organize entry points around a visitor’s task, rather than repository ownership. Framework guides lead to official Nuxt resources; community modules have their own purpose, source and installation exits."
+        "title": "Where it helps",
+        "text": "Help visitors learn Nuxt or choose a NuxtJP tool. Reach the official guide or an actual package according to the task."
       },
       {
-        "title": "Architecture",
-        "text": "A shared Nuxt foundation handles locale and static generation. Site-owned components and typed content own navigation, visual identity and the visitor journey. This keeps shared infrastructure from flattening every site into the same template."
+        "title": "Architecture and responsibilities",
+        "text": "Information architecture and UI for guides, modules and installation paths."
       },
       {
-        "title": "Trade-off",
-        "text": "Static generation keeps reading fast and hosting simple. Publishing content requires a new build; there is no invented live dashboard or account state."
+        "title": "Design decisions",
+        "text": "Do not confuse Nuxt specifications with NuxtJP products. Preserve the visitor’s task across languages. Keep reading lightweight and independent of an account."
       },
       {
-        "title": "Verification",
+        "title": "Verified behavior",
         "text": "The released interface was checked in English and Japanese at 360, 768 and 1440 pixels, including menu control, image loading and primary destinations. Version-tagged CI binds the source commit to the static archive before deployment."
       }
     ]
@@ -108,19 +108,19 @@
     "source": "https://github.com/hathq/ihat-docs-site",
     "sections": [
       {
-        "title": "The interaction",
-        "text": "Eight public HAT releases are grouped by purpose. Search and category filtering run in the browser over the published catalog, including an honest empty-result state."
+        "title": "Where it helps",
+        "text": "Find a HAT by purpose and continue to its public release. See a suitable candidate and its distribution owner together."
       },
       {
-        "title": "The boundary",
-        "text": "The directory presents release information; it does not execute HATs, install software or grant trust. Each download remains attached to its owning repository and immutable version."
+        "title": "Architecture and responsibilities",
+        "text": "Search, category filters and version-specific release paths."
       },
       {
-        "title": "Trade-off",
-        "text": "A static catalog gives predictable browsing and explicit download choices. Automatic signed synchronization is a separate Registry responsibility, rather than something the page silently claims to perform."
+        "title": "Design decisions",
+        "text": "Let people search without knowing repository names. Make the selected distribution traceable. Keep selection apart from granting authority."
       },
       {
-        "title": "Verification",
+        "title": "Verified behavior",
         "text": "The live catalog was checked for narrowing search results, category selection and empty results. English and Japanese views retain the same eight versioned release destinations."
       }
     ]
@@ -150,19 +150,19 @@
     "source": "https://github.com/semantic-language/semantic-language-site",
     "sections": [
       {
-        "title": "Make the model visible",
-        "text": "The first screen uses a compact meaning-and-context example. Follow-up pages separate capabilities, use cases and developer detail, so a new reader can understand the purpose before opening the source."
+        "title": "Where it helps",
+        "text": "Introduce a language for meaning and context through concrete examples. Understand the relation between input and interpretation before reading code."
       },
       {
-        "title": "Architecture",
-        "text": "Presentation copy and route definitions are typed and validated before static generation. Public source releases and per-file license notices remain the authoritative implementation reference."
+        "title": "Architecture and responsibilities",
+        "text": "A presentation UI separating concepts, use cases and developer references."
       },
       {
-        "title": "Trade-off",
-        "text": "The diagram explains a model; it is not an online inference console. The download page points to the available source release instead of suggesting an installer that has not been distributed."
+        "title": "Design decisions",
+        "text": "Explain the subject before terminology and APIs. Distinguish product discovery from implementation references. Link to the source and its actual license."
       },
       {
-        "title": "Verification",
+        "title": "Verified behavior",
         "text": "The deployed site, source-release destination and MPL license entry were checked in both languages. Release artifacts are source-bound, while domain and preview settings are verified during deployment."
       }
     ]

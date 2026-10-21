@@ -85,3 +85,6 @@ __pycache__/
 
 # The shared site runner may create a generated output symlink.
 /dist
+
+# Hosted browser acceptance output.
+/browser-results/
