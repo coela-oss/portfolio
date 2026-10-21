@@ -16,7 +16,7 @@ import time
 import urllib.request
 import urllib.error
 import urllib.parse
-from site_redirects import verify_redirects
+from site_redirects import verify_redirects, parse_rules
 
 
 def read(path):
@@ -115,6 +115,8 @@ def pack(root, site, sha, output):
         raise ValueError('New artifact directory required')
     assets = owned(root, site['assetDirectory'])
     files(assets)  # Reject unsafe output before copying anything.
+    if (assets / '_redirects').exists():
+        parse_rules((assets / '_redirects').read_text())
     output.mkdir(parents=True)
     shutil.copytree(assets, output / 'assets')
     marker = {'site': site['id'], 'source_sha': sha, 'release_domain': site['domain'], 'purpose': 'production', 'version': site['version']}

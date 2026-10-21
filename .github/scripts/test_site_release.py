@@ -127,6 +127,13 @@ class SiteReleaseTests(unittest.TestCase):
             verify.assert_called_once();run.assert_not_called()
         self.assertTrue(json.loads((self.root/'archive/acceptance.json').read_text())['verify_only'])
 
+    def test_malformed_redirect_cannot_be_packaged_or_reach_a_deployment(self):
+        (self.root/'public').mkdir()
+        (self.root/'public/_redirects').write_text('/unsafe //other.example 301\n')
+        with self.assertRaises(ValueError):
+            pack(self.root,self.site,'b'*40,self.root/'archive')
+        self.assertFalse((self.root/'archive').exists())
+
     def test_redirect_control_file_is_artifact_bound_and_verified_as_behavior(self):
         (self.root/'public').mkdir()
         (self.root/'public/index.html').write_text('<h1>Approved</h1>')
