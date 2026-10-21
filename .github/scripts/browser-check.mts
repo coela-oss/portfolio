@@ -31,7 +31,7 @@ try {
       await browser.call('Page.navigate', { url: origin + path })
       let ready = false
       for (let n = 0; n < 100; n++) {
-        ready = await browser.evaluate(`location.pathname===${JSON.stringify(path)} && document.readyState==='complete' && !!document.querySelector('main h1')`) === true
+        ready = await browser.evaluate(`location.pathname.replace(/\/$/,'')===${JSON.stringify(path.replace(/\/$/, ''))} && document.readyState==='complete' && !!document.querySelector('main h1')`) === true
         if (ready) break
         await sleep(100)
       }
@@ -44,7 +44,7 @@ try {
         overflow:document.documentElement.scrollWidth>innerWidth+1,
         missing:[...document.images].some(image=>!image.naturalWidth),
         header:getComputedStyle(document.querySelector('.site-header')).position,
-        selfExit:[...document.querySelectorAll('.page-next-steps a,.case-actions a')].some(a=>new URL(a.href).pathname===location.pathname && new URL(a.href).origin===location.origin),
+        selfExit:[...document.querySelectorAll('.page-next-steps a,.case-actions a')].some(a=>new URL(a.href).pathname.replace(/\/$/,'')===location.pathname.replace(/\/$/,'') && new URL(a.href).origin===location.origin),
         flow:document.querySelectorAll('.case-flow li').length,
         decisions:document.querySelectorAll('.case-evidence tbody tr').length,
         exits:document.querySelectorAll('.case-actions .visitor-path').length
