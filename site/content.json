@@ -5,7 +5,7 @@
   "locales": {
     "ja": {
       "brand": "Coela",
-      "caption": "Coela（シーラカンス）｜ソフトウェアエンジニア",
+      "caption": "シーラカンス / ソフトウェア設計",
       "origin": "https://coela.org",
       "locale": "ja",
       "accent": "#007b76",
@@ -542,7 +542,7 @@
     },
     "en": {
       "brand": "Coela",
-      "caption": "Coela — named after the coelacanth. Software engineering.",
+      "caption": "Coelacanth / Software engineering",
       "origin": "https://coela.org",
       "locale": "en",
       "accent": "#007b76",

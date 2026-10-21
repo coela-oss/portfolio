@@ -22,3 +22,7 @@
 [data-brand=coela] a:focus-visible{outline:3px solid #007e78;outline-offset:5px}
 @media(max-width:760px){[data-brand=coela] .site-hero{padding-top:44px}[data-brand=coela] .site-hero-home{grid-template-columns:1fr;gap:12px}.portfolio-signature{display:none}.work-card{grid-template-columns:1fr;gap:0}.work-description{padding:24px}.work-image{padding:16px}.portfolio-heading{display:block}.portfolio-heading p{margin-top:8px}.case-evidence figure{padding:12px}.case-pipeline ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.work-card{transition:none;scroll-behavior:auto}}
+
+/* Keep the brand, actions and evidence inside narrow viewports. */
+[data-brand=coela] .site-wordmark{min-width:0;flex-shrink:1}[data-brand=coela] .site-wordmark span{min-width:0}
+@media(max-width:760px){[data-brand=coela] .site-hero{padding-inline:0}[data-brand=coela] .site-wordmark{max-width:calc(100% - 84px)}[data-brand=coela] .site-wordmark small{letter-spacing:0;overflow-wrap:normal}[data-brand=coela] .site-actions{flex-wrap:wrap;row-gap:16px}.work-description{min-width:0}}
