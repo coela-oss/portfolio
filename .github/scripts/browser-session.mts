@@ -14,7 +14,9 @@ export async function browserSession() {
   if (process.env.GITHUB_ACTIONS !== 'true') throw Error('Browser acceptance runs only on the hosted CI runner')
   const profile = mkdtempSync(join(tmpdir(), 'portfolio-browser-'))
   const browser = spawn('/usr/bin/google-chrome', ['--headless=new', '--disable-gpu', '--disable-background-networking',
-    '--disable-extensions', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], { stdio: 'ignore' })
+    '--disable-extensions', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], {
+      stdio: 'ignore', env: { PATH: process.env.PATH, HOME: profile, LANG: 'C.UTF-8', XDG_CACHE_HOME: profile }
+    })
   const pending = new Map<number, { resolve: (value: Record<string, unknown>) => void; reject: (error: Error) => void; timer: NodeJS.Timeout }>()
   let socket: WebSocket | undefined, next = 0
   const errors: string[] = []
