@@ -1,0 +1,44 @@
+{
+  "name": "@coela/portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.29.3",
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "pnpm": "10.29.3"
+  },
+  "scripts": {
+    "site": "nuxtjp-localized-site site",
+    "validate:content": "nuxtjp-localized-site site check",
+    "test": "node site/check.mjs && node --test site/*.test.mts site/experience.cases.mts && node --test scripts/dependency-security.check.cjs",
+    "typecheck": "nuxtjp-localized-site site typecheck coela",
+    "build": "nuxtjp-localized-site site build coela",
+    "dev": "nuxtjp-localized-site site dev coela",
+    "preview": "nuxtjp-localized-site site preview coela",
+    "test:dependency-security": "node --test scripts/dependency-security.check.cjs",
+    "test:site-structure": "node site/check.mjs"
+  },
+  "dependencies": {
+    "@nuxtjp/localized-site": "0.2.6",
+    "nuxt": "4.6.2",
+    "vue": "3.5.44"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "5.9.3",
+    "vue-tsc": "3.3.13",
+    "wrangler": "4.151.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@nuxt/devtools>simple-git": "4.0.2"
+    },
+    "patchedDependencies": {
+      "braces@3.0.3": "patches/braces@3.0.3.patch",
+      "node-forge@1.4.0": "patches/node-forge@1.4.0.patch"
+    }
+  },
+  "description": "Coela engineering portfolio: live interfaces, architecture and reproducible verification."
+}

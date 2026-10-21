@@ -1,0 +1,52 @@
+{
+  "schema": "source-dependency-patch-attribution-v1",
+  "reviewedAt": "2026-10-17",
+  "packages": [
+    {
+      "name": "braces",
+      "version": "3.0.3",
+      "declaredLicense": "MIT",
+      "selectedLicense": "MIT",
+      "repository": "git+https://github.com/micromatch/braces.git",
+      "sourceTarball": "https://registry.npmjs.org/braces/-/braces-3.0.3.tgz",
+      "integrity": "sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==",
+      "changes": "Adds bounded depth/cycle checks for parsed and externally supplied brace trees.",
+      "licenseFile": "third-party/LICENSES/braces-3.0.3.txt",
+      "licenseSha256": "35bdd8a44339719441900fb50fbefc5e2dca1ca662cbaed7a687de842c8b70f2",
+      "patches": [
+        {
+          "path": "patches/braces@3.0.3.patch",
+          "sha256": "c91195ade8df38090f0aceda7e95c7fa288d0e84572fb00a2e024814e25130d5",
+          "originalFilesSha256": {
+            "lib/depth-guard.js": null,
+            "lib/parse.js": "e572166565f15fa6ad9865ae49d678218e32aabfd1b3720f6d0d43d39800d310",
+            "lib/compile.js": "dc98f22eee3d511785d92a00758d5f0d48efed5f5813bdecc2de430c529b5c9f",
+            "lib/expand.js": "41ccc196ebfa7b7781a634e721eb744e4e7bcb54cba427a7e3d6806a1b9e58f7",
+            "lib/stringify.js": "379f22d77bfa1478341ccd49c5e4267464aabcbba03558bab332aac23fc6f23a"
+          }
+        }
+      ]
+    },
+    {
+      "name": "node-forge",
+      "version": "1.4.0",
+      "declaredLicense": "(BSD-3-Clause OR GPL-2.0)",
+      "selectedLicense": "BSD-3-Clause",
+      "repository": "git+https://github.com/digitalbazaar/forge.git",
+      "sourceTarball": "https://registry.npmjs.org/node-forge/-/node-forge-1.4.0.tgz",
+      "integrity": "sha512-LarFH0+6VfriEhqMMcLX2F7SwSXeWwnEAJEsYm5QKWchiVYVvJyV9v7UDvUv+w5HO23ZpQTXDv/GxdDdMyOuoQ==",
+      "changes": "Rejects nested RSA DigestInfo AlgorithmIdentifier parameters while preserving valid signatures.",
+      "licenseFile": "third-party/LICENSES/node-forge-1.4.0.txt",
+      "licenseSha256": "f63ff0e4e239244aa79280da2dd4811a0469e5e201caf5cbc0d97c3a1dff8e82",
+      "patches": [
+        {
+          "path": "patches/node-forge@1.4.0.patch",
+          "sha256": "94e77976057f722fec0a9c528e63a45f0c43c85a610983621a51eab03b3e5908",
+          "originalFilesSha256": {
+            "lib/rsa.js": "fd4740238145ec26470eb3f06a627c72039538ce1307dbdce40521f94dfd0a50"
+          }
+        }
+      ]
+    }
+  ]
+}

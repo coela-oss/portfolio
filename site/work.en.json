@@ -1,0 +1,128 @@
+[
+  {
+    "id": "nuxtjp",
+    "path": "/work/nuxtjp",
+    "title": "NuxtJP",
+    "headline": "Developer experience, from the first visit.",
+    "summary": "Nuxt itself and community-built tools serve different needs. The interface separates learning the framework from choosing a NuxtJP package.",
+    "image": "/work/nuxtjp.png",
+    "alt": "NuxtJP website",
+    "category": "Framework and community navigation",
+    "stack": [
+      "Nuxt 4",
+      "Vue 3",
+      "TypeScript",
+      "Static generation"
+    ],
+    "pipeline": [
+      "Bilingual content",
+      "Owned routes",
+      "Static assets",
+      "Reviewed deployment"
+    ],
+    "live": "https://nuxt.jp/",
+    "source": "https://github.com/nuxtjp/website",
+    "sections": [
+      {
+        "title": "Information architecture",
+        "text": "I organize entry points around a visitor’s task, rather than repository ownership. Framework guides lead to official Nuxt resources; community modules have their own purpose, source and installation exits."
+      },
+      {
+        "title": "Architecture",
+        "text": "A shared Nuxt foundation handles locale and static generation. Site-owned components and typed content own navigation, visual identity and the visitor journey. This keeps shared infrastructure from flattening every site into the same template."
+      },
+      {
+        "title": "Trade-off",
+        "text": "Static generation keeps reading fast and hosting simple. Publishing content requires a new build; there is no invented live dashboard or account state."
+      },
+      {
+        "title": "Verification",
+        "text": "The released interface was checked in English and Japanese at 360, 768 and 1440 pixels, including menu control, image loading and primary destinations. Version-tagged CI binds the source commit to the static archive before deployment."
+      }
+    ]
+  },
+  {
+    "id": "ihat",
+    "path": "/work/ihat",
+    "title": "iHAT",
+    "headline": "Turn a release list into a useful decision.",
+    "summary": "Finding a HAT starts with what it does. Search, purpose filters and version-specific exits make a catalog usable without hiding the release identity.",
+    "image": "/work/ihat.png",
+    "alt": "iHAT directory",
+    "category": "Search and release discovery",
+    "stack": [
+      "Vue 3",
+      "TypeScript",
+      "GitHub Releases",
+      "Static catalog"
+    ],
+    "pipeline": [
+      "Release metadata",
+      "Purpose categories",
+      "Local filtering",
+      "Versioned download"
+    ],
+    "live": "https://ihat.online/registry",
+    "source": "https://github.com/hathq/ihat-docs-site",
+    "sections": [
+      {
+        "title": "The interaction",
+        "text": "Eight public HAT releases are grouped by purpose. Search and category filtering run in the browser over the published catalog, including an honest empty-result state."
+      },
+      {
+        "title": "The boundary",
+        "text": "The directory presents release information; it does not execute HATs, install software or grant trust. Each download remains attached to its owning repository and immutable version."
+      },
+      {
+        "title": "Trade-off",
+        "text": "A static catalog gives predictable browsing and explicit download choices. Automatic signed synchronization is a separate Registry responsibility, rather than something the page silently claims to perform."
+      },
+      {
+        "title": "Verification",
+        "text": "The live catalog was checked for narrowing search results, category selection and empty results. English and Japanese views retain the same eight versioned release destinations."
+      }
+    ]
+  },
+  {
+    "id": "sem-lang",
+    "path": "/work/sem-lang",
+    "title": "sem-lang",
+    "headline": "Explain meaning before exposing an API.",
+    "summary": "A language tool needs a concrete example before a specification. The site introduces input, context, interpretation and unresolved questions as one readable sequence.",
+    "image": "/work/sem-lang.png",
+    "alt": "sem-lang website",
+    "category": "An interface for a technical concept",
+    "stack": [
+      "Nuxt 4",
+      "TypeScript",
+      "Semantic models",
+      "Source distribution"
+    ],
+    "pipeline": [
+      "Concrete example",
+      "Meaning and context",
+      "Explicit diagnostics",
+      "Public source"
+    ],
+    "live": "https://sem-lang.taiper.org/",
+    "source": "https://github.com/semantic-language/semantic-language-site",
+    "sections": [
+      {
+        "title": "Make the model visible",
+        "text": "The first screen uses a compact meaning-and-context example. Follow-up pages separate capabilities, use cases and developer detail, so a new reader can understand the purpose before opening the source."
+      },
+      {
+        "title": "Architecture",
+        "text": "Presentation copy and route definitions are typed and validated before static generation. Public source releases and per-file license notices remain the authoritative implementation reference."
+      },
+      {
+        "title": "Trade-off",
+        "text": "The diagram explains a model; it is not an online inference console. The download page points to the available source release instead of suggesting an installer that has not been distributed."
+      },
+      {
+        "title": "Verification",
+        "text": "The deployed site, source-release destination and MPL license entry were checked in both languages. Release artifacts are source-bound, while domain and preview settings are verified during deployment."
+      }
+    ]
+  }
+]

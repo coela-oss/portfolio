@@ -1,0 +1,24 @@
+/* SPDX-License-Identifier: MIT */
+.service-site[data-brand=coela]{--site-accent:#007e78;--site-ink:#142a2a;background:#f6f5f0;color:var(--site-ink)}
+[data-brand=coela] .site-header{background:#f6f5f0f2;backdrop-filter:blur(18px);border-color:#142a2a1a}
+[data-brand=coela] .site-hero{max-width:1200px;padding:72px 24px 48px;margin:auto}
+[data-brand=coela] .site-hero-home{grid-template-columns:minmax(0,1fr) 260px;gap:48px;align-items:center}
+[data-brand=coela] .site-hero h1{font-size:clamp(2.7rem,5.5vw,5.4rem);font-weight:650;line-height:1.06;letter-spacing:-.055em;max-width:18ch;white-space:pre-line}
+[data-brand=coela] .site-lead{font-size:clamp(1.05rem,1.5vw,1.23rem);max-width:55ch;line-height:1.9}
+.portfolio-signature{text-align:center;background:radial-gradient(ellipse,#bde4df 0,transparent 67%);padding:24px}
+.portfolio-signature img{width:200px;height:auto;filter:drop-shadow(0 18px 28px #007e7824)}
+.portfolio-signature p{font-size:.75rem;letter-spacing:.06em;color:#526c68}
+.portfolio-work{margin:32px 0 80px}.portfolio-heading{display:flex;justify-content:space-between;gap:24px;border-top:1px solid #142a2a30;padding-top:18px;margin-bottom:28px}
+.portfolio-heading>span,.work-category{font-size:.77rem;text-transform:uppercase;letter-spacing:.12em;font-weight:650}.portfolio-heading p{margin:0;color:#526c68}
+.work-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;gap:36px;margin:0 0 36px;color:inherit;text-decoration:none;border-radius:24px;border:1px solid #142a2a1c;background:#fff;overflow:hidden}
+.work-card:hover,.work-card:focus-visible{border-color:var(--site-accent);box-shadow:0 14px 34px #142a2a10}.work-card:nth-of-type(even){background:#e5efec}
+.work-image{padding:24px;background:linear-gradient(135deg,#d5e3e0,#e6e1f0)}.work-image img{display:block;width:100%;height:auto;border:1px solid #142a2a26;border-radius:12px;box-shadow:0 12px 26px #142a2a20}
+.work-description{padding:28px 32px 28px 0}.work-description h2{font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-.04em;margin:10px 0 18px}.work-description>p:not(.work-category){line-height:1.85;color:#425b57}.work-description h2 span{float:right;color:var(--site-accent)}
+.work-stack{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:18px 0}.work-stack li{font-size:.75rem;padding:6px 10px;border:1px solid #142a2a24;border-radius:100px}.work-read{display:inline-block;margin-top:12px;font-weight:650;color:var(--site-accent)}
+.case-meta{display:flex;align-items:center;flex-wrap:wrap;gap:20px}.case-meta .work-stack{margin-right:auto}.case-meta a{color:var(--site-accent);font-weight:650}
+.case-evidence figure{margin:24px 0 48px;padding:28px;background:linear-gradient(135deg,#d5e3e0,#e6e1f0);border-radius:24px}.case-evidence figure img{display:block;width:100%;height:auto;max-width:1100px;margin:auto;border-radius:10px;border:1px solid #142a2a26;box-shadow:0 16px 36px #142a2a20}.case-evidence figcaption{font-size:.78rem;margin-top:18px;text-align:center;color:#425b57}
+.case-pipeline{border-block:1px solid #142a2a26;padding:28px 0 36px;margin-bottom:40px}.case-pipeline h2{font-size:1.25rem}.case-pipeline ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:0;list-style:none;counter-reset:stage}.case-pipeline li{counter-increment:stage;padding:20px 16px;background:#e5efec;border-radius:12px;font-size:.9rem}.case-pipeline li:before{content:counter(stage,decimal-leading-zero);display:block;margin-bottom:8px;color:#007e78;font-weight:650}
+[data-brand=coela] .site-number{display:none}[data-brand=coela] .site-section{padding-block:34px;border-color:#142a2a20}[data-brand=coela] .site-section-body{max-width:76ch;line-height:1.9}
+[data-brand=coela] a:focus-visible{outline:3px solid #007e78;outline-offset:5px}
+@media(max-width:760px){[data-brand=coela] .site-hero{padding-top:44px}[data-brand=coela] .site-hero-home{grid-template-columns:1fr;gap:12px}.portfolio-signature{display:none}.work-card{grid-template-columns:1fr;gap:0}.work-description{padding:24px}.work-image{padding:16px}.portfolio-heading{display:block}.portfolio-heading p{margin-top:8px}.case-evidence figure{padding:12px}.case-pipeline ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.work-card{transition:none;scroll-behavior:auto}}

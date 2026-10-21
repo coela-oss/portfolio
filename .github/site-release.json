@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "repository": "coela-oss/portfolio",
+  "defaultBranch": "main",
+  "requiredWorkflows": [
+    "site.yml"
+  ],
+  "sites": [
+    {
+      "id": "coela",
+      "version": "0.1.6",
+      "account": "0655772369a7b3425e3398313a36521b",
+      "worker": "coela-site",
+      "domain": "coela.org",
+      "origin": "https://coela.org",
+      "environment": "site-production-coela",
+      "siteConfig": "sites/coela/site.config.json",
+      "appDirectory": ".",
+      "assetDirectory": ".output/coela/public",
+      "buildKind": "organization",
+      "zone": "de57cf0ec64f1e326f8c93804a4f7cac",
+      "deploymentEnabled": false
+    }
+  ]
+}

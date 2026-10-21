@@ -1,0 +1,165 @@
+{
+  "schema": "nuxtjp://localized-site/site-config/v1",
+  "siteId": "coela-site",
+  "serviceId": "coela",
+  "origin": "https://coela.org",
+  "audienceScope": "global",
+  "defaultLocale": "en",
+  "fallbackLocale": "ja",
+  "prefixDefaultLocale": false,
+  "locales": [
+    "ja",
+    "en"
+  ],
+  "externalActions": false,
+  "content": {
+    "ja": {
+      "brand": "Coela（シーラカンス）",
+      "tagline": "境界から考えるソフトウェア設計",
+      "summary": "ソフトウェア、インターフェース、設計の判断。",
+      "features": [
+        {
+          "id": "nuxtjp",
+          "title": "NuxtJP",
+          "summary": "Nuxtそのものを学ぶことと、NuxtJPの道具を選ぶことは別の目的です。公式情報とコミュニティ独自の情報を分け、次に進む場所を明確にしました。"
+        },
+        {
+          "id": "ihat",
+          "title": "iHAT",
+          "summary": "HATを探す人が最初に知りたいのは用途です。検索と用途フィルタ、版を特定した出口によって、配布の正確さと使いやすさを両立しました。"
+        },
+        {
+          "id": "sem-lang",
+          "title": "sem-lang",
+          "summary": "言語の道具は、仕様だけでは用途が伝わりません。入力・文脈・解釈・未解決の問いを一つの例で示し、概念から実装へ進める構成にしました。"
+        }
+      ],
+      "docs": {
+        "overview": {
+          "slug": "/docs",
+          "title": "実装と資料の入口",
+          "summary": "サイト、実装、指針の正本を目的別に案内します。",
+          "sections": [
+            {
+              "id": "reference",
+              "title": "実装と資料の入口",
+              "body": [
+                "サイト、実装、指針の正本を目的別に案内します。"
+              ]
+            }
+          ]
+        },
+        "gettingStarted": {
+          "slug": "/docs/getting-started",
+          "title": "選んだ作品と、その設計。",
+          "summary": "動作する画面と、情報設計・型・配布の境界を、実装へのリンクとともに紹介します。",
+          "sections": [
+            {
+              "id": "reference",
+              "title": "選んだ作品と、その設計。",
+              "body": [
+                "動作する画面と、情報設計・型・配布の境界を、実装へのリンクとともに紹介します。"
+              ]
+            }
+          ]
+        },
+        "security": {
+          "slug": "/docs/security",
+          "title": "セキュリティ",
+          "summary": "公開インターフェースと実行環境を分離します。",
+          "sections": [
+            {
+              "id": "reference",
+              "title": "セキュリティ",
+              "body": [
+                "公開インターフェースと実行環境を分離します。"
+              ]
+            }
+          ]
+        }
+      },
+      "privacy": {
+        "label": "プライバシー",
+        "summary": "静的サイトの配信と接続情報について。"
+      },
+      "contact": {
+        "label": "連絡先",
+        "summary": "公開内容への提案や不具合は、対応するリポジトリへお寄せください。"
+      }
+    },
+    "en": {
+      "brand": "Coela — coelacanth",
+      "tagline": "Engineering with clear boundaries",
+      "summary": "Software, interfaces and engineering decisions.",
+      "features": [
+        {
+          "id": "nuxtjp",
+          "title": "NuxtJP",
+          "summary": "Nuxt itself and community-built tools serve different needs. The interface separates learning the framework from choosing a NuxtJP package."
+        },
+        {
+          "id": "ihat",
+          "title": "iHAT",
+          "summary": "Finding a HAT starts with what it does. Search, purpose filters and version-specific exits make a catalog usable without hiding the release identity."
+        },
+        {
+          "id": "sem-lang",
+          "title": "sem-lang",
+          "summary": "A language tool needs a concrete example before a specification. The site introduces input, context, interpretation and unresolved questions as one readable sequence."
+        }
+      ],
+      "docs": {
+        "overview": {
+          "slug": "/docs",
+          "title": "Implementation references",
+          "summary": "Entry points into the site implementation and engineering references.",
+          "sections": [
+            {
+              "id": "reference",
+              "title": "Implementation references",
+              "body": [
+                "Entry points into the site implementation and engineering references."
+              ]
+            }
+          ]
+        },
+        "gettingStarted": {
+          "slug": "/docs/getting-started",
+          "title": "Selected work. Decisions included.",
+          "summary": "Live interfaces, architecture and trade-offs, with a route into the implementation.",
+          "sections": [
+            {
+              "id": "reference",
+              "title": "Selected work. Decisions included.",
+              "body": [
+                "Live interfaces, architecture and trade-offs, with a route into the implementation."
+              ]
+            }
+          ]
+        },
+        "security": {
+          "slug": "/docs/security",
+          "title": "Security",
+          "summary": "Keep a public interface separate from execution authority.",
+          "sections": [
+            {
+              "id": "reference",
+              "title": "Security",
+              "body": [
+                "Keep a public interface separate from execution authority."
+              ]
+            }
+          ]
+        }
+      },
+      "privacy": {
+        "label": "Privacy",
+        "summary": "Static delivery and connection information."
+      },
+      "contact": {
+        "label": "Get in touch",
+        "summary": "For suggestions and reproducible issues, use the relevant project repository."
+      }
+    }
+  }
+}

@@ -1,0 +1,1081 @@
+{
+  "siteId": "coela",
+  "origin": "https://coela.org",
+  "defaultLocale": "en",
+  "locales": {
+    "ja": {
+      "brand": "Coela",
+      "caption": "Coela（シーラカンス）｜ソフトウェアエンジニア",
+      "origin": "https://coela.org",
+      "locale": "ja",
+      "accent": "#007b76",
+      "navigation": [
+        {
+          "title": "作品",
+          "href": "/work"
+        },
+        {
+          "title": "OSS",
+          "href": "/oss"
+        },
+        {
+          "title": "設計ノート",
+          "href": "/journal"
+        },
+        {
+          "title": "プロフィール",
+          "href": "/about"
+        }
+      ],
+      "pages": [
+        {
+          "path": "/",
+          "title": "複雑な仕組みを、\n使える体験に。",
+          "summary": "Coelaです。インターフェースから実行・配布の境界まで、使う人が仕組みを理解し、次の行動を選べるソフトウェアをつくっています。",
+          "kind": "home",
+          "status": "published",
+          "sections": []
+        },
+        {
+          "path": "/work",
+          "title": "選んだ作品と、その設計。",
+          "summary": "動作する画面と、情報設計・型・配布の境界を、実装へのリンクとともに紹介します。",
+          "kind": "page",
+          "status": "published",
+          "sections": []
+        },
+        {
+          "path": "/work/nuxtjp",
+          "title": "最初の訪問から、開発体験を設計する。",
+          "summary": "Nuxtそのものを学ぶことと、NuxtJPの道具を選ぶことは別の目的です。公式情報とコミュニティ独自の情報を分け、次に進む場所を明確にしました。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "情報設計",
+              "text": "リポジトリの所属ではなく、閲覧者の目的から入口を設計しています。Nuxtの学習は公式情報へ、NuxtJPのモジュールは用途・ソース・導入方法へつながります。"
+            },
+            {
+              "title": "構成",
+              "text": "言語切替と静的生成は共通のNuxt基盤が担い、ナビゲーション、配色、目的別の導線はサイト側の型付きコンテンツとコンポーネントが担います。内部の共通化と、見せ方の個性を分離しています。"
+            },
+            {
+              "title": "設計上の選択",
+              "text": "静的生成によって閲覧と配信を単純に保っています。更新には再ビルドが必要で、実在しないライブダッシュボードやアカウント状態を表示しません。"
+            },
+            {
+              "title": "検証",
+              "text": "日英それぞれ360・768・1440pxでメニュー、画像、主要リンクの終点を確認しました。タグ付きCIでソースコミットと静的配布物を結び付けてから配備します。"
+            },
+            {
+              "title": "実装をたどる",
+              "text": "画面とコードを行き来して、設計を確かめられます。",
+              "links": [
+                {
+                  "title": "動作サイト",
+                  "href": "https://nuxt.jp/"
+                },
+                {
+                  "title": "公開ソース",
+                  "href": "https://github.com/nuxtjp/website"
+                },
+                {
+                  "title": "他の作品",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/work/ihat",
+          "title": "配布物の一覧を、選べる一覧にする。",
+          "summary": "HATを探す人が最初に知りたいのは用途です。検索と用途フィルタ、版を特定した出口によって、配布の正確さと使いやすさを両立しました。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "操作の設計",
+              "text": "公開済み8件のHATを用途で分類しています。検索とカテゴリの絞り込みは公開カタログに対してブラウザ内で動作し、該当なしの場合も明示します。"
+            },
+            {
+              "title": "責務の境界",
+              "text": "このページは配布情報を提示するもので、HATの実行、インストール、信頼の付与を代行しません。各ダウンロードは所有リポジトリと固定バージョンに結び付いています。"
+            },
+            {
+              "title": "設計上の選択",
+              "text": "静的な一覧は閲覧の予測可能性と、明示的なダウンロードに向いています。署名付きの自動同期はRegistry側の別責務として扱い、一覧ページが実行済みであるかのようには表示しません。"
+            },
+            {
+              "title": "検証",
+              "text": "実サイトで検索の絞り込み、カテゴリ選択、空結果を確認しました。日英の一覧から同じ8件の版付き配布先へ到達できます。"
+            },
+            {
+              "title": "実装をたどる",
+              "text": "画面とコードを行き来して、設計を確かめられます。",
+              "links": [
+                {
+                  "title": "動作サイト",
+                  "href": "https://ihat.online/registry"
+                },
+                {
+                  "title": "公開ソース",
+                  "href": "https://github.com/hathq/ihat-docs-site"
+                },
+                {
+                  "title": "他の作品",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/work/sem-lang",
+          "title": "APIの前に、意味のモデルを伝える。",
+          "summary": "言語の道具は、仕様だけでは用途が伝わりません。入力・文脈・解釈・未解決の問いを一つの例で示し、概念から実装へ進める構成にしました。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "モデルの見せ方",
+              "text": "最初の画面は意味と文脈の小さな例から始まります。機能、用途、開発者向けの詳細を別ページに分け、ソースを開く前に目的を把握できるようにしています。"
+            },
+            {
+              "title": "構成",
+              "text": "表示用コンテンツとルートを型で定義し、静的生成前に検証します。実装の正本は公開ソースのリリースと、ファイルごとのライセンス表示です。"
+            },
+            {
+              "title": "設計上の選択",
+              "text": "図はモデルの説明であり、オンライン推論コンソールではありません。ダウンロードページは実際に提供されているソースの版へつなぎ、未配布のインストーラーを案内しません。"
+            },
+            {
+              "title": "検証",
+              "text": "本番サイト、公開ソースの配布先、MPLのライセンス入口を日英で確認しました。配布物をソースと結び付け、配備時にはドメインとプレビュー設定も検証します。"
+            },
+            {
+              "title": "実装をたどる",
+              "text": "画面とコードを行き来して、設計を確かめられます。",
+              "links": [
+                {
+                  "title": "動作サイト",
+                  "href": "https://sem-lang.taiper.org/"
+                },
+                {
+                  "title": "公開ソース",
+                  "href": "https://github.com/semantic-language/semantic-language-site"
+                },
+                {
+                  "title": "他の作品",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss",
+          "title": "分野から実装へ。",
+          "summary": "所属組織の羅列ではなく、解決したい領域から公開ソースを探せます。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Web・UI",
+              "text": "Nuxtの構築部品と、利用者の導線。",
+              "links": [
+                {
+                  "title": "Web・UI",
+                  "href": "/oss/web"
+                }
+              ]
+            },
+            {
+              "title": "開発ツール",
+              "text": "CLIとプロバイダーを分けた、ローカルからの明示的な操作。",
+              "links": [
+                {
+                  "title": "開発ツール",
+                  "href": "/oss/tools"
+                }
+              ]
+            },
+            {
+              "title": "実行・信頼",
+              "text": "権限、資格情報、実行契約を分ける基盤。",
+              "links": [
+                {
+                  "title": "実行・信頼",
+                  "href": "/oss/systems"
+                }
+              ]
+            },
+            {
+              "title": "意味とデータ",
+              "text": "意味の表現と、グラフの保存を異なる責務として扱う。",
+              "links": [
+                {
+                  "title": "意味とデータ",
+                  "href": "/oss/language"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/web",
+          "title": "Web・UI",
+          "summary": "Nuxtの構築部品と、利用者の導線。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "公開プロジェクト",
+              "text": "Nuxtの構築部品と、利用者の導線。",
+              "links": [
+                {
+                  "title": "site-builder",
+                  "href": "https://github.com/nuxtjp/site-builder"
+                },
+                {
+                  "title": "flow",
+                  "href": "https://github.com/nuxtjp/flow"
+                }
+              ]
+            },
+            {
+              "title": "背景から読む",
+              "text": "実際のインターフェースと、そこに至る設計を紹介します。",
+              "links": [
+                {
+                  "title": "作品を見る",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/tools",
+          "title": "開発ツール",
+          "summary": "CLIとプロバイダーを分けた、ローカルからの明示的な操作。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "公開プロジェクト",
+              "text": "CLIとプロバイダーを分けた、ローカルからの明示的な操作。",
+              "links": [
+                {
+                  "title": "cli",
+                  "href": "https://github.com/zixcel/cli"
+                },
+                {
+                  "title": "zixcel-google",
+                  "href": "https://github.com/zixcel/zixcel-google"
+                }
+              ]
+            },
+            {
+              "title": "背景から読む",
+              "text": "実際のインターフェースと、そこに至る設計を紹介します。",
+              "links": [
+                {
+                  "title": "作品を見る",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/systems",
+          "title": "実行・信頼",
+          "summary": "権限、資格情報、実行契約を分ける基盤。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "公開プロジェクト",
+              "text": "権限、資格情報、実行契約を分ける基盤。",
+              "links": [
+                {
+                  "title": "credential-custody",
+                  "href": "https://github.com/crowsi-net/credential-custody"
+                },
+                {
+                  "title": "hat-specifications",
+                  "href": "https://github.com/hathq/hat-specifications"
+                }
+              ]
+            },
+            {
+              "title": "背景から読む",
+              "text": "実際のインターフェースと、そこに至る設計を紹介します。",
+              "links": [
+                {
+                  "title": "作品を見る",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/language",
+          "title": "意味とデータ",
+          "summary": "意味の表現と、グラフの保存を異なる責務として扱う。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "公開プロジェクト",
+              "text": "意味の表現と、グラフの保存を異なる責務として扱う。",
+              "links": [
+                {
+                  "title": "sem-lang",
+                  "href": "https://github.com/semantic-language/sem-lang"
+                },
+                {
+                  "title": "zixcel-graph",
+                  "href": "https://github.com/zixcel/zixcel-graph"
+                }
+              ]
+            },
+            {
+              "title": "背景から読む",
+              "text": "実際のインターフェースと、そこに至る設計を紹介します。",
+              "links": [
+                {
+                  "title": "作品を見る",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/about",
+          "title": "Coelaについて",
+          "summary": "Coelaはシーラカンスに由来する名前です。道具と情報の境界を整え、理解して使えるソフトウェアを目指しています。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "取り組んでいること",
+              "text": "Rustの中核、TypeScriptのUIと連携、ローカルファーストのデータ設計、再現可能な配布を扱っています。",
+              "links": [
+                {
+                  "title": "作品",
+                  "href": "/work"
+                },
+                {
+                  "title": "公開GitHub",
+                  "href": "https://github.com/coela-oss"
+                }
+              ]
+            },
+            {
+              "title": "設計と言葉",
+              "text": "機能の説明だけでなく、採用理由と制約を残すことを重視しています。",
+              "links": [
+                {
+                  "title": "設計指針",
+                  "href": "/about/principles"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/about/principles",
+          "title": "設計で大切にすること",
+          "summary": "責務と検証可能性を、実装の出発点にします。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "境界を明示する",
+              "text": "表示、保存、通信、実行を分け、権限や認証を暗黙に引き継がない構成にします。"
+            },
+            {
+              "title": "使えることを確かめる",
+              "text": "テスト、配布物、公開画面を別々に検証し、未取得や未実施を成功に置き換えません。"
+            },
+            {
+              "title": "指針の正本",
+              "text": "指針や連携用データの正本は独立したengineeringリポジトリで管理しています。",
+              "links": [
+                {
+                  "title": "Engineering",
+                  "href": "https://github.com/coela-oss/engineering"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/journal",
+          "title": "設計ノート",
+          "summary": "実装から得た判断と、設計上の制約を読む。",
+          "kind": "journal",
+          "status": "published",
+          "sections": []
+        },
+        {
+          "path": "/journal/interface-and-authority",
+          "title": "画面と権限を分けて考える",
+          "summary": "使いやすい入口と、安全な実行境界は異なる責務です。",
+          "kind": "article",
+          "status": "published",
+          "sections": [
+            {
+              "title": "一覧が担うもの",
+              "text": "iHATの一覧は発見と配布先の選択を助けます。インストールや実行、信頼の登録は、その後に明示的に選ぶ操作です。",
+              "links": [
+                {
+                  "title": "iHATの設計",
+                  "href": "/work/ihat"
+                }
+              ]
+            },
+            {
+              "title": "説明も設計の一部",
+              "text": "未提供の機能を実装済みに見せないこと、失敗や未取得を明示することが、道具を使う際の予測可能性につながります。"
+            }
+          ],
+          "category": "設計"
+        },
+        {
+          "path": "/docs",
+          "title": "実装と資料の入口",
+          "summary": "サイト、実装、指針の正本を目的別に案内します。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "調べる",
+              "text": "画面の裏側と設計の判断を確認できます。",
+              "links": [
+                {
+                  "title": "ケーススタディ",
+                  "href": "/work"
+                },
+                {
+                  "title": "Portfolio source",
+                  "href": "https://github.com/coela-oss/portfolio"
+                },
+                {
+                  "title": "Engineering",
+                  "href": "https://github.com/coela-oss/engineering"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/contact",
+          "title": "連絡先",
+          "summary": "公開内容への提案や不具合は、対応するリポジトリへお寄せください。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "ポートフォリオについて",
+              "text": "公開可能な情報だけを記載してください。",
+              "links": [
+                {
+                  "title": "GitHub Issues",
+                  "href": "https://github.com/coela-oss/portfolio/issues"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/privacy",
+          "title": "プライバシー",
+          "summary": "静的サイトの配信と接続情報について。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "配信",
+              "text": "Cloudflareを通じて静的ページを配信します。配信事業者は接続情報を配信・セキュリティのために処理し、RUM beaconによってページの表示性能を計測する場合があります。本サイト独自のログインや追加のアクセス解析は設けていません。",
+              "links": [
+                {
+                  "title": "Cloudflare RUM",
+                  "href": "https://developers.cloudflare.com/speed/observatory/rum-beacon/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/security",
+          "title": "セキュリティ",
+          "summary": "公開インターフェースと実行環境を分離します。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "公開情報だけを扱う",
+              "text": "このサイトは認証情報、非公開の原稿、実行用の資格情報を配信しません。リンク先の製品やサービスの認証・実行は各製品の手順に従います。"
+            }
+          ]
+        },
+        {
+          "path": "/sitemap",
+          "title": "サイトマップ",
+          "summary": "目的からページを探す。",
+          "kind": "page",
+          "status": "published",
+          "sections": []
+        }
+      ],
+      "resources": [],
+      "icon": "/brand/icon.png",
+      "secondaryAction": {
+        "title": "プロフィール",
+        "href": "/about"
+      }
+    },
+    "en": {
+      "brand": "Coela",
+      "caption": "Coela — named after the coelacanth. Software engineering.",
+      "origin": "https://coela.org",
+      "locale": "en",
+      "accent": "#007b76",
+      "navigation": [
+        {
+          "title": "Work",
+          "href": "/work"
+        },
+        {
+          "title": "OSS",
+          "href": "/oss"
+        },
+        {
+          "title": "Notes",
+          "href": "/journal"
+        },
+        {
+          "title": "About",
+          "href": "/about"
+        }
+      ],
+      "pages": [
+        {
+          "path": "/",
+          "title": "Complex systems.\nClear experiences.",
+          "summary": "I’m Coela. I work across interfaces, execution boundaries and distribution to make software understandable and useful.",
+          "kind": "home",
+          "status": "published",
+          "sections": []
+        },
+        {
+          "path": "/work",
+          "title": "Selected work. Decisions included.",
+          "summary": "Live interfaces, architecture and trade-offs, with a route into the implementation.",
+          "kind": "page",
+          "status": "published",
+          "sections": []
+        },
+        {
+          "path": "/work/nuxtjp",
+          "title": "Developer experience, from the first visit.",
+          "summary": "Nuxt itself and community-built tools serve different needs. The interface separates learning the framework from choosing a NuxtJP package.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Information architecture",
+              "text": "I organize entry points around a visitor’s task, rather than repository ownership. Framework guides lead to official Nuxt resources; community modules have their own purpose, source and installation exits."
+            },
+            {
+              "title": "Architecture",
+              "text": "A shared Nuxt foundation handles locale and static generation. Site-owned components and typed content own navigation, visual identity and the visitor journey. This keeps shared infrastructure from flattening every site into the same template."
+            },
+            {
+              "title": "Trade-off",
+              "text": "Static generation keeps reading fast and hosting simple. Publishing content requires a new build; there is no invented live dashboard or account state."
+            },
+            {
+              "title": "Verification",
+              "text": "The released interface was checked in English and Japanese at 360, 768 and 1440 pixels, including menu control, image loading and primary destinations. Version-tagged CI binds the source commit to the static archive before deployment."
+            },
+            {
+              "title": "Explore the implementation",
+              "text": "Move between the interface and the code to inspect the design.",
+              "links": [
+                {
+                  "title": "Live interface",
+                  "href": "https://nuxt.jp/"
+                },
+                {
+                  "title": "Source repository",
+                  "href": "https://github.com/nuxtjp/website"
+                },
+                {
+                  "title": "More work",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/work/ihat",
+          "title": "Turn a release list into a useful decision.",
+          "summary": "Finding a HAT starts with what it does. Search, purpose filters and version-specific exits make a catalog usable without hiding the release identity.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "The interaction",
+              "text": "Eight public HAT releases are grouped by purpose. Search and category filtering run in the browser over the published catalog, including an honest empty-result state."
+            },
+            {
+              "title": "The boundary",
+              "text": "The directory presents release information; it does not execute HATs, install software or grant trust. Each download remains attached to its owning repository and immutable version."
+            },
+            {
+              "title": "Trade-off",
+              "text": "A static catalog gives predictable browsing and explicit download choices. Automatic signed synchronization is a separate Registry responsibility, rather than something the page silently claims to perform."
+            },
+            {
+              "title": "Verification",
+              "text": "The live catalog was checked for narrowing search results, category selection and empty results. English and Japanese views retain the same eight versioned release destinations."
+            },
+            {
+              "title": "Explore the implementation",
+              "text": "Move between the interface and the code to inspect the design.",
+              "links": [
+                {
+                  "title": "Live interface",
+                  "href": "https://ihat.online/registry"
+                },
+                {
+                  "title": "Source repository",
+                  "href": "https://github.com/hathq/ihat-docs-site"
+                },
+                {
+                  "title": "More work",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/work/sem-lang",
+          "title": "Explain meaning before exposing an API.",
+          "summary": "A language tool needs a concrete example before a specification. The site introduces input, context, interpretation and unresolved questions as one readable sequence.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Make the model visible",
+              "text": "The first screen uses a compact meaning-and-context example. Follow-up pages separate capabilities, use cases and developer detail, so a new reader can understand the purpose before opening the source."
+            },
+            {
+              "title": "Architecture",
+              "text": "Presentation copy and route definitions are typed and validated before static generation. Public source releases and per-file license notices remain the authoritative implementation reference."
+            },
+            {
+              "title": "Trade-off",
+              "text": "The diagram explains a model; it is not an online inference console. The download page points to the available source release instead of suggesting an installer that has not been distributed."
+            },
+            {
+              "title": "Verification",
+              "text": "The deployed site, source-release destination and MPL license entry were checked in both languages. Release artifacts are source-bound, while domain and preview settings are verified during deployment."
+            },
+            {
+              "title": "Explore the implementation",
+              "text": "Move between the interface and the code to inspect the design.",
+              "links": [
+                {
+                  "title": "Live interface",
+                  "href": "https://sem-lang.taiper.org/"
+                },
+                {
+                  "title": "Source repository",
+                  "href": "https://github.com/semantic-language/semantic-language-site"
+                },
+                {
+                  "title": "More work",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss",
+          "title": "Explore the work by discipline.",
+          "summary": "Find public implementations by the problem space, rather than an organization list.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Web & UI",
+              "text": "Nuxt building blocks and user journeys.",
+              "links": [
+                {
+                  "title": "Web & UI",
+                  "href": "/oss/web"
+                }
+              ]
+            },
+            {
+              "title": "Developer tools",
+              "text": "Explicit local operations with a CLI separated from providers.",
+              "links": [
+                {
+                  "title": "Developer tools",
+                  "href": "/oss/tools"
+                }
+              ]
+            },
+            {
+              "title": "Execution & trust",
+              "text": "Separate boundaries for authority, custody and execution contracts.",
+              "links": [
+                {
+                  "title": "Execution & trust",
+                  "href": "/oss/systems"
+                }
+              ]
+            },
+            {
+              "title": "Meaning & data",
+              "text": "Semantic representation and graph persistence as separate responsibilities.",
+              "links": [
+                {
+                  "title": "Meaning & data",
+                  "href": "/oss/language"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/web",
+          "title": "Web & UI",
+          "summary": "Nuxt building blocks and user journeys.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Public projects",
+              "text": "Nuxt building blocks and user journeys.",
+              "links": [
+                {
+                  "title": "site-builder",
+                  "href": "https://github.com/nuxtjp/site-builder"
+                },
+                {
+                  "title": "flow",
+                  "href": "https://github.com/nuxtjp/flow"
+                }
+              ]
+            },
+            {
+              "title": "Start with the reasoning",
+              "text": "Explore working interfaces and the decisions behind them.",
+              "links": [
+                {
+                  "title": "Explore selected work",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/tools",
+          "title": "Developer tools",
+          "summary": "Explicit local operations with a CLI separated from providers.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Public projects",
+              "text": "Explicit local operations with a CLI separated from providers.",
+              "links": [
+                {
+                  "title": "cli",
+                  "href": "https://github.com/zixcel/cli"
+                },
+                {
+                  "title": "zixcel-google",
+                  "href": "https://github.com/zixcel/zixcel-google"
+                }
+              ]
+            },
+            {
+              "title": "Start with the reasoning",
+              "text": "Explore working interfaces and the decisions behind them.",
+              "links": [
+                {
+                  "title": "Explore selected work",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/systems",
+          "title": "Execution & trust",
+          "summary": "Separate boundaries for authority, custody and execution contracts.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Public projects",
+              "text": "Separate boundaries for authority, custody and execution contracts.",
+              "links": [
+                {
+                  "title": "credential-custody",
+                  "href": "https://github.com/crowsi-net/credential-custody"
+                },
+                {
+                  "title": "hat-specifications",
+                  "href": "https://github.com/hathq/hat-specifications"
+                }
+              ]
+            },
+            {
+              "title": "Start with the reasoning",
+              "text": "Explore working interfaces and the decisions behind them.",
+              "links": [
+                {
+                  "title": "Explore selected work",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/oss/language",
+          "title": "Meaning & data",
+          "summary": "Semantic representation and graph persistence as separate responsibilities.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Public projects",
+              "text": "Semantic representation and graph persistence as separate responsibilities.",
+              "links": [
+                {
+                  "title": "sem-lang",
+                  "href": "https://github.com/semantic-language/sem-lang"
+                },
+                {
+                  "title": "zixcel-graph",
+                  "href": "https://github.com/zixcel/zixcel-graph"
+                }
+              ]
+            },
+            {
+              "title": "Start with the reasoning",
+              "text": "Explore working interfaces and the decisions behind them.",
+              "links": [
+                {
+                  "title": "Explore selected work",
+                  "href": "/work"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/about",
+          "title": "About Coela",
+          "summary": "Coela takes its name from the coelacanth. My focus is software people can understand, inspect and use.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "What I work on",
+              "text": "Rust cores, TypeScript interfaces and integrations, local-first data design and reproducible distribution.",
+              "links": [
+                {
+                  "title": "Selected work",
+                  "href": "/work"
+                },
+                {
+                  "title": "GitHub",
+                  "href": "https://github.com/coela-oss"
+                }
+              ]
+            },
+            {
+              "title": "Design and explanation",
+              "text": "I value the reasons and constraints behind an implementation as much as the feature description.",
+              "links": [
+                {
+                  "title": "Engineering principles",
+                  "href": "/about/principles"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/about/principles",
+          "title": "Engineering principles",
+          "summary": "Start with responsibility and verifiable behavior.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Make boundaries explicit",
+              "text": "Separate presentation, storage, communication and execution. Authority and authentication must not be inherited implicitly."
+            },
+            {
+              "title": "Verify the actual experience",
+              "text": "Verify tests, release artifacts and the public interface separately. Missing observations are not successful results."
+            },
+            {
+              "title": "The source of these principles",
+              "text": "Engineering principles and integration datasets are maintained in an independent repository.",
+              "links": [
+                {
+                  "title": "Engineering",
+                  "href": "https://github.com/coela-oss/engineering"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/journal",
+          "title": "Engineering notes",
+          "summary": "Reasoning and constraints drawn from concrete implementations.",
+          "kind": "journal",
+          "status": "published",
+          "sections": []
+        },
+        {
+          "path": "/journal/interface-and-authority",
+          "title": "An interface is not an authority",
+          "summary": "A useful entry point and a safe execution boundary solve different problems.",
+          "kind": "article",
+          "status": "published",
+          "sections": [
+            {
+              "title": "What a directory owns",
+              "text": "The iHAT directory supports discovery and release selection. Installation, execution and trust registration are separate explicit choices.",
+              "links": [
+                {
+                  "title": "The iHAT case study",
+                  "href": "/work/ihat"
+                }
+              ]
+            },
+            {
+              "title": "Explanations are part of the design",
+              "text": "Distinguishing available behavior from planned features, and failures from missing observations, makes a tool predictable."
+            }
+          ],
+          "category": "Design"
+        },
+        {
+          "path": "/docs",
+          "title": "Implementation references",
+          "summary": "Entry points into the site implementation and engineering references.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Inspect",
+              "text": "Inspect the implementation and its design choices.",
+              "links": [
+                {
+                  "title": "Case studies",
+                  "href": "/work"
+                },
+                {
+                  "title": "Portfolio source",
+                  "href": "https://github.com/coela-oss/portfolio"
+                },
+                {
+                  "title": "Engineering",
+                  "href": "https://github.com/coela-oss/engineering"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/contact",
+          "title": "Get in touch",
+          "summary": "For suggestions and reproducible issues, use the relevant project repository.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "About this portfolio",
+              "text": "Include only information that can be shared publicly.",
+              "links": [
+                {
+                  "title": "GitHub Issues",
+                  "href": "https://github.com/coela-oss/portfolio/issues"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/privacy",
+          "title": "Privacy",
+          "summary": "Static delivery and connection information.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Delivery",
+              "text": "Static pages are served through Cloudflare. The provider processes connection information for delivery and security, and may measure page performance with its RUM beacon. This site adds no separate analytics or login.",
+              "links": [
+                {
+                  "title": "Cloudflare RUM",
+                  "href": "https://developers.cloudflare.com/speed/observatory/rum-beacon/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/security",
+          "title": "Security",
+          "summary": "Keep a public interface separate from execution authority.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "Public information only",
+              "text": "The site distributes no credentials, private drafts or runtime authority. Authentication and execution belong to the linked products and their own procedures."
+            }
+          ]
+        },
+        {
+          "path": "/sitemap",
+          "title": "Sitemap",
+          "summary": "Find a page by purpose.",
+          "kind": "page",
+          "status": "published",
+          "sections": []
+        }
+      ],
+      "resources": [],
+      "icon": "/brand/icon.png",
+      "secondaryAction": {
+        "title": "About",
+        "href": "/about"
+      }
+    }
+  }
+}

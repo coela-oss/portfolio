@@ -1,0 +1,128 @@
+[
+  {
+    "id": "nuxtjp",
+    "path": "/work/nuxtjp",
+    "title": "NuxtJP",
+    "headline": "最初の訪問から、開発体験を設計する。",
+    "summary": "Nuxtそのものを学ぶことと、NuxtJPの道具を選ぶことは別の目的です。公式情報とコミュニティ独自の情報を分け、次に進む場所を明確にしました。",
+    "image": "/work/nuxtjp.png",
+    "alt": "NuxtJPのWebサイト",
+    "category": "フレームワークと独自ツールの導線",
+    "stack": [
+      "Nuxt 4",
+      "Vue 3",
+      "TypeScript",
+      "Static generation"
+    ],
+    "pipeline": [
+      "Bilingual content",
+      "Owned routes",
+      "Static assets",
+      "Reviewed deployment"
+    ],
+    "live": "https://nuxt.jp/",
+    "source": "https://github.com/nuxtjp/website",
+    "sections": [
+      {
+        "title": "情報設計",
+        "text": "リポジトリの所属ではなく、閲覧者の目的から入口を設計しています。Nuxtの学習は公式情報へ、NuxtJPのモジュールは用途・ソース・導入方法へつながります。"
+      },
+      {
+        "title": "構成",
+        "text": "言語切替と静的生成は共通のNuxt基盤が担い、ナビゲーション、配色、目的別の導線はサイト側の型付きコンテンツとコンポーネントが担います。内部の共通化と、見せ方の個性を分離しています。"
+      },
+      {
+        "title": "設計上の選択",
+        "text": "静的生成によって閲覧と配信を単純に保っています。更新には再ビルドが必要で、実在しないライブダッシュボードやアカウント状態を表示しません。"
+      },
+      {
+        "title": "検証",
+        "text": "日英それぞれ360・768・1440pxでメニュー、画像、主要リンクの終点を確認しました。タグ付きCIでソースコミットと静的配布物を結び付けてから配備します。"
+      }
+    ]
+  },
+  {
+    "id": "ihat",
+    "path": "/work/ihat",
+    "title": "iHAT",
+    "headline": "配布物の一覧を、選べる一覧にする。",
+    "summary": "HATを探す人が最初に知りたいのは用途です。検索と用途フィルタ、版を特定した出口によって、配布の正確さと使いやすさを両立しました。",
+    "image": "/work/ihat.png",
+    "alt": "iHATのディレクトリ",
+    "category": "検索とリリースの発見",
+    "stack": [
+      "Vue 3",
+      "TypeScript",
+      "GitHub Releases",
+      "Static catalog"
+    ],
+    "pipeline": [
+      "Release metadata",
+      "Purpose categories",
+      "Local filtering",
+      "Versioned download"
+    ],
+    "live": "https://ihat.online/registry",
+    "source": "https://github.com/hathq/ihat-docs-site",
+    "sections": [
+      {
+        "title": "操作の設計",
+        "text": "公開済み8件のHATを用途で分類しています。検索とカテゴリの絞り込みは公開カタログに対してブラウザ内で動作し、該当なしの場合も明示します。"
+      },
+      {
+        "title": "責務の境界",
+        "text": "このページは配布情報を提示するもので、HATの実行、インストール、信頼の付与を代行しません。各ダウンロードは所有リポジトリと固定バージョンに結び付いています。"
+      },
+      {
+        "title": "設計上の選択",
+        "text": "静的な一覧は閲覧の予測可能性と、明示的なダウンロードに向いています。署名付きの自動同期はRegistry側の別責務として扱い、一覧ページが実行済みであるかのようには表示しません。"
+      },
+      {
+        "title": "検証",
+        "text": "実サイトで検索の絞り込み、カテゴリ選択、空結果を確認しました。日英の一覧から同じ8件の版付き配布先へ到達できます。"
+      }
+    ]
+  },
+  {
+    "id": "sem-lang",
+    "path": "/work/sem-lang",
+    "title": "sem-lang",
+    "headline": "APIの前に、意味のモデルを伝える。",
+    "summary": "言語の道具は、仕様だけでは用途が伝わりません。入力・文脈・解釈・未解決の問いを一つの例で示し、概念から実装へ進める構成にしました。",
+    "image": "/work/sem-lang.png",
+    "alt": "sem-langのWebサイト",
+    "category": "技術的な概念を伝えるインターフェース",
+    "stack": [
+      "Nuxt 4",
+      "TypeScript",
+      "Semantic models",
+      "Source distribution"
+    ],
+    "pipeline": [
+      "Concrete example",
+      "Meaning and context",
+      "Explicit diagnostics",
+      "Public source"
+    ],
+    "live": "https://sem-lang.taiper.org/",
+    "source": "https://github.com/semantic-language/semantic-language-site",
+    "sections": [
+      {
+        "title": "モデルの見せ方",
+        "text": "最初の画面は意味と文脈の小さな例から始まります。機能、用途、開発者向けの詳細を別ページに分け、ソースを開く前に目的を把握できるようにしています。"
+      },
+      {
+        "title": "構成",
+        "text": "表示用コンテンツとルートを型で定義し、静的生成前に検証します。実装の正本は公開ソースのリリースと、ファイルごとのライセンス表示です。"
+      },
+      {
+        "title": "設計上の選択",
+        "text": "図はモデルの説明であり、オンライン推論コンソールではありません。ダウンロードページは実際に提供されているソースの版へつなぎ、未配布のインストーラーを案内しません。"
+      },
+      {
+        "title": "検証",
+        "text": "本番サイト、公開ソースの配布先、MPLのライセンス入口を日英で確認しました。配布物をソースと結び付け、配備時にはドメインとプレビュー設定も検証します。"
+      }
+    ]
+  }
+]

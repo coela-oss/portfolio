@@ -1,0 +1,44 @@
+[
+  {
+    "id": "nuxtjp",
+    "image": "/work/nuxtjp.png",
+    "origin": "https://nuxt.jp/",
+    "repository": "https://github.com/nuxtjp/website",
+    "source": "010a800d442256382c882f521871796e585e2bee",
+    "version": "0.1.9",
+    "capturedOn": "2026-10-21",
+    "sha256": "9572df5e7d01510a6ad7c6a0137a30b569303eec53cd0c90c493ad4842335b3b",
+    "width": 1440,
+    "height": 1100,
+    "kind": "live-web-interface",
+    "locale": "ja"
+  },
+  {
+    "id": "ihat",
+    "image": "/work/ihat.png",
+    "origin": "https://ihat.online/registry",
+    "repository": "https://github.com/hathq/ihat-docs-site",
+    "source": "68425e567da1e6762000fed04658772a826c670d",
+    "version": "0.1.9",
+    "capturedOn": "2026-10-21",
+    "sha256": "1c4e4912c6280db202620378b182f4f5a2d3116937b6ad771542652e3f7edb1f",
+    "width": 1440,
+    "height": 1100,
+    "kind": "live-web-interface",
+    "locale": "ja"
+  },
+  {
+    "id": "sem-lang",
+    "image": "/work/sem-lang.png",
+    "origin": "https://sem-lang.taiper.org/",
+    "repository": "https://github.com/semantic-language/semantic-language-site",
+    "source": "111b9634f699fc561b2a99ee89994c53a16b2989",
+    "version": "0.1.4",
+    "capturedOn": "2026-10-21",
+    "sha256": "c46a0107dcc2dfb35518e08dce47d410b138134ac9fca9296b85d764269930da",
+    "width": 1440,
+    "height": 1100,
+    "kind": "live-web-interface",
+    "locale": "ja"
+  }
+]

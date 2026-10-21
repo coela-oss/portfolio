@@ -1,0 +1,100 @@
+{
+  "ja": {
+    "category": "エンジニアのポートフォリオ",
+    "primary": {
+      "href": "/work",
+      "title": "作品を見る"
+    },
+    "secondary": {
+      "href": "/about",
+      "title": "Coelaについて"
+    },
+    "pathsTitle": "何をお探しですか？",
+    "paths": [
+      {
+        "href": "/work",
+        "title": "つくっているものを見る",
+        "summary": "製品・道具・設計の背景"
+      },
+      {
+        "href": "/oss",
+        "title": "分野からOSSを探す",
+        "summary": "用途と関心から実装へ"
+      },
+      {
+        "href": "/about/principles",
+        "title": "考え方を知る",
+        "summary": "設計と開発を支える視点"
+      }
+    ],
+    "preview": {
+      "kind": "portfolio",
+      "label": "作品の領域",
+      "title": "情報と、人のあいだをつくる。",
+      "rows": [
+        {
+          "label": "NuxtJP",
+          "detail": "Developer experience"
+        },
+        {
+          "label": "iHAT",
+          "detail": "Release discovery"
+        },
+        {
+          "label": "sem-lang",
+          "detail": "Meaning and context"
+        }
+      ],
+      "outcome": "作品から、設計の背景へ。"
+    }
+  },
+  "en": {
+    "category": "An engineer’s portfolio",
+    "primary": {
+      "href": "/work",
+      "title": "Explore my work"
+    },
+    "secondary": {
+      "href": "/about",
+      "title": "About Coela"
+    },
+    "pathsTitle": "What brings you here?",
+    "paths": [
+      {
+        "href": "/work",
+        "title": "Explore the work",
+        "summary": "Products, tools and the thinking behind them"
+      },
+      {
+        "href": "/oss",
+        "title": "Browse open source",
+        "summary": "Find implementations by discipline"
+      },
+      {
+        "href": "/about/principles",
+        "title": "Explore my approach",
+        "summary": "Perspectives on design and engineering"
+      }
+    ],
+    "preview": {
+      "kind": "portfolio",
+      "label": "Areas of work",
+      "title": "Building between people and information.",
+      "rows": [
+        {
+          "label": "NuxtJP",
+          "detail": "Developer experience"
+        },
+        {
+          "label": "iHAT",
+          "detail": "Release discovery"
+        },
+        {
+          "label": "sem-lang",
+          "detail": "Meaning and context"
+        }
+      ],
+      "outcome": "From the work to the decisions behind it."
+    }
+  }
+}

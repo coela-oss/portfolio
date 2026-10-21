@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-10-09",
+  "status": "local-backport-unpublished",
+  "patches": [
+    {
+      "package": "braces",
+      "version": "3.0.3",
+      "license": "MIT",
+      "upstream": "https://github.com/micromatch/braces",
+      "advisory": "GHSA-vfj7-8cjw-p6xm",
+      "behavior": "Reject AST/parse nesting over 64; reject cyclic AST and walks over 100000 nodes."
+    },
+    {
+      "package": "node-forge",
+      "version": "1.4.0",
+      "license": "BSD-3-Clause OR GPL-2.0",
+      "upstream": "https://github.com/digitalbazaar/forge",
+      "advisory": "GHSA-86w9-cpqp-85rv",
+      "behavior": "Require exact DigestAlgorithm OID and optional empty primitive NULL; reject extra nested fields."
+    }
+  ],
+  "test": "pnpm test:dependency-security",
+  "registry_audit": "Original upstream versions still match advisories; do not suppress globally. Only exact verified patch hashes may be credited locally.",
+  "rights": "Upstream package LICENSE files retained unchanged; these patches do not relicense upstream code."
+}

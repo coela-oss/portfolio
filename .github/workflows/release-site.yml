@@ -1,0 +1,125 @@
+name: Release site from owned version tag
+on:
+  push:
+    tags: ['site/**']
+  workflow_dispatch:
+  pull_request:
+    paths: ['.github/site-release.json', '.github/scripts/site_release.py', '.github/scripts/site_build.py', '.github/scripts/test_site_release.py', '.github/workflows/release-site.yml']
+permissions:
+  contents: read
+concurrency:
+  group: site-release-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - run: python3 .github/scripts/test_site_release.py
+  prepare:
+    if: github.event_name != 'pull_request' && github.ref_type == 'tag'
+    needs: contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      sha256: ${{ steps.archive.outputs.sha256 }}
+      app: ${{ steps.plan.outputs.app }}
+      environment: ${{ steps.plan.outputs.environment }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require owned tag on main and successful owner CI
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/site_release.py plan
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24.15.0'
+          package-manager-cache: false
+      - run: npm install --global --ignore-scripts --no-audit --no-fund pnpm@10.29.3
+      - name: Build selected site without deployment credentials
+        env:
+          SITE_RELEASE_ID: ${{ steps.plan.outputs.site }}
+          SITE_RELEASE_APP: ${{ steps.plan.outputs.app }}
+          NUXT_TELEMETRY_DISABLED: '1'
+        run: |
+          python3 .github/scripts/site_build.py "$SITE_RELEASE_ID" "$SITE_RELEASE_APP"
+          git diff --exit-code
+      - name: Bind source, target and all public asset hashes
+        id: archive
+        run: python3 .github/scripts/site_release.py pack "$RUNNER_TEMP/site-release"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        id: upload
+        with:
+          name: site-release-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/site-release/site.tgz
+            ${{ runner.temp }}/site-release/SHA256SUMS
+          retention-days: 90
+          if-no-files-found: error
+      - name: Describe publication gate
+        env:
+          SITE_DEPLOY_ENABLED: ${{ vars.SITE_DEPLOY_ENABLED }}
+          RELEASE_HASH: ${{ steps.archive.outputs.sha256 }}
+        run: |
+          printf 'Prepared source `%s`, archive SHA256 `%s`.\n' "$GITHUB_SHA" "$RELEASE_HASH" >> "$GITHUB_STEP_SUMMARY"
+          if test "$SITE_DEPLOY_ENABLED" != true; then
+            echo 'NOT DEPLOYED: configure reviewed site production Environment, effective required reviewers and its CLOUDFLARE_DEPLOY_TOKEN; then set SITE_DEPLOY_ENABLED=true. Private plan limitations must be resolved first.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+  deploy:
+    needs: prepare
+    if: vars.SITE_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: ${{ needs.prepare.outputs.environment }}
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24.15.0'
+          package-manager-cache: false
+      - run: npm install --global --ignore-scripts --no-audit --no-fund pnpm@10.29.3
+      - name: Install only the owning locked deployment toolchain without Cloudflare credentials
+        env:
+          SITE_RELEASE_APP: ${{ needs.prepare.outputs.app }}
+        run: pnpm --dir "$SITE_RELEASE_APP" install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          artifact-ids: ${{ needs.prepare.outputs.artifact-id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/site-release
+      - name: Deploy exact archive and verify production; never create a public preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN }}
+          EXPECTED_ARCHIVE_SHA256: ${{ needs.prepare.outputs.sha256 }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: python3 .github/scripts/site_release.py deploy "$RUNNER_TEMP/site-release"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: site-receipt-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/site-release/rollback.json
+            ${{ runner.temp }}/site-release/acceptance.json
+            ${{ runner.temp }}/site-release/operation.json
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Summarize verified production
+        run: cat "$RUNNER_TEMP/site-release/acceptance.json" >> "$GITHUB_STEP_SUMMARY"
