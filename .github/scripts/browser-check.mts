@@ -27,6 +27,7 @@ try {
     await browser.call('Emulation.setDeviceMetricsOverride', { width, height: 1100, deviceScaleFactor: 1, mobile: false })
     for (const page of data.locales[locale].pages) {
       const path = (locale === 'en' ? '' : '/ja') + page.path
+      console.log(`Render ${locale} ${width}px ${page.path}`)
       await browser.call('Page.navigate', { url: origin + path })
       let ready = false
       for (let n = 0; n < 100; n++) {
@@ -35,7 +36,10 @@ try {
         await sleep(100)
       }
       if (!ready) throw Error(`Page not ready: ${path}`)
-      await browser.evaluate('Promise.all([...document.images].map(image=>image.decode().catch(()=>{})))')
+      const images = await browser.evaluate(`Promise.race([
+        Promise.all([...document.images].map(image=>{image.loading='eager';return image.decode().then(()=>true,()=>false)})),
+        new Promise(resolve=>setTimeout(()=>resolve(null),7000))])`)
+      if (!Array.isArray(images) || images.some(decoded => decoded !== true)) throw Error(`Image loading failed or exceeded its deadline: ${path}`)
       const result = object(await browser.evaluate(`(()=>({h1:document.querySelectorAll('h1').length,
         overflow:document.documentElement.scrollWidth>innerWidth+1,
         missing:[...document.images].some(image=>!image.naturalWidth),
@@ -54,11 +58,15 @@ try {
         if (await browser.evaluate("document.querySelector('.site-menu').getAttribute('aria-expanded')") !== 'false') throw Error('Menu did not close')
       }
       if (['/', '/work', '/work/sem-lang', '/work/zix-cli'].includes(page.path) && width !== 768) {
-        const shot = await browser.call('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false })
+        const size = object((await browser.call('Page.getLayoutMetrics')).cssContentSize)
+        if (typeof size.height !== 'number' || size.height < 1 || size.height > 12000) throw Error('Screenshot height exceeds the review budget')
+        const shot = await browser.call('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true,
+          clip: { x: 0, y: 0, width, height: size.height, scale: 1 } })
         if (typeof shot.data !== 'string') throw Error('Missing screenshot')
         writeFileSync(`browser-results/${locale}-${width}-${page.path.replaceAll('/', '-') || 'home'}.png`, Buffer.from(shot.data, 'base64'))
       }
       results.push({ locale, width, path, ...result })
+      writeFileSync('browser-results/progress.json', JSON.stringify(results, null, 2)+'\n')
     }
   }
   if (browser.errors.length) throw Error(browser.errors.join('; '))
