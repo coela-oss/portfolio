@@ -50,10 +50,10 @@ useHead(() => ({ htmlAttrs: { lang: locale.value }, link: [
         <div v-if="page.kind === 'home'" class="portfolio-signature"><img :src="content.icon" width="240" height="240" alt="Coela"><p>Software · Interfaces · Systems</p></div>
       </section>
       <div class="site-body">
+        <VisitorPaths v-if="page.kind === 'home'" :experience="experience" :local="local" />
         <WorkChooser v-if="path === '/work'" :locale="locale" :local="local" />
         <WorkGallery v-if="page.kind === 'home' || path === '/work'" :locale="locale" :local="local" />
         <CaseStudy :path="path" :locale="locale" />
-        <VisitorPaths v-if="page.kind === 'home'" :experience="experience" :local="local" />
         <PageSections :sections="page.sections" :local="local" />
         <CaseActions v-if="caseStory" :story="caseStory" :locale="locale" :local="local" />
         <section v-if="page.kind === 'journal'" class="site-journal">

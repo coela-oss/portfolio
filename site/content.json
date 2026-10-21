@@ -49,35 +49,43 @@
               "links": [
                 {
                   "title": "NERP",
-                  "href": "https://nerp.jp"
+                  "href": "https://nerp.jp",
+                  "summary": "業務アプリケーションの紹介と提供条件"
                 },
                 {
                   "title": "Hatter",
-                  "href": "https://hatter.ihat.online"
+                  "href": "https://hatter.ihat.online",
+                  "summary": "ローカル実行ツールの紹介と導入"
                 },
                 {
                   "title": "Taiper",
-                  "href": "https://taiper.org"
+                  "href": "https://taiper.org",
+                  "summary": "情報整理と意思決定のための製品"
                 },
                 {
                   "title": "Zixcel",
-                  "href": "https://zixcel.com"
+                  "href": "https://zixcel.com",
+                  "summary": "CLIとサービス連携ツールの全体像"
                 },
                 {
                   "title": "Crowsi",
-                  "href": "https://crowsi.org"
+                  "href": "https://crowsi.org",
+                  "summary": "認証情報と実行境界を扱う基盤"
                 },
                 {
                   "title": "Constillo",
-                  "href": "https://constillo.com"
+                  "href": "https://constillo.com",
+                  "summary": "製品・サービスの紹介"
                 },
                 {
                   "title": "vPremises",
-                  "href": "https://vpremises.com"
+                  "href": "https://vpremises.com",
+                  "summary": "環境構築・運用に関する取り組み"
                 },
                 {
                   "title": "Incus JP",
-                  "href": "https://incus.jp"
+                  "href": "https://incus.jp",
+                  "summary": "Incusの情報と日本語の導入ガイド"
                 }
               ]
             }
@@ -604,35 +612,43 @@
               "links": [
                 {
                   "title": "NERP",
-                  "href": "https://nerp.jp"
+                  "href": "https://nerp.jp",
+                  "summary": "Business applications and availability"
                 },
                 {
                   "title": "Hatter",
-                  "href": "https://hatter.ihat.online"
+                  "href": "https://hatter.ihat.online",
+                  "summary": "The local execution tool and installation"
                 },
                 {
                   "title": "Taiper",
-                  "href": "https://taiper.org"
+                  "href": "https://taiper.org",
+                  "summary": "A product for organizing information and decisions"
                 },
                 {
                   "title": "Zixcel",
-                  "href": "https://zixcel.com"
+                  "href": "https://zixcel.com",
+                  "summary": "An overview of CLI and service integration tools"
                 },
                 {
                   "title": "Crowsi",
-                  "href": "https://crowsi.org"
+                  "href": "https://crowsi.org",
+                  "summary": "Infrastructure for credentials and execution boundaries"
                 },
                 {
                   "title": "Constillo",
-                  "href": "https://constillo.com"
+                  "href": "https://constillo.com",
+                  "summary": "Product and service overview"
                 },
                 {
                   "title": "vPremises",
-                  "href": "https://vpremises.com"
+                  "href": "https://vpremises.com",
+                  "summary": "Environment provisioning and operations"
                 },
                 {
                   "title": "Incus JP",
-                  "href": "https://incus.jp"
+                  "href": "https://incus.jp",
+                  "summary": "Incus information and Japanese getting-started guides"
                 }
               ]
             }
