@@ -46,7 +46,7 @@ jobs:
         run: python3 .github/scripts/site_release.py plan
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: '24.15.0'
+          node-version: '24.22.1'
           package-manager-cache: false
       - run: npm install --global --ignore-scripts --no-audit --no-fund pnpm@10.29.3
       - name: Build selected site without deployment credentials
@@ -94,7 +94,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: '24.15.0'
+          node-version: '24.22.1'
           package-manager-cache: false
       - run: npm install --global --ignore-scripts --no-audit --no-fund pnpm@10.29.3
       - name: Install only the owning locked deployment toolchain without Cloudflare credentials
