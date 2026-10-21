@@ -8,7 +8,7 @@
   "sites": [
     {
       "id": "coela",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "account": "0655772369a7b3425e3398313a36521b",
       "worker": "coela-site",
       "domain": "coela.org",

@@ -14,26 +14,12 @@
       "SHA-256",
       "Provider contracts"
     ],
-    "pipeline": [
-      "API specification",
-      "Explicit review",
-      "Bounded catalog",
-      "Provider boundary"
-    ],
     "live": "https://github.com/zixcel/cli/releases/tag/v0.2.2",
     "source": "https://github.com/zixcel/cli",
     "sections": [
       {
         "title": "The dispatcher boundary",
         "text": "Separate specification input, explicitly selected operations, source hashes and provider execution contracts. The recorded run parses a synthetic OpenAPI document and extracts the GET /inspection route."
-      },
-      {
-        "title": "Parsing does not grant authority",
-        "text": "Catalog projection and route inspection are local operations. An unbound operation is not silently connected to authentication or network execution. A real provider action requires a separate explicit contract."
-      },
-      {
-        "title": "Trade-off",
-        "text": "Keep common admission logic separate from provider-specific implementations instead of collecting every integration into one large CLI. Generality must not silently broaden authority, and parsing a specification is not proof that a live operation is safe."
       },
       {
         "title": "Verification with a released binary",
@@ -56,26 +42,12 @@
       "TypeScript",
       "Static generation"
     ],
-    "pipeline": [
-      "Bilingual content",
-      "Owned routes",
-      "Static assets",
-      "Reviewed deployment"
-    ],
     "live": "https://nuxt.jp/",
     "source": "https://github.com/nuxtjp/website",
     "sections": [
       {
-        "title": "Information architecture",
-        "text": "I organize entry points around a visitor’s task, rather than repository ownership. Framework guides lead to official Nuxt resources; community modules have their own purpose, source and installation exits."
-      },
-      {
         "title": "Architecture",
         "text": "A shared Nuxt foundation handles locale and static generation. Site-owned components and typed content own navigation, visual identity and the visitor journey. This keeps shared infrastructure from flattening every site into the same template."
-      },
-      {
-        "title": "Trade-off",
-        "text": "Static generation keeps reading fast and hosting simple. Publishing content requires a new build; there is no invented live dashboard or account state."
       },
       {
         "title": "Verification",
@@ -98,26 +70,12 @@
       "GitHub Releases",
       "Static catalog"
     ],
-    "pipeline": [
-      "Release metadata",
-      "Purpose categories",
-      "Local filtering",
-      "Versioned download"
-    ],
     "live": "https://ihat.online/registry",
     "source": "https://github.com/hathq/ihat-docs-site",
     "sections": [
       {
         "title": "The interaction",
         "text": "Eight public HAT releases are grouped by purpose. Search and category filtering run in the browser over the published catalog, including an honest empty-result state."
-      },
-      {
-        "title": "The boundary",
-        "text": "The directory presents release information; it does not execute HATs, install software or grant trust. Each download remains attached to its owning repository and immutable version."
-      },
-      {
-        "title": "Trade-off",
-        "text": "A static catalog gives predictable browsing and explicit download choices. Automatic signed synchronization is a separate Registry responsibility, rather than something the page silently claims to perform."
       },
       {
         "title": "Verification",
@@ -140,26 +98,12 @@
       "Semantic models",
       "Source distribution"
     ],
-    "pipeline": [
-      "Concrete example",
-      "Meaning and context",
-      "Explicit diagnostics",
-      "Public source"
-    ],
     "live": "https://sem-lang.taiper.org/",
     "source": "https://github.com/semantic-language/semantic-language-site",
     "sections": [
       {
-        "title": "Make the model visible",
-        "text": "The first screen uses a compact meaning-and-context example. Follow-up pages separate capabilities, use cases and developer detail, so a new reader can understand the purpose before opening the source."
-      },
-      {
         "title": "Architecture",
         "text": "Presentation copy and route definitions are typed and validated before static generation. Public source releases and per-file license notices remain the authoritative implementation reference."
-      },
-      {
-        "title": "Trade-off",
-        "text": "The diagram explains a model; it is not an online inference console. The download page points to the available source release instead of suggesting an installer that has not been distributed."
       },
       {
         "title": "Verification",

@@ -14,3 +14,23 @@ The existing presentation foundation retains Apache-2.0 in LICENSE and NOTICE.
 New MIT extensions are identified in source; original prose and images follow
 `../LICENSES/README.md`. Shared Nuxt generation remains in the independently
 published `@nuxtjp/localized-site` package.
+
+## Visitor journeys and case studies
+
+The work index compares purposes before opening a case. `case-stories.json`
+provides bilingual purpose/contribution/outcome summaries, four-step explanatory
+flows, decision tables and three distinct product/source/reference exits. These
+are explanations of existing behavior, not new runtime features or measurements.
+Capture versions and dates remain the evidence of the pictured historical build;
+a current-release link is a separate destination. The sem-lang implementation and
+its presentation website have separate, explicitly labelled links.
+
+`navigation.mts` supplies context-specific related reading. Case actions own their
+exits; do not reintroduce a generic work/about loop below every page. OSS category
+pages describe repository purposes and link to the relevant case directly.
+
+`pnpm test`, strict types and static generation run locally within bounded units.
+The owner CI runs `.github/scripts/browser-check.mts` against the actual generated
+site with hosted Chrome: both languages, three widths, menu state, page overflow,
+images, headings, case diagrams/tables/exits and screenshots. The script refuses
+local execution; no local browser or product runtime is needed for source checks.

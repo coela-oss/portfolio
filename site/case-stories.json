@@ -1,0 +1,470 @@
+{
+  "ja": {
+    "zix-cli": {
+      "purpose": "APIをローカルから扱うための、共通の操作入口。",
+      "contribution": "仕様の取込みとプロバイダー固有の通信を分ける設計。",
+      "result": "操作の候補・入力・接続先を、実行前に確認できる。",
+      "flowTitle": "仕様から操作までの流れ",
+      "flow": [
+        {
+          "title": "API仕様",
+          "text": "対象の操作と入力を読み取る"
+        },
+        {
+          "title": "レビュー",
+          "text": "使う操作を明示的に選ぶ"
+        },
+        {
+          "title": "Zix CLI",
+          "text": "仕様と選択内容を照合する"
+        },
+        {
+          "title": "プロバイダー",
+          "text": "認証・通信を個別に担当する"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "共通入口と個別実装を分離",
+          "reason": "APIごとの認証や通信を一つのCLIへ詰め込まない",
+          "scope": "仕様の読込みだけでは外部操作を開始しない"
+        },
+        {
+          "choice": "入力と版を照合",
+          "reason": "選んだ仕様から操作の意味が変わらないようにする",
+          "scope": "実行には別途プロバイダーの設定が必要"
+        },
+        {
+          "choice": "ローカルで確認",
+          "reason": "候補の確認にクラウドの認証情報を使わない",
+          "scope": "画面の例は合成入力によるローカル実行"
+        }
+      ],
+      "actions": [
+        {
+          "title": "配布版を確認する",
+          "href": "https://github.com/zixcel/cli/releases/latest",
+          "summary": "現在提供されているCLIと導入資料。"
+        },
+        {
+          "title": "CLIの実装を読む",
+          "href": "https://github.com/zixcel/cli",
+          "summary": "仕様の選択・照合とプロバイダー契約。"
+        },
+        {
+          "title": "画面の例を再現する",
+          "href": "https://github.com/coela-oss/portfolio/tree/main/examples/zix",
+          "summary": "キャプチャに使ったv0.2.2の入力と実行結果。"
+        }
+      ]
+    },
+    "nuxtjp": {
+      "purpose": "Nuxtの学習と、NuxtJP独自ツールの選択を助けるサイト。",
+      "contribution": "公式情報・独自モジュール・導入ガイドの情報設計とUI。",
+      "result": "知りたい内容に応じて、公式ガイドか実際のパッケージへ進める。",
+      "flowTitle": "閲覧者の目的から、次の行動へ",
+      "flow": [
+        {
+          "title": "目的を選ぶ",
+          "text": "Nuxtを学ぶ／ツールを探す"
+        },
+        {
+          "title": "情報を分ける",
+          "text": "公式ガイドと独自の製品情報"
+        },
+        {
+          "title": "内容を読む",
+          "text": "用途・機能・導入方法"
+        },
+        {
+          "title": "試す・調べる",
+          "text": "パッケージやソースへ進む"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "公式と独自を区別",
+          "reason": "Nuxt自体の仕様とNuxtJPの提供物を混同させない",
+          "scope": "公式ガイドの正本はNuxt公式サイト"
+        },
+        {
+          "choice": "日英で同じ導線",
+          "reason": "言語を変えても知りたい内容を追えるようにする",
+          "scope": "翻訳ページにも対応する入口を用意"
+        },
+        {
+          "choice": "静的に配信",
+          "reason": "表示を軽くし、閲覧にアカウントを要求しない",
+          "scope": "内容の更新はサイトの再生成を伴う"
+        }
+      ],
+      "actions": [
+        {
+          "title": "NuxtJPを訪れる",
+          "href": "https://nuxt.jp/",
+          "summary": "公式情報と独自ツールを目的から探す。"
+        },
+        {
+          "title": "サイトの実装を読む",
+          "href": "https://github.com/nuxtjp/website",
+          "summary": "ルート・コンテンツ・UIの構成。"
+        },
+        {
+          "title": "Flowのパッケージを見る",
+          "href": "https://www.npmjs.com/package/@nuxtjp/flow",
+          "summary": "NuxtJP独自のUIモジュール。"
+        }
+      ]
+    },
+    "ihat": {
+      "purpose": "用途からHATを見つけ、公開された配布先へ進むディレクトリ。",
+      "contribution": "検索・用途フィルタ・バージョンを示す配布導線。",
+      "result": "目的に合う候補と、その配布元を同じ画面で確認できる。",
+      "flowTitle": "候補を見つけて、配布元へ進む",
+      "flow": [
+        {
+          "title": "用途を選ぶ",
+          "text": "カテゴリと検索語を指定"
+        },
+        {
+          "title": "候補を比較",
+          "text": "公開カタログ内で絞り込む"
+        },
+        {
+          "title": "版を確認",
+          "text": "所有者と提供版を読む"
+        },
+        {
+          "title": "配布元へ",
+          "text": "各ownerのGitHub Release"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "用途で分類",
+          "reason": "リポジトリ名を知らなくても探せるようにする",
+          "scope": "検索対象は公開カタログ内の情報"
+        },
+        {
+          "choice": "版付きの出口",
+          "reason": "選んだ配布物の出所を確かめられるようにする",
+          "scope": "一覧の閲覧だけではインストールされない"
+        },
+        {
+          "choice": "発見と実行を分離",
+          "reason": "候補の発見と権限付与を別の操作にする",
+          "scope": "Registryの署名同期は独立した実行経路"
+        }
+      ],
+      "actions": [
+        {
+          "title": "HATを用途から探す",
+          "href": "https://ihat.online/registry",
+          "summary": "検索・カテゴリから公開配布物へ。"
+        },
+        {
+          "title": "一覧サイトの実装を読む",
+          "href": "https://github.com/hathq/ihat-docs-site",
+          "summary": "カタログ・フィルタ・配布リンクの構成。"
+        },
+        {
+          "title": "Hatterの導入方法を見る",
+          "href": "https://hatter.ihat.online/download",
+          "summary": "ローカル実行ツールの提供条件と導入手順。"
+        }
+      ]
+    },
+    "sem-lang": {
+      "purpose": "意味と文脈を扱う言語の考え方を、具体例から伝えるサイト。",
+      "contribution": "概念・用途・開発者向け情報を分けた紹介UI。",
+      "result": "ソースを読む前に、入力と解釈の関係を理解できる。",
+      "flowTitle": "概念から言語本体へ進む導線",
+      "flow": [
+        {
+          "title": "入力の例",
+          "text": "小さな題材から始める"
+        },
+        {
+          "title": "文脈と解釈",
+          "text": "同じ入力の意味を読み解く"
+        },
+        {
+          "title": "用途・機能",
+          "text": "使いどころを確かめる"
+        },
+        {
+          "title": "言語本体へ",
+          "text": "公開ソースとライセンス"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "具体例から始める",
+          "reason": "用語やAPIの前に何を扱うかを伝える",
+          "scope": "図は説明でありオンライン実行環境ではない"
+        },
+        {
+          "choice": "紹介と実装を分ける",
+          "reason": "製品を知る入口と開発者の資料を分ける",
+          "scope": "言語本体とWebサイトは別のリポジトリ"
+        },
+        {
+          "choice": "提供条件を見せる",
+          "reason": "取得可能なソースとライセンスへ案内する",
+          "scope": "未配布のインストーラーを提示しない"
+        }
+      ],
+      "actions": [
+        {
+          "title": "用途と機能を見る",
+          "href": "https://sem-lang.taiper.org/",
+          "summary": "意味と文脈の例から製品を知る。"
+        },
+        {
+          "title": "言語本体のソースを読む",
+          "href": "https://github.com/semantic-language/sem-lang",
+          "summary": "MPL-2.0の公開言語実装。"
+        },
+        {
+          "title": "紹介サイトの実装を読む",
+          "href": "https://github.com/semantic-language/semantic-language-site",
+          "summary": "このケースで扱うUIと情報設計。"
+        }
+      ]
+    }
+  },
+  "en": {
+    "zix-cli": {
+      "purpose": "A common local entry point for working with APIs.",
+      "contribution": "Separate specification selection from provider-specific communication.",
+      "result": "Inspect the operation, input and destination before execution.",
+      "flowTitle": "From a specification to an operation",
+      "flow": [
+        {
+          "title": "API description",
+          "text": "Read selected operations and inputs"
+        },
+        {
+          "title": "Review",
+          "text": "Choose operations explicitly"
+        },
+        {
+          "title": "Zix CLI",
+          "text": "Check the selection against its source"
+        },
+        {
+          "title": "Provider",
+          "text": "Own authentication and communication"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "Separate the entry point",
+          "reason": "Keep provider-specific authentication and transport out of the common CLI",
+          "scope": "Reading a specification does not execute a remote operation"
+        },
+        {
+          "choice": "Bind inputs to a version",
+          "reason": "Preserve the meaning of the reviewed selection",
+          "scope": "Execution requires a separately configured provider"
+        },
+        {
+          "choice": "Inspect locally",
+          "reason": "Review candidates without cloud credentials",
+          "scope": "The pictured example uses synthetic local input"
+        }
+      ],
+      "actions": [
+        {
+          "title": "Find the current release",
+          "href": "https://github.com/zixcel/cli/releases/latest",
+          "summary": "Available CLI binaries and installation references."
+        },
+        {
+          "title": "Read the CLI source",
+          "href": "https://github.com/zixcel/cli",
+          "summary": "Specification selection and provider contracts."
+        },
+        {
+          "title": "Reproduce the example",
+          "href": "https://github.com/coela-oss/portfolio/tree/main/examples/zix",
+          "summary": "The v0.2.2 inputs and output shown in the capture."
+        }
+      ]
+    },
+    "nuxtjp": {
+      "purpose": "Help visitors learn Nuxt or choose a NuxtJP tool.",
+      "contribution": "Information architecture and UI for guides, modules and installation paths.",
+      "result": "Reach the official guide or an actual package according to the task.",
+      "flowTitle": "From a visitor’s goal to their next action",
+      "flow": [
+        {
+          "title": "Choose a goal",
+          "text": "Learn Nuxt or find a tool"
+        },
+        {
+          "title": "Separate sources",
+          "text": "Official guides and community products"
+        },
+        {
+          "title": "Read the details",
+          "text": "Purpose, features and installation"
+        },
+        {
+          "title": "Try or inspect",
+          "text": "Continue to a package or its source"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "Distinguish ownership",
+          "reason": "Do not confuse Nuxt specifications with NuxtJP products",
+          "scope": "Official guidance remains on the Nuxt website"
+        },
+        {
+          "choice": "Match language routes",
+          "reason": "Preserve the visitor’s task across languages",
+          "scope": "Translated pages retain corresponding entry points"
+        },
+        {
+          "choice": "Serve static pages",
+          "reason": "Keep reading lightweight and independent of an account",
+          "scope": "Content updates require regeneration"
+        }
+      ],
+      "actions": [
+        {
+          "title": "Visit NuxtJP",
+          "href": "https://nuxt.jp/",
+          "summary": "Find official guidance and independent tools."
+        },
+        {
+          "title": "Read the website source",
+          "href": "https://github.com/nuxtjp/website",
+          "summary": "Routes, content and interface components."
+        },
+        {
+          "title": "Explore the Flow package",
+          "href": "https://www.npmjs.com/package/@nuxtjp/flow",
+          "summary": "A NuxtJP interface module."
+        }
+      ]
+    },
+    "ihat": {
+      "purpose": "Find a HAT by purpose and continue to its public release.",
+      "contribution": "Search, category filters and version-specific release paths.",
+      "result": "See a suitable candidate and its distribution owner together.",
+      "flowTitle": "Find a candidate, then visit its release",
+      "flow": [
+        {
+          "title": "Choose a purpose",
+          "text": "Select a category and search term"
+        },
+        {
+          "title": "Compare candidates",
+          "text": "Filter the public catalog locally"
+        },
+        {
+          "title": "Check the version",
+          "text": "Inspect its owner and release"
+        },
+        {
+          "title": "Visit the source",
+          "text": "Open the owner’s GitHub Release"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "Organize by purpose",
+          "reason": "Let people search without knowing repository names",
+          "scope": "Search is limited to the public catalog"
+        },
+        {
+          "choice": "Identify the release",
+          "reason": "Make the selected distribution traceable",
+          "scope": "Browsing does not install anything"
+        },
+        {
+          "choice": "Separate discovery and execution",
+          "reason": "Keep selection apart from granting authority",
+          "scope": "Signed Registry synchronization is a separate path"
+        }
+      ],
+      "actions": [
+        {
+          "title": "Browse HATs by purpose",
+          "href": "https://ihat.online/registry",
+          "summary": "Search public releases by category."
+        },
+        {
+          "title": "Read the directory source",
+          "href": "https://github.com/hathq/ihat-docs-site",
+          "summary": "Catalog, filtering and distribution links."
+        },
+        {
+          "title": "Find Hatter installation steps",
+          "href": "https://hatter.ihat.online/download",
+          "summary": "Terms and installation for the local tool."
+        }
+      ]
+    },
+    "sem-lang": {
+      "purpose": "Introduce a language for meaning and context through concrete examples.",
+      "contribution": "A presentation UI separating concepts, use cases and developer references.",
+      "result": "Understand the relation between input and interpretation before reading code.",
+      "flowTitle": "From an example to the language implementation",
+      "flow": [
+        {
+          "title": "Example input",
+          "text": "Start with a small subject"
+        },
+        {
+          "title": "Context and meaning",
+          "text": "Explain how it is interpreted"
+        },
+        {
+          "title": "Uses and features",
+          "text": "Find where the model applies"
+        },
+        {
+          "title": "Language source",
+          "text": "Reach the implementation and license"
+        }
+      ],
+      "decisions": [
+        {
+          "choice": "Start with an example",
+          "reason": "Explain the subject before terminology and APIs",
+          "scope": "The diagram is explanatory, not an online runtime"
+        },
+        {
+          "choice": "Separate site and language",
+          "reason": "Distinguish product discovery from implementation references",
+          "scope": "The language and website have separate repositories"
+        },
+        {
+          "choice": "Show availability",
+          "reason": "Link to the source and its actual license",
+          "scope": "Do not offer an unavailable installer"
+        }
+      ],
+      "actions": [
+        {
+          "title": "Explore uses and features",
+          "href": "https://sem-lang.taiper.org/",
+          "summary": "An introduction to meaning and context."
+        },
+        {
+          "title": "Read the language source",
+          "href": "https://github.com/semantic-language/sem-lang",
+          "summary": "The public MPL-2.0 language implementation."
+        },
+        {
+          "title": "Read the website source",
+          "href": "https://github.com/semantic-language/semantic-language-site",
+          "summary": "The UI and information architecture in this case study."
+        }
+      ]
+    }
+  }
+}

@@ -49,35 +49,43 @@
               "links": [
                 {
                   "title": "NERP",
-                  "href": "https://nerp.jp"
+                  "href": "https://nerp.jp",
+                  "summary": "業務アプリケーションの紹介と提供条件"
                 },
                 {
                   "title": "Hatter",
-                  "href": "https://hatter.ihat.online"
+                  "href": "https://hatter.ihat.online",
+                  "summary": "ローカル実行ツールの紹介と導入"
                 },
                 {
                   "title": "Taiper",
-                  "href": "https://taiper.org"
+                  "href": "https://taiper.org",
+                  "summary": "情報整理と意思決定のための製品"
                 },
                 {
                   "title": "Zixcel",
-                  "href": "https://zixcel.com"
+                  "href": "https://zixcel.com",
+                  "summary": "CLIとサービス連携ツールの全体像"
                 },
                 {
                   "title": "Crowsi",
-                  "href": "https://crowsi.org"
+                  "href": "https://crowsi.org",
+                  "summary": "認証情報と実行境界を扱う基盤"
                 },
                 {
                   "title": "Constillo",
-                  "href": "https://constillo.com"
+                  "href": "https://constillo.com",
+                  "summary": "製品・サービスの紹介"
                 },
                 {
                   "title": "vPremises",
-                  "href": "https://vpremises.com"
+                  "href": "https://vpremises.com",
+                  "summary": "環境構築・運用に関する取り組み"
                 },
                 {
                   "title": "Incus JP",
-                  "href": "https://incus.jp"
+                  "href": "https://incus.jp",
+                  "summary": "Incusの情報と日本語の導入ガイド"
                 }
               ]
             }
@@ -95,34 +103,8 @@
               "text": "仕様の読み込み、明示的に選択した操作、元データのhash、プロバイダーの実行契約を分離します。今回の実行ではOpenAPIの合成入力を読み、GET /inspectionの経路情報を取り出しました。"
             },
             {
-              "title": "実操作を混ぜない構成",
-              "text": "カタログの生成や経路の表示はローカルで完結します。プロバイダーへの対応付けがない操作を、通信や認証へ勝手につなげません。外部サービスを実際に操作するには、別の明示的な契約が必要です。"
-            },
-            {
-              "title": "設計上の選択",
-              "text": "大きな万能CLIにすべてを集約せず、共通の照合とプロバイダー固有の実装を分けています。汎用性のために権限を暗黙に広げることや、仕様を読んだだけで安全な実操作とみなすことはしません。"
-            },
-            {
               "title": "公開版の検証",
               "text": "v0.2.2でversion、api project、api routesを実行し、実際の入力と出力をexamples/zixに保持しました。認証情報、外部通信、実データ操作は使っていません。書込み可能範囲を限定したファイルだけを受け入れる動作も確認しています。"
-            },
-            {
-              "title": "再現と実装",
-              "text": "入力、実行結果、ソースから確認できます。",
-              "links": [
-                {
-                  "title": "Release v0.2.2",
-                  "href": "https://github.com/zixcel/cli/releases/tag/v0.2.2"
-                },
-                {
-                  "title": "Reproduction inputs",
-                  "href": "https://github.com/coela-oss/portfolio/tree/main/examples/zix"
-                },
-                {
-                  "title": "Source",
-                  "href": "https://github.com/zixcel/cli"
-                }
-              ]
             }
           ]
         },
@@ -134,38 +116,12 @@
           "status": "published",
           "sections": [
             {
-              "title": "情報設計",
-              "text": "リポジトリの所属ではなく、閲覧者の目的から入口を設計しています。Nuxtの学習は公式情報へ、NuxtJPのモジュールは用途・ソース・導入方法へつながります。"
-            },
-            {
               "title": "構成",
               "text": "言語切替と静的生成は共通のNuxt基盤が担い、ナビゲーション、配色、目的別の導線はサイト側の型付きコンテンツとコンポーネントが担います。内部の共通化と、見せ方の個性を分離しています。"
             },
             {
-              "title": "設計上の選択",
-              "text": "静的生成によって閲覧と配信を単純に保っています。更新には再ビルドが必要で、実在しないライブダッシュボードやアカウント状態を表示しません。"
-            },
-            {
               "title": "検証",
               "text": "日英それぞれ360・768・1440pxでメニュー、画像、主要リンクの終点を確認しました。タグ付きCIでソースコミットと静的配布物を結び付けてから配備します。"
-            },
-            {
-              "title": "実装をたどる",
-              "text": "画面とコードを行き来して、設計を確かめられます。",
-              "links": [
-                {
-                  "title": "動作サイト",
-                  "href": "https://nuxt.jp/"
-                },
-                {
-                  "title": "公開ソース",
-                  "href": "https://github.com/nuxtjp/website"
-                },
-                {
-                  "title": "他の作品",
-                  "href": "/work"
-                }
-              ]
             }
           ]
         },
@@ -181,34 +137,8 @@
               "text": "公開済み8件のHATを用途で分類しています。検索とカテゴリの絞り込みは公開カタログに対してブラウザ内で動作し、該当なしの場合も明示します。"
             },
             {
-              "title": "責務の境界",
-              "text": "このページは配布情報を提示するもので、HATの実行、インストール、信頼の付与を代行しません。各ダウンロードは所有リポジトリと固定バージョンに結び付いています。"
-            },
-            {
-              "title": "設計上の選択",
-              "text": "静的な一覧は閲覧の予測可能性と、明示的なダウンロードに向いています。署名付きの自動同期はRegistry側の別責務として扱い、一覧ページが実行済みであるかのようには表示しません。"
-            },
-            {
               "title": "検証",
               "text": "実サイトで検索の絞り込み、カテゴリ選択、空結果を確認しました。日英の一覧から同じ8件の版付き配布先へ到達できます。"
-            },
-            {
-              "title": "実装をたどる",
-              "text": "画面とコードを行き来して、設計を確かめられます。",
-              "links": [
-                {
-                  "title": "動作サイト",
-                  "href": "https://ihat.online/registry"
-                },
-                {
-                  "title": "公開ソース",
-                  "href": "https://github.com/hathq/ihat-docs-site"
-                },
-                {
-                  "title": "他の作品",
-                  "href": "/work"
-                }
-              ]
             }
           ]
         },
@@ -220,38 +150,12 @@
           "status": "published",
           "sections": [
             {
-              "title": "モデルの見せ方",
-              "text": "最初の画面は意味と文脈の小さな例から始まります。機能、用途、開発者向けの詳細を別ページに分け、ソースを開く前に目的を把握できるようにしています。"
-            },
-            {
               "title": "構成",
               "text": "表示用コンテンツとルートを型で定義し、静的生成前に検証します。実装の正本は公開ソースのリリースと、ファイルごとのライセンス表示です。"
             },
             {
-              "title": "設計上の選択",
-              "text": "図はモデルの説明であり、オンライン推論コンソールではありません。ダウンロードページは実際に提供されているソースの版へつなぎ、未配布のインストーラーを案内しません。"
-            },
-            {
               "title": "検証",
               "text": "本番サイト、公開ソースの配布先、MPLのライセンス入口を日英で確認しました。配布物をソースと結び付け、配備時にはドメインとプレビュー設定も検証します。"
-            },
-            {
-              "title": "実装をたどる",
-              "text": "画面とコードを行き来して、設計を確かめられます。",
-              "links": [
-                {
-                  "title": "動作サイト",
-                  "href": "https://sem-lang.taiper.org/"
-                },
-                {
-                  "title": "公開ソース",
-                  "href": "https://github.com/semantic-language/semantic-language-site"
-                },
-                {
-                  "title": "他の作品",
-                  "href": "/work"
-                }
-              ]
             }
           ]
         },
@@ -317,11 +221,13 @@
               "links": [
                 {
                   "title": "site-builder",
-                  "href": "https://github.com/nuxtjp/site-builder"
+                  "href": "https://github.com/nuxtjp/site-builder",
+                  "summary": "静的サイトの共通生成基盤"
                 },
                 {
                   "title": "flow",
-                  "href": "https://github.com/nuxtjp/flow"
+                  "href": "https://github.com/nuxtjp/flow",
+                  "summary": "Nuxtでフローやキャンバスを構築するUIモジュール"
                 }
               ]
             },
@@ -330,8 +236,8 @@
               "text": "実際のインターフェースと、そこに至る設計を紹介します。",
               "links": [
                 {
-                  "title": "作品を見る",
-                  "href": "/work"
+                  "title": "関連する設計を読む",
+                  "href": "/work/nuxtjp"
                 }
               ]
             }
@@ -350,11 +256,13 @@
               "links": [
                 {
                   "title": "cli",
-                  "href": "https://github.com/zixcel/cli"
+                  "href": "https://github.com/zixcel/cli",
+                  "summary": "ローカルからAPIを扱う共通CLI"
                 },
                 {
                   "title": "zixcel-google",
-                  "href": "https://github.com/zixcel/zixcel-google"
+                  "href": "https://github.com/zixcel/zixcel-google",
+                  "summary": "Google Cloud固有の操作と観測を担うRust実装"
                 }
               ]
             },
@@ -363,8 +271,8 @@
               "text": "実際のインターフェースと、そこに至る設計を紹介します。",
               "links": [
                 {
-                  "title": "作品を見る",
-                  "href": "/work"
+                  "title": "関連する設計を読む",
+                  "href": "/work/zix-cli"
                 }
               ]
             }
@@ -383,11 +291,13 @@
               "links": [
                 {
                   "title": "credential-custody",
-                  "href": "https://github.com/crowsi-net/credential-custody"
+                  "href": "https://github.com/crowsi-net/credential-custody",
+                  "summary": "OSキー保管・認証情報の利用境界"
                 },
                 {
                   "title": "hat-specifications",
-                  "href": "https://github.com/hathq/hat-specifications"
+                  "href": "https://github.com/hathq/hat-specifications",
+                  "summary": "HATの形式・検証・パッケージ契約"
                 }
               ]
             },
@@ -396,8 +306,8 @@
               "text": "実際のインターフェースと、そこに至る設計を紹介します。",
               "links": [
                 {
-                  "title": "作品を見る",
-                  "href": "/work"
+                  "title": "関連する設計を読む",
+                  "href": "/work/ihat"
                 }
               ]
             }
@@ -416,11 +326,13 @@
               "links": [
                 {
                   "title": "sem-lang",
-                  "href": "https://github.com/semantic-language/sem-lang"
+                  "href": "https://github.com/semantic-language/sem-lang",
+                  "summary": "意味と文脈を扱う言語の公開実装"
                 },
                 {
                   "title": "zixcel-graph",
-                  "href": "https://github.com/zixcel/zixcel-graph"
+                  "href": "https://github.com/zixcel/zixcel-graph",
+                  "summary": "ローカルデータのグラフ保存基盤"
                 }
               ]
             },
@@ -429,8 +341,8 @@
               "text": "実際のインターフェースと、そこに至る設計を紹介します。",
               "links": [
                 {
-                  "title": "作品を見る",
-                  "href": "/work"
+                  "title": "関連する設計を読む",
+                  "href": "/work/sem-lang"
                 }
               ]
             }
@@ -668,35 +580,43 @@
               "links": [
                 {
                   "title": "NERP",
-                  "href": "https://nerp.jp"
+                  "href": "https://nerp.jp",
+                  "summary": "Business applications and availability"
                 },
                 {
                   "title": "Hatter",
-                  "href": "https://hatter.ihat.online"
+                  "href": "https://hatter.ihat.online",
+                  "summary": "The local execution tool and installation"
                 },
                 {
                   "title": "Taiper",
-                  "href": "https://taiper.org"
+                  "href": "https://taiper.org",
+                  "summary": "A product for organizing information and decisions"
                 },
                 {
                   "title": "Zixcel",
-                  "href": "https://zixcel.com"
+                  "href": "https://zixcel.com",
+                  "summary": "An overview of CLI and service integration tools"
                 },
                 {
                   "title": "Crowsi",
-                  "href": "https://crowsi.org"
+                  "href": "https://crowsi.org",
+                  "summary": "Infrastructure for credentials and execution boundaries"
                 },
                 {
                   "title": "Constillo",
-                  "href": "https://constillo.com"
+                  "href": "https://constillo.com",
+                  "summary": "Product and service overview"
                 },
                 {
                   "title": "vPremises",
-                  "href": "https://vpremises.com"
+                  "href": "https://vpremises.com",
+                  "summary": "Environment provisioning and operations"
                 },
                 {
                   "title": "Incus JP",
-                  "href": "https://incus.jp"
+                  "href": "https://incus.jp",
+                  "summary": "Incus information and Japanese getting-started guides"
                 }
               ]
             }
@@ -714,34 +634,8 @@
               "text": "Separate specification input, explicitly selected operations, source hashes and provider execution contracts. The recorded run parses a synthetic OpenAPI document and extracts the GET /inspection route."
             },
             {
-              "title": "Parsing does not grant authority",
-              "text": "Catalog projection and route inspection are local operations. An unbound operation is not silently connected to authentication or network execution. A real provider action requires a separate explicit contract."
-            },
-            {
-              "title": "Trade-off",
-              "text": "Keep common admission logic separate from provider-specific implementations instead of collecting every integration into one large CLI. Generality must not silently broaden authority, and parsing a specification is not proof that a live operation is safe."
-            },
-            {
               "title": "Verification with a released binary",
               "text": "Run version, api project and api routes with v0.2.2 and retain actual inputs and outputs in examples/zix. The observation uses no credential, external request or live data mutation. Group-writable catalog input was refused as designed."
-            },
-            {
-              "title": "Reproduce and inspect",
-              "text": "Inspect the inputs, recorded output and implementation.",
-              "links": [
-                {
-                  "title": "Release v0.2.2",
-                  "href": "https://github.com/zixcel/cli/releases/tag/v0.2.2"
-                },
-                {
-                  "title": "Reproduction inputs",
-                  "href": "https://github.com/coela-oss/portfolio/tree/main/examples/zix"
-                },
-                {
-                  "title": "Source",
-                  "href": "https://github.com/zixcel/cli"
-                }
-              ]
             }
           ]
         },
@@ -753,38 +647,12 @@
           "status": "published",
           "sections": [
             {
-              "title": "Information architecture",
-              "text": "I organize entry points around a visitor’s task, rather than repository ownership. Framework guides lead to official Nuxt resources; community modules have their own purpose, source and installation exits."
-            },
-            {
               "title": "Architecture",
               "text": "A shared Nuxt foundation handles locale and static generation. Site-owned components and typed content own navigation, visual identity and the visitor journey. This keeps shared infrastructure from flattening every site into the same template."
             },
             {
-              "title": "Trade-off",
-              "text": "Static generation keeps reading fast and hosting simple. Publishing content requires a new build; there is no invented live dashboard or account state."
-            },
-            {
               "title": "Verification",
               "text": "The released interface was checked in English and Japanese at 360, 768 and 1440 pixels, including menu control, image loading and primary destinations. Version-tagged CI binds the source commit to the static archive before deployment."
-            },
-            {
-              "title": "Explore the implementation",
-              "text": "Move between the interface and the code to inspect the design.",
-              "links": [
-                {
-                  "title": "Live interface",
-                  "href": "https://nuxt.jp/"
-                },
-                {
-                  "title": "Source repository",
-                  "href": "https://github.com/nuxtjp/website"
-                },
-                {
-                  "title": "More work",
-                  "href": "/work"
-                }
-              ]
             }
           ]
         },
@@ -800,34 +668,8 @@
               "text": "Eight public HAT releases are grouped by purpose. Search and category filtering run in the browser over the published catalog, including an honest empty-result state."
             },
             {
-              "title": "The boundary",
-              "text": "The directory presents release information; it does not execute HATs, install software or grant trust. Each download remains attached to its owning repository and immutable version."
-            },
-            {
-              "title": "Trade-off",
-              "text": "A static catalog gives predictable browsing and explicit download choices. Automatic signed synchronization is a separate Registry responsibility, rather than something the page silently claims to perform."
-            },
-            {
               "title": "Verification",
               "text": "The live catalog was checked for narrowing search results, category selection and empty results. English and Japanese views retain the same eight versioned release destinations."
-            },
-            {
-              "title": "Explore the implementation",
-              "text": "Move between the interface and the code to inspect the design.",
-              "links": [
-                {
-                  "title": "Live interface",
-                  "href": "https://ihat.online/registry"
-                },
-                {
-                  "title": "Source repository",
-                  "href": "https://github.com/hathq/ihat-docs-site"
-                },
-                {
-                  "title": "More work",
-                  "href": "/work"
-                }
-              ]
             }
           ]
         },
@@ -839,38 +681,12 @@
           "status": "published",
           "sections": [
             {
-              "title": "Make the model visible",
-              "text": "The first screen uses a compact meaning-and-context example. Follow-up pages separate capabilities, use cases and developer detail, so a new reader can understand the purpose before opening the source."
-            },
-            {
               "title": "Architecture",
               "text": "Presentation copy and route definitions are typed and validated before static generation. Public source releases and per-file license notices remain the authoritative implementation reference."
             },
             {
-              "title": "Trade-off",
-              "text": "The diagram explains a model; it is not an online inference console. The download page points to the available source release instead of suggesting an installer that has not been distributed."
-            },
-            {
               "title": "Verification",
               "text": "The deployed site, source-release destination and MPL license entry were checked in both languages. Release artifacts are source-bound, while domain and preview settings are verified during deployment."
-            },
-            {
-              "title": "Explore the implementation",
-              "text": "Move between the interface and the code to inspect the design.",
-              "links": [
-                {
-                  "title": "Live interface",
-                  "href": "https://sem-lang.taiper.org/"
-                },
-                {
-                  "title": "Source repository",
-                  "href": "https://github.com/semantic-language/semantic-language-site"
-                },
-                {
-                  "title": "More work",
-                  "href": "/work"
-                }
-              ]
             }
           ]
         },
@@ -936,11 +752,13 @@
               "links": [
                 {
                   "title": "site-builder",
-                  "href": "https://github.com/nuxtjp/site-builder"
+                  "href": "https://github.com/nuxtjp/site-builder",
+                  "summary": "Shared generation for localized static sites"
                 },
                 {
                   "title": "flow",
-                  "href": "https://github.com/nuxtjp/flow"
+                  "href": "https://github.com/nuxtjp/flow",
+                  "summary": "A Nuxt module for flows and canvas interfaces"
                 }
               ]
             },
@@ -949,8 +767,8 @@
               "text": "Explore working interfaces and the decisions behind them.",
               "links": [
                 {
-                  "title": "Explore selected work",
-                  "href": "/work"
+                  "title": "Read the related case study",
+                  "href": "/work/nuxtjp"
                 }
               ]
             }
@@ -969,11 +787,13 @@
               "links": [
                 {
                   "title": "cli",
-                  "href": "https://github.com/zixcel/cli"
+                  "href": "https://github.com/zixcel/cli",
+                  "summary": "A common local CLI for working with APIs"
                 },
                 {
                   "title": "zixcel-google",
-                  "href": "https://github.com/zixcel/zixcel-google"
+                  "href": "https://github.com/zixcel/zixcel-google",
+                  "summary": "Rust operations and observations for Google Cloud"
                 }
               ]
             },
@@ -982,8 +802,8 @@
               "text": "Explore working interfaces and the decisions behind them.",
               "links": [
                 {
-                  "title": "Explore selected work",
-                  "href": "/work"
+                  "title": "Read the related case study",
+                  "href": "/work/zix-cli"
                 }
               ]
             }
@@ -1002,11 +822,13 @@
               "links": [
                 {
                   "title": "credential-custody",
-                  "href": "https://github.com/crowsi-net/credential-custody"
+                  "href": "https://github.com/crowsi-net/credential-custody",
+                  "summary": "OS credential storage and controlled credential use"
                 },
                 {
                   "title": "hat-specifications",
-                  "href": "https://github.com/hathq/hat-specifications"
+                  "href": "https://github.com/hathq/hat-specifications",
+                  "summary": "HAT formats, validation and package contracts"
                 }
               ]
             },
@@ -1015,8 +837,8 @@
               "text": "Explore working interfaces and the decisions behind them.",
               "links": [
                 {
-                  "title": "Explore selected work",
-                  "href": "/work"
+                  "title": "Read the related case study",
+                  "href": "/work/ihat"
                 }
               ]
             }
@@ -1035,11 +857,13 @@
               "links": [
                 {
                   "title": "sem-lang",
-                  "href": "https://github.com/semantic-language/sem-lang"
+                  "href": "https://github.com/semantic-language/sem-lang",
+                  "summary": "The public language implementation for meaning and context"
                 },
                 {
                   "title": "zixcel-graph",
-                  "href": "https://github.com/zixcel/zixcel-graph"
+                  "href": "https://github.com/zixcel/zixcel-graph",
+                  "summary": "A graph storage foundation for local data"
                 }
               ]
             },
@@ -1048,8 +872,8 @@
               "text": "Explore working interfaces and the decisions behind them.",
               "links": [
                 {
-                  "title": "Explore selected work",
-                  "href": "/work"
+                  "title": "Read the related case study",
+                  "href": "/work/sem-lang"
                 }
               ]
             }

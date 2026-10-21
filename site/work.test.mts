@@ -13,8 +13,8 @@ test('each case has the same localized identity, actual evidence and distinct ex
   for (const [locale, works] of [['en', english], ['ja', japanese]] as const) {
     const routes = new Set(pages.locales[locale].pages.map(p => p.path))
     for (const work of works) {
-      assert.ok(routes.has(work.path));assert.equal(work.sections.length, 4)
-      assert.ok(work.stack.length >= 3 && work.pipeline.length >= 3)
+      assert.ok(routes.has(work.path));assert.equal(work.sections.length, 2)
+      assert.ok(work.stack.length >= 3)
       const capture = captures.find(c => c.id === work.id)
       assert.ok(capture);assert.equal(capture.image, work.image)
       assert.equal(capture.repository, work.source);assert.equal(capture.origin, work.live)
