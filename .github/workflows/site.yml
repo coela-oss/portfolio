@@ -25,6 +25,7 @@ jobs:
       - name: Install the official registry dependency tree
         run: pnpm install --frozen-lockfile --store-dir "$RUNNER_TEMP/site-store" --registry=https://registry.npmjs.org
       - run: pnpm validate:content
+      - run: python3 -m unittest discover -s .github/scripts -p 'test_site_*.py'
       - run: pnpm test
       - run: pnpm site typecheck '${{ matrix.site }}'
       - run: pnpm site build '${{ matrix.site }}'

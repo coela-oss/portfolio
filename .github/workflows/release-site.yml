@@ -4,7 +4,7 @@ on:
     tags: ['site/**']
   workflow_dispatch:
   pull_request:
-    paths: ['.github/site-release.json', '.github/scripts/site_release.py', '.github/scripts/site_build.py', '.github/scripts/test_site_release.py', '.github/workflows/release-site.yml']
+    paths: ['.github/site-release.json', '.github/scripts/site_release.py', '.github/scripts/site_build.py', '.github/scripts/test_site_release.py', '.github/scripts/site_redirects.py', '.github/scripts/test_site_redirects.py', '.github/workflows/release-site.yml']
 permissions:
   contents: read
 concurrency:
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - run: python3 .github/scripts/test_site_release.py
+      - run: python3 -m unittest discover -s .github/scripts -p 'test_site_*.py'
   prepare:
     if: github.event_name != 'pull_request' && github.ref_type == 'tag'
     needs: contract
@@ -31,6 +31,8 @@ jobs:
       artifact-id: ${{ steps.upload.outputs.artifact-id }}
       sha256: ${{ steps.archive.outputs.sha256 }}
       app: ${{ steps.plan.outputs.app }}
+      install: ${{ steps.plan.outputs.install }}
+      deploy-enabled: ${{ steps.plan.outputs.deploy-enabled }}
       environment: ${{ steps.plan.outputs.environment }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -78,7 +80,7 @@ jobs:
           fi
   deploy:
     needs: prepare
-    if: vars.SITE_DEPLOY_ENABLED == 'true'
+    if: vars.SITE_DEPLOY_ENABLED == 'true' && needs.prepare.outputs.deploy-enabled == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment: ${{ needs.prepare.outputs.environment }}
@@ -97,7 +99,7 @@ jobs:
       - run: npm install --global --ignore-scripts --no-audit --no-fund pnpm@10.29.3
       - name: Install only the owning locked deployment toolchain without Cloudflare credentials
         env:
-          SITE_RELEASE_APP: ${{ needs.prepare.outputs.app }}
+          SITE_RELEASE_APP: ${{ needs.prepare.outputs.install }}
         run: pnpm --dir "$SITE_RELEASE_APP" install --frozen-lockfile --ignore-scripts
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:

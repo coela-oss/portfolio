@@ -1,5 +1,47 @@
 [
   {
+    "id": "zix-cli",
+    "path": "/work/zix-cli",
+    "title": "Zix CLI",
+    "headline": "From an API specification to an explicit command.",
+    "summary": "A Rust dispatcher owns specification review and integrity checks; providers own transport and authentication. The released binary makes that boundary inspectable.",
+    "image": "/work/zix-cli.png",
+    "alt": "Recorded local output from the released Zix CLI",
+    "category": "Rust / API integration",
+    "stack": [
+      "Rust",
+      "OpenAPI 3.1",
+      "SHA-256",
+      "Provider contracts"
+    ],
+    "pipeline": [
+      "API specification",
+      "Explicit review",
+      "Bounded catalog",
+      "Provider boundary"
+    ],
+    "live": "https://github.com/zixcel/cli/releases/tag/v0.2.2",
+    "source": "https://github.com/zixcel/cli",
+    "sections": [
+      {
+        "title": "The dispatcher boundary",
+        "text": "Separate specification input, explicitly selected operations, source hashes and provider execution contracts. The recorded run parses a synthetic OpenAPI document and extracts the GET /inspection route."
+      },
+      {
+        "title": "Parsing does not grant authority",
+        "text": "Catalog projection and route inspection are local operations. An unbound operation is not silently connected to authentication or network execution. A real provider action requires a separate explicit contract."
+      },
+      {
+        "title": "Trade-off",
+        "text": "Keep common admission logic separate from provider-specific implementations instead of collecting every integration into one large CLI. Generality must not silently broaden authority, and parsing a specification is not proof that a live operation is safe."
+      },
+      {
+        "title": "Verification with a released binary",
+        "text": "Run version, api project and api routes with v0.2.2 and retain actual inputs and outputs in examples/zix. The observation uses no credential, external request or live data mutation. Group-writable catalog input was refused as designed."
+      }
+    ]
+  },
+  {
     "id": "nuxtjp",
     "path": "/work/nuxtjp",
     "title": "NuxtJP",

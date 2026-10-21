@@ -42,7 +42,89 @@
           "summary": "動作する画面と、情報設計・型・配布の境界を、実装へのリンクとともに紹介します。",
           "kind": "page",
           "status": "published",
-          "sections": []
+          "sections": [
+            {
+              "title": "製品とプロジェクトのサイト",
+              "text": "各製品の最新情報、提供条件、導入の入口は、それぞれの独立したサイトへ。",
+              "links": [
+                {
+                  "title": "NERP",
+                  "href": "https://nerp.jp"
+                },
+                {
+                  "title": "Hatter",
+                  "href": "https://hatter.ihat.online"
+                },
+                {
+                  "title": "Taiper",
+                  "href": "https://taiper.org"
+                },
+                {
+                  "title": "Zixcel",
+                  "href": "https://zixcel.com"
+                },
+                {
+                  "title": "Crowsi",
+                  "href": "https://crowsi.org"
+                },
+                {
+                  "title": "Constillo",
+                  "href": "https://constillo.com"
+                },
+                {
+                  "title": "vPremises",
+                  "href": "https://vpremises.com"
+                },
+                {
+                  "title": "Incus JP",
+                  "href": "https://incus.jp"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/work/zix-cli",
+          "title": "APIの仕様を、明示的な操作の入口へ。",
+          "summary": "Rustの共通CLIが仕様の選別・照合を担い、プロバイダーが個別の通信と認証を担います。公開バイナリの実行結果から、その境界を説明します。",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "共通CLIの責務",
+              "text": "仕様の読み込み、明示的に選択した操作、元データのhash、プロバイダーの実行契約を分離します。今回の実行ではOpenAPIの合成入力を読み、GET /inspectionの経路情報を取り出しました。"
+            },
+            {
+              "title": "実操作を混ぜない構成",
+              "text": "カタログの生成や経路の表示はローカルで完結します。プロバイダーへの対応付けがない操作を、通信や認証へ勝手につなげません。外部サービスを実際に操作するには、別の明示的な契約が必要です。"
+            },
+            {
+              "title": "設計上の選択",
+              "text": "大きな万能CLIにすべてを集約せず、共通の照合とプロバイダー固有の実装を分けています。汎用性のために権限を暗黙に広げることや、仕様を読んだだけで安全な実操作とみなすことはしません。"
+            },
+            {
+              "title": "公開版の検証",
+              "text": "v0.2.2でversion、api project、api routesを実行し、実際の入力と出力をexamples/zixに保持しました。認証情報、外部通信、実データ操作は使っていません。書込み可能範囲を限定したファイルだけを受け入れる動作も確認しています。"
+            },
+            {
+              "title": "再現と実装",
+              "text": "入力、実行結果、ソースから確認できます。",
+              "links": [
+                {
+                  "title": "Release v0.2.2",
+                  "href": "https://github.com/zixcel/cli/releases/tag/v0.2.2"
+                },
+                {
+                  "title": "Reproduction inputs",
+                  "href": "https://github.com/coela-oss/portfolio/tree/main/examples/zix"
+                },
+                {
+                  "title": "Source",
+                  "href": "https://github.com/zixcel/cli"
+                }
+              ]
+            }
+          ]
         },
         {
           "path": "/work/nuxtjp",
@@ -579,7 +661,89 @@
           "summary": "Live interfaces, architecture and trade-offs, with a route into the implementation.",
           "kind": "page",
           "status": "published",
-          "sections": []
+          "sections": [
+            {
+              "title": "Product and project sites",
+              "text": "Current features, availability and adoption paths belong to each independent product site.",
+              "links": [
+                {
+                  "title": "NERP",
+                  "href": "https://nerp.jp"
+                },
+                {
+                  "title": "Hatter",
+                  "href": "https://hatter.ihat.online"
+                },
+                {
+                  "title": "Taiper",
+                  "href": "https://taiper.org"
+                },
+                {
+                  "title": "Zixcel",
+                  "href": "https://zixcel.com"
+                },
+                {
+                  "title": "Crowsi",
+                  "href": "https://crowsi.org"
+                },
+                {
+                  "title": "Constillo",
+                  "href": "https://constillo.com"
+                },
+                {
+                  "title": "vPremises",
+                  "href": "https://vpremises.com"
+                },
+                {
+                  "title": "Incus JP",
+                  "href": "https://incus.jp"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/work/zix-cli",
+          "title": "From an API specification to an explicit command.",
+          "summary": "A Rust dispatcher owns specification review and integrity checks; providers own transport and authentication. The released binary makes that boundary inspectable.",
+          "kind": "page",
+          "status": "published",
+          "sections": [
+            {
+              "title": "The dispatcher boundary",
+              "text": "Separate specification input, explicitly selected operations, source hashes and provider execution contracts. The recorded run parses a synthetic OpenAPI document and extracts the GET /inspection route."
+            },
+            {
+              "title": "Parsing does not grant authority",
+              "text": "Catalog projection and route inspection are local operations. An unbound operation is not silently connected to authentication or network execution. A real provider action requires a separate explicit contract."
+            },
+            {
+              "title": "Trade-off",
+              "text": "Keep common admission logic separate from provider-specific implementations instead of collecting every integration into one large CLI. Generality must not silently broaden authority, and parsing a specification is not proof that a live operation is safe."
+            },
+            {
+              "title": "Verification with a released binary",
+              "text": "Run version, api project and api routes with v0.2.2 and retain actual inputs and outputs in examples/zix. The observation uses no credential, external request or live data mutation. Group-writable catalog input was refused as designed."
+            },
+            {
+              "title": "Reproduce and inspect",
+              "text": "Inspect the inputs, recorded output and implementation.",
+              "links": [
+                {
+                  "title": "Release v0.2.2",
+                  "href": "https://github.com/zixcel/cli/releases/tag/v0.2.2"
+                },
+                {
+                  "title": "Reproduction inputs",
+                  "href": "https://github.com/coela-oss/portfolio/tree/main/examples/zix"
+                },
+                {
+                  "title": "Source",
+                  "href": "https://github.com/zixcel/cli"
+                }
+              ]
+            }
+          ]
         },
         {
           "path": "/work/nuxtjp",

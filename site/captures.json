@@ -1,5 +1,19 @@
 [
   {
+    "id": "zix-cli",
+    "image": "/work/zix-cli.png",
+    "origin": "https://github.com/zixcel/cli/releases/tag/v0.2.2",
+    "repository": "https://github.com/zixcel/cli",
+    "source": "2451c152d1f2502af4770d3ffb2f237f0626a56c",
+    "version": "0.2.2",
+    "capturedOn": "2026-10-21",
+    "sha256": "3407491141f5442895bde2f8cfd60a045976ee03f8c3b574768190da4d23a53e",
+    "width": 1440,
+    "height": 1100,
+    "kind": "cli-output-view",
+    "locale": "en"
+  },
+  {
     "id": "nuxtjp",
     "image": "/work/nuxtjp.png",
     "origin": "https://nuxt.jp/",

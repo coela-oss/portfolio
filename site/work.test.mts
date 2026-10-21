@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto'
 import english from './work.en.json' with { type: 'json' }
 import japanese from './work.ja.json' with { type: 'json' }
 import captures from './captures.json' with { type: 'json' }
+import redirects from './redirects.json' with { type: 'json' }
 import pages from './content.json' with { type: 'json' }
 test('each case has the same localized identity, actual evidence and distinct exits', () => {
   assert.deepEqual(english.map(w => w.path), japanese.map(w => w.path))
@@ -40,5 +41,14 @@ test('case pages keep their problem, technical decisions and verification in bot
       assert.ok(page)
       for (const section of work.sections) assert.ok(page.sections.some(s => s.text === section.text))
     }
+  }
+})
+
+test('legacy entry points reach a live page or independent product, without alias loops', () => {
+  const paths = new Set(pages.locales.en.pages.map(p => p.path))
+  for (const [from, to] of Object.entries(redirects)) {
+    assert.ok(!paths.has(from));assert.notEqual(from, to)
+    if (to.startsWith('/')) { assert.ok(paths.has(to));assert.ok(!Object.hasOwn(redirects, to)) }
+    else assert.equal(new URL(to).protocol, 'https:')
   }
 })
