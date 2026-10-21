@@ -16,6 +16,7 @@ import time
 import urllib.request
 import urllib.error
 import urllib.parse
+from site_redirects import verify_redirects, parse_rules
 
 
 def read(path):
@@ -36,6 +37,8 @@ def select(root, contract, tag):
     if len(matches) != 1:
         raise ValueError('Tag must select exactly one site and its reviewed version')
     site = matches[0]
+    if not isinstance(site.get('deploymentEnabled', True), bool):
+        raise ValueError('Deployment readiness must be explicit boolean')
     if not re.fullmatch(r'site-production-[a-z0-9-]+', site['environment']):
         raise ValueError('Invalid production Environment')
     if not re.fullmatch(r'[a-z0-9-]+', site['id']) or not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', site['version']):
@@ -46,6 +49,12 @@ def select(root, contract, tag):
         raise ValueError('Invalid owned zone')
     if site['origin'] != 'https://' + site['domain'] or not re.fullmatch(r'[a-z0-9.-]+', site['domain']):
         raise ValueError('Invalid production origin')
+    zone_name = site.get('zoneName', site['domain'])
+    if not re.fullmatch(r'[a-z0-9]+(?:[.-][a-z0-9]+)*', zone_name) or not (site['domain'] == zone_name or site['domain'].endswith('.' + zone_name)):
+        raise ValueError('Site domain must belong to the explicit owned zone')
+    install = owned(root, site.get('installDirectory', site['appDirectory']))
+    if not owned(root, site['appDirectory']).resolve().is_relative_to(install.resolve()):
+        raise ValueError('Install root must contain the selected application')
     for key in ['appDirectory', 'assetDirectory', 'siteConfig']:
         owned(root, site[key])
     if read(owned(root, site['siteConfig']))['origin'] != site['origin']:
@@ -106,6 +115,8 @@ def pack(root, site, sha, output):
         raise ValueError('New artifact directory required')
     assets = owned(root, site['assetDirectory'])
     files(assets)  # Reject unsafe output before copying anything.
+    if (assets / '_redirects').exists():
+        parse_rules((assets / '_redirects').read_text())
     output.mkdir(parents=True)
     shutil.copytree(assets, output / 'assets')
     marker = {'site': site['id'], 'source_sha': sha, 'release_domain': site['domain'], 'purpose': 'production', 'version': site['version']}
@@ -159,6 +170,16 @@ def verify_assets(origin, expected):
         list(pool.map(one, expected.items()))
 
 
+def deployment_tool(root, site):
+    app = owned(root, site.get('installDirectory', site['appDirectory']))
+    manifest = read(app / 'package.json')
+    version = manifest.get('devDependencies', {}).get('wrangler', '')
+    binary = app / 'node_modules/.bin/wrangler'
+    if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version) or not (app / 'pnpm-lock.yaml').is_file() or not binary.is_file() or not os.access(binary, os.X_OK):
+        raise ValueError('Pinned Wrangler dependency, lockfile and installed executable are required')
+    return binary
+
+
 def deploy(root, contract, site, output, expected):
     receipt = unpack(output / 'site.tgz', expected, output / 'verified')
     if receipt['site'] != site or receipt['source'] != os.environ['GITHUB_SHA']:
@@ -171,7 +192,7 @@ def deploy(root, contract, site, output, expected):
     prefix = f"https://api.cloudflare.com/client/v4/accounts/{site['account']}/workers"
     zone_url = f"https://api.cloudflare.com/client/v4/zones/{site['zone']}"
     zone = request(zone_url, token)
-    if zone.get('success') is not True or zone['result']['name'] != site['domain'] or zone['result']['account']['id'] != site['account'] or zone['result']['status'] != 'active':
+    if zone.get('success') is not True or zone['result']['name'] != site.get('zoneName', site['domain']) or zone['result']['account']['id'] != site['account'] or zone['result']['status'] != 'active':
         raise ValueError('Owned active zone mismatch')
     def dns_digest():
         records = []
@@ -203,7 +224,7 @@ def deploy(root, contract, site, output, expected):
               'routes':[{'pattern':d['hostname'],'custom_domain':True} for d in before if d['service']==site['worker']]}
     (output / 'wrangler.json').write_text(json.dumps(config) + '\n')
     # Uses this repo's committed Wrangler dependency. No install/build receives the CF token.
-    wrangler = owned(root, site['appDirectory']) / 'node_modules/.bin/wrangler'
+    wrangler = owned(root, site.get('installDirectory', site['appDirectory'])) / 'node_modules/.bin/wrangler'
     current = request(site['origin'] + '/.well-known/release.json')
     if current.get('site') != site['id'] or current.get('purpose') != 'production':
         raise ValueError('Existing production is not this owned static site')
@@ -215,9 +236,14 @@ def deploy(root, contract, site, output, expected):
             raise ValueError('Only initial tag push may deploy; later runs verify existing bytes only')
         # A fresh run is not evidence that an earlier deployment failed. Refuse
         # replay after a matching source/version; only verify those bytes above.
+        wrangler = deployment_tool(root, site)
         (output / 'operation.json').write_text(json.dumps({'state':'deployment-starting; do not replay','site':site['id'],'source':receipt['source']}) + '\n')
         subprocess.run([str(wrangler), 'deploy', '--config', str(output / 'wrangler.json')], cwd=root, check=True)
-    verify_assets(site['origin'], receipt['files'])
+    public_files = {name: digest for name, digest in receipt['files'].items() if name != '_redirects'}
+    verify_assets(site['origin'], public_files)
+    redirect_count = 0
+    if '_redirects' in receipt['files']:
+        redirect_count = verify_redirects(site['origin'], (output / 'verified/assets/_redirects').read_text())
     if before != domains():
         raise ValueError('Custom domain binding changed; do not replay deployment')
     if dns_digest() != original_dns:
@@ -226,7 +252,7 @@ def deploy(root, contract, site, output, expected):
     if exposure.get('success') is not True or exposure['result'].get('enabled') is not False or exposure['result'].get('previews_enabled') is not False:
         raise ValueError('Unexpected workers.dev or preview exposure')
     (output / 'acceptance.json').write_text(json.dumps({'site':site['id'],'source':receipt['source'],'version':site['version'],
-        'origin':site['origin'],'matched_assets':len(receipt['files']),'archive_sha256':expected,'custom_domains_unchanged':True,
+        'origin':site['origin'],'matched_assets':len(public_files),'matched_redirects':redirect_count,'archive_sha256':expected,'custom_domains_unchanged':True,
         'dns_unchanged':True,'workers_dev_enabled':False,'preview_urls_enabled':False,'verify_only':already}) + '\n')
     (output / 'operation.json').write_text('{"state":"complete"}\n')
 
@@ -238,7 +264,7 @@ def main():
     site = select(root, contract, os.environ['GITHUB_REF_NAME'])
     if mode == 'plan':
         admit(root, contract, os.environ)
-        for key, value in {'site':site['id'],'app':site['appDirectory'],'environment':site['environment']}.items():
+        for key, value in {'site':site['id'],'app':site['appDirectory'],'install':site.get('installDirectory', site['appDirectory']),'environment':site['environment'],'deploy-enabled':'true' if site.get('deploymentEnabled', True) else 'false'}.items():
             with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
                 out.write(key + '=' + value + '\n')
     elif mode == 'pack':

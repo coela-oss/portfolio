@@ -4,9 +4,9 @@ Coela takes its name from the coelacanth. This is the public source of
 [coela.org](https://coela.org/): working interfaces, architecture, trade-offs and
 links to implementations. English is the default; Japanese has separate routes.
 
-Start at **Work** for three technical case studies, **Open source** for projects
+Start at **Work** for four technical case studies, **Open source** for projects
 by discipline, and **Notes** for implementation-grounded design writing.
-The live screenshots include NuxtJP, the iHAT directory and sem-lang.
+The case studies include the released Zix CLI, NuxtJP, the iHAT directory and sem-lang.
 
 ## Development
 
@@ -31,7 +31,9 @@ Edit `site/work.en.json`, `site/work.ja.json` and `site/content.json` together.
 Each case contains a problem, architecture, trade-off, verification and direct
 source/live exits. `site/captures.json` records actual URLs, dates, source versions
 and screenshot hashes; tests reject invented paths or changed image bytes.
-Screenshots are real public Web interfaces, not generated product mockups.
+Images show real public Web interfaces or an explicitly labelled formatted view
+of actual CLI output. `examples/zix` retains the synthetic inputs and recorded
+outputs of the credential-free local CLI observation.
 Never insert customer data or private application screens without permission.
 
 ## Independent release

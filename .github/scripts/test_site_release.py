@@ -7,7 +7,7 @@ import tarfile
 import tempfile
 import unittest
 from unittest.mock import patch
-from site_release import select, pack, unpack, admit, deploy, verify_assets
+from site_release import select, pack, unpack, admit, deploy, verify_assets, deployment_tool
 from subprocess import CompletedProcess
 
 
@@ -29,6 +29,29 @@ class SiteReleaseTests(unittest.TestCase):
         for tag in ['v0.1.0','site/other/v0.1.0','site/example/v0.2.0']:
             with self.assertRaises(ValueError): select(self.root,self.contract,tag)
         (self.root / 'site.json').write_text('{"origin":"https://other.example"}')
+        with self.assertRaises(ValueError):select(self.root,self.contract,'site/example/v0.1.0')
+
+    def test_subdomain_requires_explicit_parent_zone_on_a_label_boundary(self):
+        site = self.contract['sites'][0]
+        site.update(domain='product.example.org', origin='https://product.example.org', zoneName='example.org')
+        (self.root/'site.json').write_text('{"origin":"https://product.example.org"}')
+        self.assertEqual(select(self.root,self.contract,'site/example/v0.1.0'),site)
+        for zone in ['ample.org', 'other.org', 'example.org/path', '.example.org', 'org.evil']:
+            site['zoneName'] = zone
+            with self.assertRaises(ValueError):select(self.root,self.contract,'site/example/v0.1.0')
+
+    def test_shared_install_root_is_explicit_and_cannot_escape_the_owner(self):
+        site = self.contract['sites'][0]
+        site.update(appDirectory='products/example', installDirectory='.')
+        self.assertEqual(select(self.root,self.contract,'site/example/v0.1.0'),site)
+        for directory in ['../sibling', 'unrelated', './\nother=bad']:
+            site['installDirectory'] = directory
+            with self.assertRaises(ValueError):select(self.root,self.contract,'site/example/v0.1.0')
+
+    def test_new_product_targets_remain_explicitly_disabled(self):
+        self.contract['sites'][0]['deploymentEnabled'] = False
+        self.assertFalse(select(self.root,self.contract,'site/example/v0.1.0')['deploymentEnabled'])
+        self.contract['sites'][0]['deploymentEnabled'] = 'false'
         with self.assertRaises(ValueError):select(self.root,self.contract,'site/example/v0.1.0')
 
     def test_output_traversal_symlink_and_environment_output_injection_rejected(self):
@@ -103,6 +126,49 @@ class SiteReleaseTests(unittest.TestCase):
             deploy(self.root,self.contract,self.site,self.root/'archive',digest)
             verify.assert_called_once();run.assert_not_called()
         self.assertTrue(json.loads((self.root/'archive/acceptance.json').read_text())['verify_only'])
+
+    def test_malformed_redirect_cannot_be_packaged_or_reach_a_deployment(self):
+        (self.root/'public').mkdir()
+        (self.root/'public/_redirects').write_text('/unsafe //other.example 301\n')
+        with self.assertRaises(ValueError):
+            pack(self.root,self.site,'b'*40,self.root/'archive')
+        self.assertFalse((self.root/'archive').exists())
+
+    def test_redirect_control_file_is_artifact_bound_and_verified_as_behavior(self):
+        (self.root/'public').mkdir()
+        (self.root/'public/index.html').write_text('<h1>Approved</h1>')
+        (self.root/'public/_redirects').write_text('/old /work 301\n')
+        digest=pack(self.root,self.site,'b'*40,self.root/'archive')
+        env={**self.env,'GH_TOKEN':'synthetic-test-token','CLOUDFLARE_API_TOKEN':'synthetic-fixture-token','GITHUB_EVENT_NAME':'workflow_dispatch','GITHUB_RUN_ATTEMPT':'2'}
+        with patch.dict('os.environ',env),patch('site_release.request',side_effect=self.provider(True)),patch('site_release.verify_assets') as verify,patch('site_release.verify_redirects',return_value=1) as redirects,patch('site_release.subprocess.run') as run:
+            deploy(self.root,self.contract,self.site,self.root/'archive',digest)
+            self.assertNotIn('_redirects', verify.call_args.args[1])
+            redirects.assert_called_once_with('https://example.org','/old /work 301\n')
+            run.assert_not_called()
+        receipt=json.loads((self.root/'archive/acceptance.json').read_text())
+        self.assertEqual(receipt['matched_redirects'],1)
+        self.assertEqual(receipt['matched_assets'],2)
+
+    def test_deployment_tool_must_be_pinned_locked_and_executable(self):
+        (self.root/'package.json').write_text('{"devDependencies":{"wrangler":"4.149.0"}}')
+        with self.assertRaises(ValueError):deployment_tool(self.root,self.site)
+        (self.root/'pnpm-lock.yaml').write_text('lockfileVersion: 9.0')
+        binary=self.root/'node_modules/.bin/wrangler';binary.parent.mkdir(parents=True)
+        binary.write_text('#!/bin/sh\nexit 0\n')
+        with self.assertRaises(ValueError):deployment_tool(self.root,self.site)
+        binary.chmod(0o700)
+        self.assertEqual(deployment_tool(self.root,self.site),binary)
+        (self.root/'package.json').write_text('{"devDependencies":{"wrangler":"latest"}}')
+        with self.assertRaises(ValueError):deployment_tool(self.root,self.site)
+
+    def test_missing_tool_stops_before_operation_record_or_subprocess(self):
+        _,digest=self.prepare()
+        (self.root/'package.json').write_text('{"devDependencies":{}}')
+        env={**self.env,'GH_TOKEN':'synthetic-test-token','CLOUDFLARE_API_TOKEN':'synthetic-fixture-token','GITHUB_EVENT_NAME':'push','GITHUB_RUN_ATTEMPT':'1'}
+        with patch.dict('os.environ',env),patch('site_release.request',side_effect=self.provider(False)),patch('site_release.subprocess.run') as run:
+            with self.assertRaises(ValueError):deploy(self.root,self.contract,self.site,self.root/'archive',digest)
+            run.assert_not_called()
+        self.assertFalse((self.root/'archive/operation.json').exists())
 
     def test_asset_readback_accepts_only_prepared_bytes_after_bounded_stale_reads(self):
         expected={'404.html':hashlib.sha256(b'approved fallback').hexdigest()}

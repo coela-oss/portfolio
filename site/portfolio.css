@@ -2,7 +2,7 @@
 .service-site[data-brand=coela]{--site-accent:#007e78;--site-ink:#142a2a;background:#f6f5f0;color:var(--site-ink)}
 [data-brand=coela] .site-header{background:#f6f5f0f2;backdrop-filter:blur(18px);border-color:#142a2a1a}
 [data-brand=coela] .site-hero{max-width:1200px;padding:72px 24px 48px;margin:auto}
-[data-brand=coela] .site-hero-home{grid-template-columns:minmax(0,1fr) 260px;gap:48px;align-items:center}
+[data-brand=coela] .site-hero-home{grid-template-columns:minmax(0,1fr) 260px;gap:48px;align-items:center;min-height:560px}
 [data-brand=coela] .site-hero h1{font-size:clamp(2.7rem,5.5vw,5.4rem);font-weight:650;line-height:1.06;letter-spacing:-.055em;max-width:18ch;white-space:pre-line}
 [data-brand=coela] .site-lead{font-size:clamp(1.05rem,1.5vw,1.23rem);max-width:55ch;line-height:1.9}
 .portfolio-signature{text-align:center;background:radial-gradient(ellipse,#bde4df 0,transparent 67%);padding:24px}
@@ -22,3 +22,9 @@
 [data-brand=coela] a:focus-visible{outline:3px solid #007e78;outline-offset:5px}
 @media(max-width:760px){[data-brand=coela] .site-hero{padding-top:44px}[data-brand=coela] .site-hero-home{grid-template-columns:1fr;gap:12px}.portfolio-signature{display:none}.work-card{grid-template-columns:1fr;gap:0}.work-description{padding:24px}.work-image{padding:16px}.portfolio-heading{display:block}.portfolio-heading p{margin-top:8px}.case-evidence figure{padding:12px}.case-pipeline ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.work-card{transition:none;scroll-behavior:auto}}
+
+/* Keep the brand, actions and evidence inside narrow viewports. */
+[data-brand=coela] .site-wordmark{min-width:0;flex-shrink:1}[data-brand=coela] .site-wordmark span{min-width:0}
+@media(max-width:760px){[data-brand=coela] .site-hero{padding-inline:0}[data-brand=coela] .site-wordmark{max-width:calc(100% - 84px)}[data-brand=coela] .site-wordmark small{letter-spacing:0;overflow-wrap:normal}[data-brand=coela] .site-actions{flex-wrap:wrap;row-gap:16px}.work-description{min-width:0}}
+
+@media(max-width:760px){[data-brand=coela] .site-hero-home{min-height:0}[data-brand=coela] .site-hero h1{font-size:clamp(2.2rem,8vw,3rem)}}

@@ -3,6 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { NuxtModule } from 'nuxt/schema'
 import data from './content.json'
+import redirects from './redirects.json'
 import { validateContent } from './check.mjs'
 
 // A site-owned scaffold: no checkout, manager service, or unreleased package required.
@@ -40,6 +41,11 @@ const sitePages: NuxtModule = (_options, nuxt) => {
     mkdirSync(directory, { recursive: true })
     writeFileSync(join(directory, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>\n`)
     writeFileSync(join(directory, 'site-content.json'), JSON.stringify(data) + '\n')
+    const rules = Object.entries(redirects).flatMap(([from, to]) => ['', '/ja'].flatMap(prefix => {
+      const target = to.startsWith('/') ? prefix + to : to
+      return [`${prefix}${from} ${target} 301`, `${prefix}${from}/ ${target} 301`]
+    }))
+    writeFileSync(join(directory, '_redirects'), rules.join('\n') + '\n')
   })
   nuxt.options.nitro.publicAssets ??= []
   nuxt.options.nitro.publicAssets.push({ dir: directory, maxAge: 0 })
