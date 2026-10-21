@@ -14,29 +14,15 @@
       "SHA-256",
       "Provider contracts"
     ],
-    "pipeline": [
-      "API specification",
-      "Explicit review",
-      "Bounded catalog",
-      "Provider boundary"
-    ],
     "live": "https://github.com/zixcel/cli/releases/tag/v0.2.2",
     "source": "https://github.com/zixcel/cli",
     "sections": [
       {
-        "title": "使う場面",
-        "text": "APIをローカルから扱うための、共通の操作入口。操作の候補・入力・接続先を、実行前に確認できる。"
+        "title": "共通CLIの責務",
+        "text": "仕様の読み込み、明示的に選択した操作、元データのhash、プロバイダーの実行契約を分離します。今回の実行ではOpenAPIの合成入力を読み、GET /inspectionの経路情報を取り出しました。"
       },
       {
-        "title": "構成と役割",
-        "text": "仕様の取込みとプロバイダー固有の通信を分ける設計。"
-      },
-      {
-        "title": "設計の判断",
-        "text": "APIごとの認証や通信を一つのCLIへ詰め込まない。選んだ仕様から操作の意味が変わらないようにする。候補の確認にクラウドの認証情報を使わない。"
-      },
-      {
-        "title": "確かめた動作",
+        "title": "公開版の検証",
         "text": "v0.2.2でversion、api project、api routesを実行し、実際の入力と出力をexamples/zixに保持しました。認証情報、外部通信、実データ操作は使っていません。書込み可能範囲を限定したファイルだけを受け入れる動作も確認しています。"
       }
     ]
@@ -56,29 +42,15 @@
       "TypeScript",
       "Static generation"
     ],
-    "pipeline": [
-      "Bilingual content",
-      "Owned routes",
-      "Static assets",
-      "Reviewed deployment"
-    ],
     "live": "https://nuxt.jp/",
     "source": "https://github.com/nuxtjp/website",
     "sections": [
       {
-        "title": "使う場面",
-        "text": "Nuxtの学習と、NuxtJP独自ツールの選択を助けるサイト。知りたい内容に応じて、公式ガイドか実際のパッケージへ進める。"
+        "title": "構成",
+        "text": "言語切替と静的生成は共通のNuxt基盤が担い、ナビゲーション、配色、目的別の導線はサイト側の型付きコンテンツとコンポーネントが担います。内部の共通化と、見せ方の個性を分離しています。"
       },
       {
-        "title": "構成と役割",
-        "text": "公式情報・独自モジュール・導入ガイドの情報設計とUI。"
-      },
-      {
-        "title": "設計の判断",
-        "text": "Nuxt自体の仕様とNuxtJPの提供物を混同させない。言語を変えても知りたい内容を追えるようにする。表示を軽くし、閲覧にアカウントを要求しない。"
-      },
-      {
-        "title": "確かめた動作",
+        "title": "検証",
         "text": "日英それぞれ360・768・1440pxでメニュー、画像、主要リンクの終点を確認しました。タグ付きCIでソースコミットと静的配布物を結び付けてから配備します。"
       }
     ]
@@ -98,29 +70,15 @@
       "GitHub Releases",
       "Static catalog"
     ],
-    "pipeline": [
-      "Release metadata",
-      "Purpose categories",
-      "Local filtering",
-      "Versioned download"
-    ],
     "live": "https://ihat.online/registry",
     "source": "https://github.com/hathq/ihat-docs-site",
     "sections": [
       {
-        "title": "使う場面",
-        "text": "用途からHATを見つけ、公開された配布先へ進むディレクトリ。目的に合う候補と、その配布元を同じ画面で確認できる。"
+        "title": "操作の設計",
+        "text": "公開済み8件のHATを用途で分類しています。検索とカテゴリの絞り込みは公開カタログに対してブラウザ内で動作し、該当なしの場合も明示します。"
       },
       {
-        "title": "構成と役割",
-        "text": "検索・用途フィルタ・バージョンを示す配布導線。"
-      },
-      {
-        "title": "設計の判断",
-        "text": "リポジトリ名を知らなくても探せるようにする。選んだ配布物の出所を確かめられるようにする。候補の発見と権限付与を別の操作にする。"
-      },
-      {
-        "title": "確かめた動作",
+        "title": "検証",
         "text": "実サイトで検索の絞り込み、カテゴリ選択、空結果を確認しました。日英の一覧から同じ8件の版付き配布先へ到達できます。"
       }
     ]
@@ -140,29 +98,15 @@
       "Semantic models",
       "Source distribution"
     ],
-    "pipeline": [
-      "Concrete example",
-      "Meaning and context",
-      "Explicit diagnostics",
-      "Public source"
-    ],
     "live": "https://sem-lang.taiper.org/",
     "source": "https://github.com/semantic-language/semantic-language-site",
     "sections": [
       {
-        "title": "使う場面",
-        "text": "意味と文脈を扱う言語の考え方を、具体例から伝えるサイト。ソースを読む前に、入力と解釈の関係を理解できる。"
+        "title": "構成",
+        "text": "表示用コンテンツとルートを型で定義し、静的生成前に検証します。実装の正本は公開ソースのリリースと、ファイルごとのライセンス表示です。"
       },
       {
-        "title": "構成と役割",
-        "text": "概念・用途・開発者向け情報を分けた紹介UI。"
-      },
-      {
-        "title": "設計の判断",
-        "text": "用語やAPIの前に何を扱うかを伝える。製品を知る入口と開発者の資料を分ける。取得可能なソースとライセンスへ案内する。"
-      },
-      {
-        "title": "確かめた動作",
+        "title": "検証",
         "text": "本番サイト、公開ソースの配布先、MPLのライセンス入口を日英で確認しました。配布物をソースと結び付け、配備時にはドメインとプレビュー設定も検証します。"
       }
     ]

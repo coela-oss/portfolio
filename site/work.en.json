@@ -14,29 +14,15 @@
       "SHA-256",
       "Provider contracts"
     ],
-    "pipeline": [
-      "API specification",
-      "Explicit review",
-      "Bounded catalog",
-      "Provider boundary"
-    ],
     "live": "https://github.com/zixcel/cli/releases/tag/v0.2.2",
     "source": "https://github.com/zixcel/cli",
     "sections": [
       {
-        "title": "Where it helps",
-        "text": "A common local entry point for working with APIs. Inspect the operation, input and destination before execution."
+        "title": "The dispatcher boundary",
+        "text": "Separate specification input, explicitly selected operations, source hashes and provider execution contracts. The recorded run parses a synthetic OpenAPI document and extracts the GET /inspection route."
       },
       {
-        "title": "Architecture and responsibilities",
-        "text": "Separate specification selection from provider-specific communication."
-      },
-      {
-        "title": "Design decisions",
-        "text": "Keep provider-specific authentication and transport out of the common CLI. Preserve the meaning of the reviewed selection. Review candidates without cloud credentials."
-      },
-      {
-        "title": "Verified behavior",
+        "title": "Verification with a released binary",
         "text": "Run version, api project and api routes with v0.2.2 and retain actual inputs and outputs in examples/zix. The observation uses no credential, external request or live data mutation. Group-writable catalog input was refused as designed."
       }
     ]
@@ -56,29 +42,15 @@
       "TypeScript",
       "Static generation"
     ],
-    "pipeline": [
-      "Bilingual content",
-      "Owned routes",
-      "Static assets",
-      "Reviewed deployment"
-    ],
     "live": "https://nuxt.jp/",
     "source": "https://github.com/nuxtjp/website",
     "sections": [
       {
-        "title": "Where it helps",
-        "text": "Help visitors learn Nuxt or choose a NuxtJP tool. Reach the official guide or an actual package according to the task."
+        "title": "Architecture",
+        "text": "A shared Nuxt foundation handles locale and static generation. Site-owned components and typed content own navigation, visual identity and the visitor journey. This keeps shared infrastructure from flattening every site into the same template."
       },
       {
-        "title": "Architecture and responsibilities",
-        "text": "Information architecture and UI for guides, modules and installation paths."
-      },
-      {
-        "title": "Design decisions",
-        "text": "Do not confuse Nuxt specifications with NuxtJP products. Preserve the visitor’s task across languages. Keep reading lightweight and independent of an account."
-      },
-      {
-        "title": "Verified behavior",
+        "title": "Verification",
         "text": "The released interface was checked in English and Japanese at 360, 768 and 1440 pixels, including menu control, image loading and primary destinations. Version-tagged CI binds the source commit to the static archive before deployment."
       }
     ]
@@ -98,29 +70,15 @@
       "GitHub Releases",
       "Static catalog"
     ],
-    "pipeline": [
-      "Release metadata",
-      "Purpose categories",
-      "Local filtering",
-      "Versioned download"
-    ],
     "live": "https://ihat.online/registry",
     "source": "https://github.com/hathq/ihat-docs-site",
     "sections": [
       {
-        "title": "Where it helps",
-        "text": "Find a HAT by purpose and continue to its public release. See a suitable candidate and its distribution owner together."
+        "title": "The interaction",
+        "text": "Eight public HAT releases are grouped by purpose. Search and category filtering run in the browser over the published catalog, including an honest empty-result state."
       },
       {
-        "title": "Architecture and responsibilities",
-        "text": "Search, category filters and version-specific release paths."
-      },
-      {
-        "title": "Design decisions",
-        "text": "Let people search without knowing repository names. Make the selected distribution traceable. Keep selection apart from granting authority."
-      },
-      {
-        "title": "Verified behavior",
+        "title": "Verification",
         "text": "The live catalog was checked for narrowing search results, category selection and empty results. English and Japanese views retain the same eight versioned release destinations."
       }
     ]
@@ -140,29 +98,15 @@
       "Semantic models",
       "Source distribution"
     ],
-    "pipeline": [
-      "Concrete example",
-      "Meaning and context",
-      "Explicit diagnostics",
-      "Public source"
-    ],
     "live": "https://sem-lang.taiper.org/",
     "source": "https://github.com/semantic-language/semantic-language-site",
     "sections": [
       {
-        "title": "Where it helps",
-        "text": "Introduce a language for meaning and context through concrete examples. Understand the relation between input and interpretation before reading code."
+        "title": "Architecture",
+        "text": "Presentation copy and route definitions are typed and validated before static generation. Public source releases and per-file license notices remain the authoritative implementation reference."
       },
       {
-        "title": "Architecture and responsibilities",
-        "text": "A presentation UI separating concepts, use cases and developer references."
-      },
-      {
-        "title": "Design decisions",
-        "text": "Explain the subject before terminology and APIs. Distinguish product discovery from implementation references. Link to the source and its actual license."
-      },
-      {
-        "title": "Verified behavior",
+        "title": "Verification",
         "text": "The deployed site, source-release destination and MPL license entry were checked in both languages. Release artifacts are source-bound, while domain and preview settings are verified during deployment."
       }
     ]
