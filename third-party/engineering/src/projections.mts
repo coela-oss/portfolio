@@ -1,14 +1,18 @@
 import { readGuidance, type Guidance, type Selection } from './content.mts'
 
 function excerpt(guidance: Guidance): string {
-  const paragraph = guidance.text.split(/\r?\n\s*\r?\n/).find(p => p.trim() && !p.trim().startsWith('#')) ?? ''
+  const paragraph = guidance.text.split(/\r?\n\s*\r?\n/).find(p => p.trim()
+    && !p.trim().startsWith('#') && !/^(Status:|状態：)/u.test(p.trim())) ?? ''
+  const normalized = paragraph.replace(/\s+/g, ' ').trim()
+  const sentence = normalized.match(/.*?[。！？]|.*?[.!?](?=\s|$)/u)?.[0] ?? normalized
   let result = ''
-  for (const char of paragraph.replace(/\s+/g, ' ').trim()) {
-    if (Buffer.byteLength(result + char) > 160) break
+  for (const char of sentence) {
+    if (Buffer.byteLength(result + char) > 157) return `${result.trimEnd()}…`
     result += char
   }
   return result
 }
+
 export function websiteExcerpt(root: string, selection: Selection) {
   const guidance = readGuidance(root, selection)
   return { ...guidance.selection, locale: guidance.entry.locale, license: guidance.entry.license,

@@ -1,9 +1,9 @@
 {
   "repository": "https://github.com/coela-oss/engineering",
-  "source": "987353d9f106077db2d625fc974638d4fdb09927",
+  "source": "9e896321167a814f86b93a21a54c379fc0277a9e",
   "files": {
     "src/content.mts": "d4dc4cdb2cef86eeed7f81e22ce7b3835f4a8cfadd7a792823e2af82af05bccb",
-    "src/projections.mts": "3a960c102e556c5cd920e1b0009209eee848655cebb319848750ea167a306ee8",
+    "src/projections.mts": "83678d516a88839a52ed5d00b54d6d76ac6e9e4770016da048bd993db416eaf0",
     "datasets/catalog.json": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
     "datasets/selections.json": "7d9a54e9ad12033a031a654120ed9fd06ff0065e8f67e24bb0bf70d65416516f",
     "content/en/principles.md": "152199edd03f171ec85011c4ec22376b88dec762cf8b3c2db175718670531e43",
