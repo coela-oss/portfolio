@@ -30,7 +30,7 @@ jobs:
       - run: pnpm site typecheck '${{ matrix.site }}'
       - run: pnpm site build '${{ matrix.site }}'
       - name: Type-check hosted browser tooling
-        run: pnpm exec tsc --noEmit --strict --module NodeNext --moduleResolution NodeNext --target ES2022 --resolveJsonModule --allowImportingTsExtensions --skipLibCheck .github/scripts/browser-session.mts .github/scripts/browser-check.mts site/navigation.test.mts
+        run: pnpm exec tsc --noEmit --strict --module NodeNext --moduleResolution NodeNext --target ES2022 --resolveJsonModule --allowImportingTsExtensions --skipLibCheck .github/scripts/browser-session.mts .github/scripts/browser-check.mts site/navigation.test.mts site/guidance.test.mts scripts/update-engineering.mts
       - name: Provide Japanese glyphs for faithful hosted screenshots
         run: |
           sudo apt-get update -qq
