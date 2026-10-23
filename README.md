@@ -55,5 +55,12 @@ changes fail verification. Review new hashes explicitly when templates change.
 The workflow saves the DNS digest and domain bindings before deployment, then
 records each read-back phase so a later failure can be reconciled without writes.
 
+For a hosted-only mismatch, dispatch `observe-site.yml` with the reviewed release
+run ID and archive SHA256. It binds the owning artifact, executes no artifact
+code, and reads public responses using hosted curl. Its report retains safe
+response headers and bounded public HTML samples for mismatches. Cookies are
+excluded. The workflow has no Cloudflare credential, production Environment,
+deployment tool or publication capability; it cannot replace release acceptance.
+
 See [license scope](LICENSES/README.md). Original extensions use MIT; original
 content uses CC BY 4.0. Existing Apache-2.0 and third-party notices are preserved.
