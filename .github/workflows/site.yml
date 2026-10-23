@@ -32,9 +32,20 @@ jobs:
       - name: Type-check hosted browser tooling
         run: pnpm exec tsc --noEmit --strict --module NodeNext --moduleResolution NodeNext --target ES2022 --resolveJsonModule --allowImportingTsExtensions --skipLibCheck .github/scripts/browser-session.mts .github/scripts/browser-check.mts site/navigation.test.mts site/guidance.test.mts scripts/update-engineering.mts
       - name: Provide Japanese glyphs for faithful hosted screenshots
+        timeout-minutes: 4
+        shell: bash
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install --yes --no-install-recommends fonts-noto-cjk
+          set -euo pipefail
+          # Isolate font metadata from runner mirror selection; retain Ubuntu's
+          # existing signed archive trust and use its official HTTPS endpoint.
+          font_sources="$RUNNER_TEMP/ubuntu-fonts.list"
+          printf '%s\n' 'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble main' > "$font_sources"
+          sudo mkdir -p "$RUNNER_TEMP/font-apt-lists/partial"
+          font_options=(-o "Dir::Etc::sourcelist=$font_sources" -o 'Dir::Etc::sourceparts=-'
+            -o "Dir::State::lists=$RUNNER_TEMP/font-apt-lists" -o 'Acquire::Retries=1'
+            -o 'Acquire::http::Timeout=30' -o 'Acquire::https::Timeout=30')
+          sudo apt-get "${font_options[@]}" update -qq
+          sudo apt-get "${font_options[@]}" install --yes --no-install-recommends fonts-noto-cjk
           fc-match -f '%{family}' 'sans-serif:lang=ja' | grep -F 'CJK'
       - name: Check rendered navigation, diagrams and responsive tables on hosted Chrome
         run: node .github/scripts/browser-check.mts
