@@ -1,0 +1,36 @@
+{
+  "site": "coela",
+  "version": "0.1.9",
+  "origin": "https://coela.org",
+  "source": "abc3869ef7270e2092a98ba052064e5c8fd097e9",
+  "archiveSha256": "e323fb97d9bcb75508fc5b93061fb16c844d566d41ae6f27a6f79c6303b74ecc",
+  "verificationContext": "local-public-read-only",
+  "verifiedAt": "2026-10-23T08:13:31.835325+00:00",
+  "publicAssetsVerified": 103,
+  "redirectsVerified": 44,
+  "sitemapPages": 40,
+  "edgeScriptHashes": {
+    "analytics": "f542853e69366d59366d2c2abdcec79375a7252e3250902407ea07d2a2cfeee8",
+    "jsd": "6a75d68b52efbad75a56e87a7ed4a35db2a3a1eb32339a68733bba7110a10715"
+  },
+  "localVerifierScriptSha256": "0ea903f8055a3f91d75421f7b1d9de60c384f480cbccf45b6f0d80d15cdacb1e",
+  "localObservationSha256": "e3067b8cb6b3fb4b9683396e212a03b57626395a1b078c3c8bc75812278eccbc",
+  "deploymentRun": "https://github.com/coela-oss/portfolio/actions/runs/39920414324",
+  "hostedObservationRun": "https://github.com/coela-oss/portfolio/actions/runs/39922322374",
+  "hostedObservation": {
+    "state": "blocked",
+    "matched": 17,
+    "http403": 86,
+    "claimedAsPassed": false
+  },
+  "controlPlaneEvidence": {
+    "firstDeploymentAttempt": 1,
+    "readOnlyRetryAttempt": 2,
+    "dnsAndBindingsIdenticalBetweenSnapshots": true,
+    "dnsSnapshotSha256": "4d0a90f35c626f8617e42a10fa83bbfc59058b2075399aef8146c9e27dc087db",
+    "bindingsSnapshotSha256": "fe01b0c556c837b8e92eba5bbd307b662b79f5138d4ad4e08468ad4058ff7b82"
+  },
+  "cloudflareDefensesChanged": false,
+  "deploymentRepeatedByVerifier": false,
+  "newCredentialsAdded": false
+}
