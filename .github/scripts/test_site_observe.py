@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from site_release import pack
-from site_observe import download, observe
+from site_observe import download, observe, summary
 
 
 class ObservationTests(unittest.TestCase):
@@ -66,11 +66,43 @@ class ObservationTests(unittest.TestCase):
             run.assert_not_called()
 
     def test_invalid_review_identifiers_stop_before_github_or_download(self):
-        with patch.dict(os.environ, {'SITE_RELEASE_RUN_ID':'../123','SITE_ARCHIVE_SHA256':'b' * 64}), patch('site_observe.request') as request, patch('site_observe.subprocess.run') as run:
+        with patch.dict(os.environ, {'SITE_RELEASE_RUN_ID':'../123','SITE_ARCHIVE_SHA256':'b' * 64}), patch('site_observe.subprocess.run') as run:
             with self.assertRaises(ValueError):
                 download(self.root, self.root / 'new')
-            request.assert_not_called()
             run.assert_not_called()
+
+    def test_challenge_is_blocked_not_a_successful_content_check(self):
+        def challenged(args, **kwargs):
+            result = self.response(args, **kwargs)
+            result.stdout = result.stdout.replace(b'HTTP/2 200', b'HTTP/2 403\r\nCf-Mitigated: challenge').replace(b'__OBSERVATION__200', b'__OBSERVATION__403')
+            return result
+        with patch('site_observe.subprocess.run', side_effect=challenged):
+            self.assertEqual(observe(self.output), 2)
+        report = json.loads((self.output / 'results/observations.json').read_text())
+        self.assertEqual(report['state'], 'public_observation_blocked')
+        self.assertEqual(report['blockedResponses'], 2)
+        self.assertEqual(report['matched'], 0)
+        self.assertTrue(all(row['error'] == 'cloudflare_challenge' for row in report['files']))
+
+    def test_summary_labels_local_evidence_separately_and_excludes_stale_source(self):
+        with patch('site_observe.subprocess.run', side_effect=self.response):
+            observe(self.output)
+        operator = self.root / 'docs/operations/current-production-verification.json'
+        operator.parent.mkdir(parents=True)
+        review = json.loads((self.output / 'review.json').read_text())
+        evidence = {'source':review['source'],'archiveSha256':review['archive_sha256'],'verificationContext':'local-public-read-only','publicAssetsVerified':2,'redirectsVerified':1}
+        operator.write_text(json.dumps(evidence))
+        destination = self.root / 'summary.txt'
+        with patch.dict(os.environ, {'GITHUB_STEP_SUMMARY':str(destination)}):
+            summary(self.root, self.output)
+        self.assertIn('Separate operator evidence', destination.read_text())
+        self.assertIn('explicitly separate from hosted CI', destination.read_text())
+        evidence['source'] = 'b' * 40
+        operator.write_text(json.dumps(evidence))
+        destination.write_text('')
+        with patch.dict(os.environ, {'GITHUB_STEP_SUMMARY':str(destination)}):
+            summary(self.root, self.output)
+        self.assertNotIn('Separate operator evidence', destination.read_text())
 
 
 if __name__ == '__main__':

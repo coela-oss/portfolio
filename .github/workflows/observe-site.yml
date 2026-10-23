@@ -31,6 +31,9 @@ jobs:
         run: python3 .github/scripts/site_observe.py download "$RUNNER_TEMP/site-readback"
       - name: Observe public responses using the same hosted curl
         run: python3 .github/scripts/site_observe.py observe "$RUNNER_TEMP/site-readback"
+      - name: Distinguish hosted blockers from separate local verification evidence
+        if: always()
+        run: python3 .github/scripts/site_observe.py summary "$RUNNER_TEMP/site-readback"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:

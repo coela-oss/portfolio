@@ -62,5 +62,21 @@ response headers and bounded public HTML samples for mismatches. Cookies are
 excluded. The workflow has no Cloudflare credential, production Environment,
 deployment tool or publication capability; it cannot replace release acceptance.
 
+The same owner script supports local observation with the existing GitHub login.
+Set `reviewed_run_id` and `reviewed_archive_sha256` to the reviewed values:
+
+```sh
+SITE_RELEASE_RUN_ID="$reviewed_run_id" SITE_ARCHIVE_SHA256="$reviewed_archive_sha256" \
+  python3 .github/scripts/site_observe.py download .local/acceptance/fresh-readback
+python3 .github/scripts/site_observe.py observe .local/acceptance/fresh-readback
+```
+
+Cloudflare challenge responses are reported as `public_observation_blocked`,
+retain a nonzero exit code, and are separate from content mismatches. Current
+operator verification is recorded in
+[`docs/operations/current-production-verification.json`](docs/operations/current-production-verification.json).
+Hosted summaries label this local evidence separately and bind it to the exact
+source/archive. They do not turn a blocked hosted probe into a successful check.
+
 See [license scope](LICENSES/README.md). Original extensions use MIT; original
 content uses CC BY 4.0. Existing Apache-2.0 and third-party notices are preserved.
