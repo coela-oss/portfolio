@@ -39,7 +39,10 @@ jobs:
           # Isolate font metadata from runner mirror selection; retain Ubuntu's
           # existing signed archive trust and use its official HTTPS endpoint.
           font_sources="$RUNNER_TEMP/ubuntu-fonts.list"
-          printf '%s\n' 'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble main' > "$font_sources"
+          printf '%s\n' \
+            'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble main' \
+            'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://archive.ubuntu.com/ubuntu noble-updates main' \
+            'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] https://security.ubuntu.com/ubuntu noble-security main' > "$font_sources"
           sudo mkdir -p "$RUNNER_TEMP/font-apt-lists/partial"
           font_options=(-o "Dir::Etc::sourcelist=$font_sources" -o 'Dir::Etc::sourceparts=-'
             -o "Dir::State::lists=$RUNNER_TEMP/font-apt-lists" -o 'Acquire::Retries=1'
