@@ -6,6 +6,7 @@ import { createServer } from 'node:net'
 import { resolve } from 'node:path'
 import { browserSession, object } from './browser-session.mts'
 import data from '../../site/content.json' with { type: 'json' }
+import guidance from '../../site/guidance.json' with { type: 'json' }
 if (process.env.GITHUB_ACTIONS !== 'true') throw Error('Rendered checks are restricted to hosted CI')
 const probe = createServer(); probe.listen(0, '127.0.0.1'); await once(probe, 'listening')
 const address = probe.address()
@@ -51,13 +52,28 @@ try {
       }))()`))
       if (result.h1 !== 1 || result.overflow || result.missing || result.header !== 'sticky' || result.selfExit) throw Error(`${locale}/${width}${page.path}: ${JSON.stringify(result)}`)
       if (page.path.startsWith('/work/') && (result.flow !== 4 || result.decisions !== 3 || result.exits !== 3)) throw Error(`Incomplete case: ${path}`)
+      if (page.path === '/about/principles') {
+        const expected = guidance.filter(entry => entry.locale === locale)
+        const shown = await browser.evaluate(`([...document.querySelectorAll('.guidance-card')].map(card => ({
+          id:card.getAttribute('data-content-id'),version:card.getAttribute('data-content-version'),
+          source:card.querySelector('.guidance-source')?.getAttribute('href'),
+          excerpt:card.querySelector('blockquote')?.textContent?.trim(),
+          license:card.querySelector('.guidance-credit a')?.textContent?.trim()
+        })))`)
+        if (JSON.stringify(shown) !== JSON.stringify(expected.map(entry => ({ id: entry.contentId,
+          version: entry.version, source: entry.source, excerpt: entry.excerpt, license: entry.license })))) {
+          throw Error(`Engineering source projection changed: ${path}`)
+        }
+        await browser.evaluate("document.querySelectorAll('.guidance-card details').forEach(detail=>detail.open=true)")
+        if (await browser.evaluate('document.documentElement.scrollWidth>innerWidth+1') === true) throw Error('Engineering identity metadata overflows')
+      }
       if (page.path === '/' && width === 360) {
         await browser.evaluate("document.querySelector('.site-menu').click()")
         if (await browser.evaluate("document.querySelector('.site-menu').getAttribute('aria-expanded')") !== 'true') throw Error('Menu did not open')
         await browser.evaluate("document.querySelector('.site-header').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))")
         if (await browser.evaluate("document.querySelector('.site-menu').getAttribute('aria-expanded')") !== 'false') throw Error('Menu did not close')
       }
-      if (['/', '/work', '/work/sem-lang', '/work/zix-cli'].includes(page.path) && width !== 768) {
+      if (['/', '/work', '/work/sem-lang', '/work/zix-cli', '/about/principles'].includes(page.path) && width !== 768) {
         const size = object((await browser.call('Page.getLayoutMetrics')).cssContentSize)
         if (typeof size.height !== 'number' || size.height < 1 || size.height > 12000) throw Error('Screenshot height exceeds the review budget')
         const shot = await browser.call('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true,
