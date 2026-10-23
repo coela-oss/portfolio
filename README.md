@@ -45,5 +45,15 @@ production Environment and a dedicated credential have been accepted. Re-runs
 verify matching deployments and cannot resend an unknown write.
 No DNS, Worker, credential or permission change is implied by a source update.
 
+Production HTML can contain Cloudflare Web Analytics and JavaScript Detections
+tags added at the edge. The release contract pins the complete tag hashes.
+Only JSD's hex ray ID and base64 numeric timestamp are normalized before hashing.
+Verification may remove at most one of each pinned tag at the end of the body;
+all remaining HTML bytes and every non-HTML asset must match the prepared archive.
+Unknown scripts, modified page content, duplicate tags and upstream template
+changes fail verification. Review new hashes explicitly when templates change.
+The workflow saves the DNS digest and domain bindings before deployment, then
+records each read-back phase so a later failure can be reconciled without writes.
+
 See [license scope](LICENSES/README.md). Original extensions use MIT; original
 content uses CC BY 4.0. Existing Apache-2.0 and third-party notices are preserved.

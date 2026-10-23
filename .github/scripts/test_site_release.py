@@ -134,6 +134,20 @@ class SiteReleaseTests(unittest.TestCase):
             pack(self.root,self.site,'b'*40,self.root/'archive')
         self.assertFalse((self.root/'archive').exists())
 
+    def test_readback_failure_keeps_dns_baseline_and_phase_without_redeployment(self):
+        _,digest=self.prepare()
+        env={**self.env,'GH_TOKEN':'synthetic-test-token','CLOUDFLARE_API_TOKEN':'synthetic-fixture-token','GITHUB_EVENT_NAME':'workflow_dispatch','GITHUB_RUN_ATTEMPT':'2'}
+        with patch.dict('os.environ',env),patch('site_release.request',side_effect=self.provider(True)),patch('site_release.verify_assets',side_effect=ValueError('fixture mismatch')),patch('site_release.subprocess.run') as run:
+            with self.assertRaises(ValueError):deploy(self.root,self.contract,self.site,self.root/'archive',digest)
+            run.assert_not_called()
+        before=json.loads((self.root/'archive/before.json').read_text())
+        self.assertRegex(before['dns_sha256'],r'^[a-f0-9]{64}$')
+        self.assertEqual(before['custom_domains'][0]['service'],'example-site')
+        operation=json.loads((self.root/'archive/operation.json').read_text())
+        self.assertEqual(operation['phase'],'assets')
+        self.assertTrue(operation['verify_only'])
+        self.assertFalse(operation['deployment_acknowledged'])
+
     def test_redirect_control_file_is_artifact_bound_and_verified_as_behavior(self):
         (self.root/'public').mkdir()
         (self.root/'public/index.html').write_text('<h1>Approved</h1>')

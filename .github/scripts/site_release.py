@@ -3,6 +3,7 @@
 No central repository, preview Worker, DNS mutation or secret persistence.
 """
 import concurrent.futures
+import base64
 import hashlib
 import json
 import os
@@ -37,6 +38,7 @@ def select(root, contract, tag):
     if len(matches) != 1:
         raise ValueError('Tag must select exactly one site and its reviewed version')
     site = matches[0]
+    edge_hashes(site.get('edgeScriptHashes', {}))
     if not isinstance(site.get('deploymentEnabled', True), bool):
         raise ValueError('Deployment readiness must be explicit boolean')
     if not re.fullmatch(r'site-production-[a-z0-9-]+', site['environment']):
@@ -153,20 +155,79 @@ def unpack(archive, expected, destination):
     return receipt
 
 
-def verify_assets(origin, expected):
+def edge_hashes(value):
+    if not isinstance(value, dict) or set(value) - {'analytics', 'jsd'} or any(not isinstance(v, str) or not re.fullmatch('[a-f0-9]{64}', v) for v in value.values()) or len(set(value.values())) != len(value):
+        raise ValueError('Invalid pinned edge script hashes')
+    return value
+
+
+def edge_script_digest(tag):
+    # Only the two non-executable, request-specific JSD values may vary.
+    pattern = rb"window\.__CF\$cv\$params=\{r:'([a-f0-9]{16})',t:'([A-Za-z0-9+/]{8,32}={0,2})'\};"
+    matches = list(re.finditer(pattern, tag))
+    if matches:
+        if len(matches) != 1:
+            return None
+        try:
+            stamp = base64.b64decode(matches[0][2], validate=True)
+        except ValueError:
+            return None
+        if not re.fullmatch(rb'[0-9]{10,12}', stamp):
+            return None
+        tag = re.sub(pattern, b"window.__CF$cv$params={r:'RAY_ID',t:'TIMESTAMP'};", tag)
+    return hashlib.sha256(tag).hexdigest()
+
+
+def origin_html(data, approved):
+    """Remove at most one of each exact pinned tag, only at the body end.
+
+    This does not execute scripts or remove arbitrary provider-looking markup.
+    All remaining bytes must still match the prepared artifact's digest.
+    """
+    approved = edge_hashes(approved)
+    if not approved or len(data) > 8 * 1024 * 1024 or b'</body>' not in data:
+        return data
+    head, tail = data.rsplit(b'</body>', 1)
+    seen = set()
+    for _ in range(2):
+        probe = head[:-1] if head.endswith(b'\n') else head
+        start = probe.rfind(b'<script')
+        if start < 0:
+            break
+        tag = probe[start:]
+        if len(tag) > 8192 or not re.fullmatch(rb'<script\b[^>]*>.*?</script>', tag, re.S):
+            break
+        digest = edge_script_digest(tag)
+        kinds = [key for key, value in approved.items() if value == digest]
+        if len(kinds) != 1 or kinds[0] in seen:
+            break
+        seen.add(kinds[0])
+        head = probe[:start]
+    return head + b'</body>' + tail
+
+
+def verify_assets(origin, expected, approved=None):
+    approved = edge_hashes({} if approved is None else approved)
     def one(item):
         name, digest = item
         path = name[:-10] if name.endswith('index.html') else name
         for attempt in range(5):
             # Nuxt's .html assets redirect to canonical paths; generated 404
             # pages may legitimately retain 404 status. Admit only exact bytes.
-            response = subprocess.run(['curl', '--silent', '--show-error', '--location', '--max-redirs', '5', '--proto-redir', '=https', '--connect-timeout', '5', '--max-time', '30', '--max-filesize', '104857600', origin + '/' + urllib.parse.quote(path)], capture_output=True)
-            if response.returncode == 0 and hashlib.sha256(response.stdout).hexdigest() == digest:
-                return
+            try:
+                response = subprocess.run(['curl', '--silent', '--show-error', '--location', '--max-redirs', '5', '--proto-redir', '=https', '--connect-timeout', '5', '--max-time', '30', '--max-filesize', '8388608', origin + '/' + urllib.parse.quote(path)], capture_output=True, timeout=35)
+            except subprocess.TimeoutExpired:
+                response = None
+            if response is not None and response.returncode == 0:
+                content = response.stdout
+                if hashlib.sha256(content).hexdigest() == digest:
+                    return
+                if name.endswith('.html') and hashlib.sha256(origin_html(content, approved)).hexdigest() == digest:
+                    return
             if attempt < 4:
                 time.sleep(3)
         raise ValueError('Production asset verification failed')
-    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
         list(pool.map(one, expected.items()))
 
 
@@ -219,6 +280,7 @@ def deploy(root, contract, site, output, expected):
         raise ValueError('Rollback deployment metadata missing')
     versions = rollback['result']['deployments'][0]['versions']
     (output / 'rollback.json').write_text(json.dumps({'worker':site['worker'],'versions':versions}) + '\n')
+    (output / 'before.json').write_text(json.dumps({'dns_sha256':original_dns,'custom_domains':before,'source':receipt['source']}) + '\n')
     config = {'name':site['worker'],'account_id':site['account'],'compatibility_date':'2026-10-15',
               'workers_dev':False,'preview_urls':False,'assets':{'directory':'./verified/assets'},
               'routes':[{'pattern':d['hostname'],'custom_domain':True} for d in before if d['service']==site['worker']]}
@@ -239,11 +301,16 @@ def deploy(root, contract, site, output, expected):
         wrangler = deployment_tool(root, site)
         (output / 'operation.json').write_text(json.dumps({'state':'deployment-starting; do not replay','site':site['id'],'source':receipt['source']}) + '\n')
         subprocess.run([str(wrangler), 'deploy', '--config', str(output / 'wrangler.json')], cwd=root, check=True)
+    def readback_phase(phase):
+        (output / 'operation.json').write_text(json.dumps({'state':'readback-pending; do not replay','phase':phase,'site':site['id'],'source':receipt['source'],'deployment_acknowledged':not already,'verify_only':already}) + '\n')
+    readback_phase('assets')
     public_files = {name: digest for name, digest in receipt['files'].items() if name != '_redirects'}
-    verify_assets(site['origin'], public_files)
+    verify_assets(site['origin'], public_files, site.get('edgeScriptHashes', {}))
     redirect_count = 0
+    readback_phase('redirects')
     if '_redirects' in receipt['files']:
         redirect_count = verify_redirects(site['origin'], (output / 'verified/assets/_redirects').read_text())
+    readback_phase('bindings-and-dns')
     if before != domains():
         raise ValueError('Custom domain binding changed; do not replay deployment')
     if dns_digest() != original_dns:
@@ -253,7 +320,8 @@ def deploy(root, contract, site, output, expected):
         raise ValueError('Unexpected workers.dev or preview exposure')
     (output / 'acceptance.json').write_text(json.dumps({'site':site['id'],'source':receipt['source'],'version':site['version'],
         'origin':site['origin'],'matched_assets':len(public_files),'matched_redirects':redirect_count,'archive_sha256':expected,'custom_domains_unchanged':True,
-        'dns_unchanged':True,'workers_dev_enabled':False,'preview_urls_enabled':False,'verify_only':already}) + '\n')
+        'dns_unchanged':True,'workers_dev_enabled':False,'preview_urls_enabled':False,'verify_only':already,
+        'edge_script_hashes':site.get('edgeScriptHashes', {})}) + '\n')
     (output / 'operation.json').write_text('{"state":"complete"}\n')
 
 
