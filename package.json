@@ -21,7 +21,7 @@
     "test:site-structure": "node site/check.mjs"
   },
   "dependencies": {
-    "@nuxtjp/localized-site": "0.2.6",
+    "@nuxtjp/localized-site": "0.2.7",
     "nuxt": "4.6.2",
     "vue": "3.5.44"
   },
