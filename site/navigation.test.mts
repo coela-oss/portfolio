@@ -5,6 +5,7 @@ import stories from './case-stories.json' with { type: 'json' }
 import data from './content.json' with { type: 'json' }
 import works from './work.en.json' with { type: 'json' }
 import { nextSteps } from './navigation.mts'
+import type { Section } from './types.ts'
 for (const locale of ['ja', 'en'] as const) {
   test(`${locale}: cases have explanatory diagrams, decision tables and distinct actionable exits`, () => {
     for (const work of works) {
@@ -38,13 +39,14 @@ for (const locale of ['ja', 'en'] as const) {
   })
   test(`${locale}: OSS categories describe actual source destinations and related case studies`, () => {
     for (const page of data.locales[locale].pages.filter(page => page.path.startsWith('/oss/'))) {
-      const projects = page.sections[0]?.links
+      const sections: Section[] = page.sections
+      const projects = sections[0]?.links
       assert.ok(projects?.length)
       for (const link of projects) {
-        assert.ok('summary' in link && link.summary.trim())
+        assert.ok(link.summary?.trim())
         assert.ok(link.href.startsWith('https://github.com/'))
       }
-      assert.ok(page.sections[1]?.links?.some(link => link.href.startsWith('/work/')))
+      assert.ok(sections[1]?.links?.some(link => link.href.startsWith('/work/')))
     }
   })
 }

@@ -9,6 +9,7 @@ import PageNextSteps from './components/PageNextSteps.vue'
 import type { SiteContent, Locale } from './types'
 import SiteHeader from './components/SiteHeader.vue'
 import PageSections from './components/PageSections.vue'
+import EngineeringGuidance from './components/EngineeringGuidance.vue'
 import WorkGallery from './components/WorkGallery.vue'
 import CaseStudy from './components/CaseStudy.vue'
 import CaseActions from './components/CaseActions.vue'
@@ -54,6 +55,7 @@ useHead(() => ({ htmlAttrs: { lang: locale.value }, link: [
         <WorkChooser v-if="path === '/work'" :locale="locale" :local="local" />
         <WorkGallery v-if="page.kind === 'home' || path === '/work'" :locale="locale" :local="local" />
         <CaseStudy :path="path" :locale="locale" />
+        <EngineeringGuidance v-if="path === '/about/principles'" :locale="locale" />
         <PageSections :sections="page.sections" :local="local" />
         <CaseActions v-if="caseStory" :story="caseStory" :locale="locale" :local="local" />
         <section v-if="page.kind === 'journal'" class="site-journal">

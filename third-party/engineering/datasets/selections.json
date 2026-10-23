@@ -1,0 +1,30 @@
+[
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "engineering-principles-en",
+    "contentSha256": "152199edd03f171ec85011c4ec22376b88dec762cf8b3c2db175718670531e43"
+  },
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "engineering-principles-ja",
+    "contentSha256": "13bd69a229106ea3e040c445aae03b2aded3649a04703bda16ae555594110f48"
+  },
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "rust-resource-safety-en",
+    "contentSha256": "e5180f7e6d86b1a341c9f6ba186cf6e8f83766f489e2d3cb963273c0835dceb2"
+  },
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "rust-resource-safety-ja",
+    "contentSha256": "c5a88271b3ec53dbc0b8e3d90e156fe9643e3999083257b2b6b3e76eef111b46"
+  }
+]

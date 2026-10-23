@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/coela-oss/engineering",
+  "source": "9e896321167a814f86b93a21a54c379fc0277a9e",
+  "files": {
+    "src/content.mts": "d4dc4cdb2cef86eeed7f81e22ce7b3835f4a8cfadd7a792823e2af82af05bccb",
+    "src/projections.mts": "83678d516a88839a52ed5d00b54d6d76ac6e9e4770016da048bd993db416eaf0",
+    "datasets/catalog.json": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "datasets/selections.json": "7d9a54e9ad12033a031a654120ed9fd06ff0065e8f67e24bb0bf70d65416516f",
+    "content/en/principles.md": "152199edd03f171ec85011c4ec22376b88dec762cf8b3c2db175718670531e43",
+    "content/ja/principles.md": "13bd69a229106ea3e040c445aae03b2aded3649a04703bda16ae555594110f48",
+    "content/en/rust-resource-safety.md": "e5180f7e6d86b1a341c9f6ba186cf6e8f83766f489e2d3cb963273c0835dceb2",
+    "content/ja/rust-resource-safety.md": "c5a88271b3ec53dbc0b8e3d90e156fe9643e3999083257b2b6b3e76eef111b46",
+    "LICENSE": "ef07a14612d007767a5b4a195122674d92cc46e6a7e4357f3a42ea9234323f64",
+    "LICENSES/MIT.txt": "c0c73f264ab325510bd6cf2ef271774334e3ed4ecac8697770a4092fa7644113",
+    "LICENSES/CC-BY-4.0.txt": "d557539df68e771cc1eedcc91d13f70fca930e508d11eedcafa4b15db49e3744"
+  }
+}

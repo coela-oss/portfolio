@@ -5,10 +5,12 @@ import type { NuxtModule } from 'nuxt/schema'
 import data from './content.json'
 import redirects from './redirects.json'
 import { validateContent } from './check.mjs'
+import { verifyEngineering } from './guidance.mts'
 
 // A site-owned scaffold: no checkout, manager service, or unreleased package required.
 const sitePages: NuxtModule = (_options, nuxt) => {
   if (process.env.SITE_ID && process.env.SITE_ID !== data.siteId) return
+  verifyEngineering()
   validateContent(data)
   const publicPages = data.locales.en.pages.filter(page => page.status !== 'draft')
   const paths = (['ja', 'en'] as const).flatMap(locale => publicPages.map(page => ({

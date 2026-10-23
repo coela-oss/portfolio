@@ -387,26 +387,7 @@
           "summary": "責務と検証可能性を、実装の出発点にします。",
           "kind": "page",
           "status": "published",
-          "sections": [
-            {
-              "title": "境界を明示する",
-              "text": "表示、保存、通信、実行を分け、権限や認証を暗黙に引き継がない構成にします。"
-            },
-            {
-              "title": "使えることを確かめる",
-              "text": "テスト、配布物、公開画面を別々に検証し、未取得や未実施を成功に置き換えません。"
-            },
-            {
-              "title": "指針の正本",
-              "text": "指針や連携用データの正本は独立したengineeringリポジトリで管理しています。",
-              "links": [
-                {
-                  "title": "Engineering",
-                  "href": "https://github.com/coela-oss/engineering"
-                }
-              ]
-            }
-          ]
+          "sections": []
         },
         {
           "path": "/journal",
@@ -918,26 +899,7 @@
           "summary": "Start with responsibility and verifiable behavior.",
           "kind": "page",
           "status": "published",
-          "sections": [
-            {
-              "title": "Make boundaries explicit",
-              "text": "Separate presentation, storage, communication and execution. Authority and authentication must not be inherited implicitly."
-            },
-            {
-              "title": "Verify the actual experience",
-              "text": "Verify tests, release artifacts and the public interface separately. Missing observations are not successful results."
-            },
-            {
-              "title": "The source of these principles",
-              "text": "Engineering principles and integration datasets are maintained in an independent repository.",
-              "links": [
-                {
-                  "title": "Engineering",
-                  "href": "https://github.com/coela-oss/engineering"
-                }
-              ]
-            }
-          ]
+          "sections": []
         },
         {
           "path": "/journal",

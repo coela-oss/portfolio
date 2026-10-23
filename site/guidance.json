@@ -1,0 +1,50 @@
+[
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "engineering-principles-en",
+    "contentSha256": "152199edd03f171ec85011c4ec22376b88dec762cf8b3c2db175718670531e43",
+    "locale": "en",
+    "license": "CC-BY-4.0",
+    "attribution": "Coela",
+    "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/en/principles.md",
+    "excerpt": "I use these principles to explain and review engineering choices."
+  },
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "engineering-principles-ja",
+    "contentSha256": "13bd69a229106ea3e040c445aae03b2aded3649a04703bda16ae555594110f48",
+    "locale": "ja",
+    "license": "CC-BY-4.0",
+    "attribution": "Coela",
+    "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/ja/principles.md",
+    "excerpt": "設計の選択を説明し、見直すためのCoelaの指針です。"
+  },
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "rust-resource-safety-en",
+    "contentSha256": "e5180f7e6d86b1a341c9f6ba186cf6e8f83766f489e2d3cb963273c0835dceb2",
+    "locale": "en",
+    "license": "CC-BY-4.0",
+    "attribution": "Coela",
+    "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/en/rust-resource-safety.md",
+    "excerpt": "Validate sizes before allocation, then enforce per-item and aggregate byte, entry and nesting budgets while reading."
+  },
+  {
+    "catalogId": "coela-engineering-content",
+    "version": "0.2.4",
+    "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+    "contentId": "rust-resource-safety-ja",
+    "contentSha256": "c5a88271b3ec53dbc0b8e3d90e156fe9643e3999083257b2b6b3e76eef111b46",
+    "locale": "ja",
+    "license": "CC-BY-4.0",
+    "attribution": "Coela",
+    "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/ja/rust-resource-safety.md",
+    "excerpt": "確保前のサイズ検証に加え、読取り中にも単体・合計のバイト数、件数、深さを制限する。"
+  }
+]
