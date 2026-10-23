@@ -119,6 +119,7 @@ jobs:
           name: site-receipt-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/site-release/rollback.json
+            ${{ runner.temp }}/site-release/before.json
             ${{ runner.temp }}/site-release/acceptance.json
             ${{ runner.temp }}/site-release/operation.json
           retention-days: 90
