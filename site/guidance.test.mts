@@ -14,6 +14,7 @@ test('portfolio consumes the exact admitted upstream source, excerpt and attribu
       assert.equal(entry.license, 'CC-BY-4.0')
       assert.equal(entry.attribution, 'Coela')
       assert.ok(entry.excerpt.length > 20)
+      assert.ok(entry.title.length > 0)
       assert.match(entry.source, new RegExp(`/blob/[a-f0-9]{40}/content/${locale}/`))
     }
   }

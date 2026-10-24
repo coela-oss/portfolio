@@ -12,6 +12,10 @@ const root = fileURLToPath(new URL('../third-party/engineering/', import.meta.ur
 export function verifyEngineering() {
   assert.equal(provenance.repository, 'https://github.com/coela-oss/engineering')
   assert.match(provenance.source, /^[a-f0-9]{40}$/)
+  assert.equal(provenance.webRelease.version, '0.1.0')
+  assert.equal(provenance.webRelease.url, 'https://github.com/coela-oss/engineering/releases/tag/web/v0.1.0')
+  assert.match(provenance.webRelease.archiveSha256, /^[a-f0-9]{64}$/)
+  assert.match(provenance.webRelease.receiptSha256, /^[a-f0-9]{64}$/)
   const files = Object.entries(provenance.files)
   assert.equal(files.length, 11)
   for (const [path, digest] of files) {

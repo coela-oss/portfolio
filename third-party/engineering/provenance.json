@@ -1,9 +1,9 @@
 {
   "repository": "https://github.com/coela-oss/engineering",
-  "source": "9e896321167a814f86b93a21a54c379fc0277a9e",
+  "source": "79e3ee0caab4c0e4d688becccc1759ba697d65c4",
   "files": {
-    "src/content.mts": "d4dc4cdb2cef86eeed7f81e22ce7b3835f4a8cfadd7a792823e2af82af05bccb",
-    "src/projections.mts": "83678d516a88839a52ed5d00b54d6d76ac6e9e4770016da048bd993db416eaf0",
+    "src/content.mts": "349c15491d1e5722e68b126ccd257ae8ed7d7e96b14902d26c15103e1e020abc",
+    "src/projections.mts": "1ec99543e1fd3845a740f35f26c2635f26461ac906f540b332eee6da13b078d2",
     "datasets/catalog.json": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
     "datasets/selections.json": "7d9a54e9ad12033a031a654120ed9fd06ff0065e8f67e24bb0bf70d65416516f",
     "content/en/principles.md": "152199edd03f171ec85011c4ec22376b88dec762cf8b3c2db175718670531e43",
@@ -13,5 +13,11 @@
     "LICENSE": "ef07a14612d007767a5b4a195122674d92cc46e6a7e4357f3a42ea9234323f64",
     "LICENSES/MIT.txt": "c0c73f264ab325510bd6cf2ef271774334e3ed4ecac8697770a4092fa7644113",
     "LICENSES/CC-BY-4.0.txt": "d557539df68e771cc1eedcc91d13f70fca930e508d11eedcafa4b15db49e3744"
+  },
+  "webRelease": {
+    "version": "0.1.0",
+    "archiveSha256": "5a0893a4f36dfee302663359f7a97f65437d8fdd45d8bf1ee7a18ed5d4a42ce0",
+    "receiptSha256": "9a74449851facb24b52908bc023c6f7637a132ff5cb0a8f458b76fa19fcd4ca2",
+    "url": "https://github.com/coela-oss/engineering/releases/tag/web/v0.1.0"
   }
 }

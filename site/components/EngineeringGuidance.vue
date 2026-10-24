@@ -2,9 +2,6 @@
 import excerpts from '../guidance.json'
 import type { Locale } from '../types'
 const props = defineProps<{ locale: Locale }>()
-const title = (id: string) => id.startsWith('engineering-principles')
-  ? props.locale === 'ja' ? '設計の指針' : 'Engineering principles'
-  : props.locale === 'ja' ? 'Rustの資源と失敗の扱い' : 'Rust resource and failure safety'
 </script>
 <template>
   <section class="engineering-guidance" :aria-label="locale === 'ja' ? '設計指針の原文' : 'Engineering guidance sources'">
@@ -12,7 +9,7 @@ const title = (id: string) => id.startsWith('engineering-principles')
     <div class="guidance-grid">
       <article v-for="entry in excerpts.filter(item => item.locale === locale)" :key="entry.contentId" class="guidance-card" :data-content-id="entry.contentId" :data-content-version="entry.version">
         <p class="guidance-edition">{{ locale === 'ja' ? '原文の版' : 'Source edition' }} {{ entry.version }}</p>
-        <h2>{{ title(entry.contentId) }}</h2>
+        <h2>{{ entry.title }}</h2>
         <blockquote>{{ entry.excerpt }}</blockquote>
         <p class="guidance-credit">{{ entry.attribution }} · <a href="https://creativecommons.org/licenses/by/4.0/">{{ entry.license }}</a></p>
         <a class="guidance-source" :href="entry.source">{{ locale === 'ja' ? 'この版の原文を読む' : 'Read this source edition' }} <span aria-hidden="true">↗</span></a>
