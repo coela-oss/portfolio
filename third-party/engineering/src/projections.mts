@@ -1,4 +1,4 @@
-import { readGuidance, type Guidance, type Selection } from './content.mts'
+import { ContentError, readGuidance, type Guidance, type Selection } from './content.mts'
 
 function excerpt(guidance: Guidance): string {
   const paragraph = guidance.text.split(/\r?\n\s*\r?\n/).find(p => p.trim()
@@ -13,10 +13,19 @@ function excerpt(guidance: Guidance): string {
   return result
 }
 
+// Presentation comes from the admitted document, never an ID-prefix fallback.
+function title(guidance: Guidance): string {
+  const heading = guidance.text.split(/\r?\n/).filter(line => /^# /u.test(line))
+  if (heading.length !== 1) throw new ContentError('ambiguous_document_title')
+  const result = heading[0]!.slice(2).trim()
+  if (!result || Buffer.byteLength(result) > 512) throw new ContentError('invalid_document_title')
+  return result
+}
+
 export function websiteExcerpt(root: string, selection: Selection) {
   const guidance = readGuidance(root, selection)
   return { ...guidance.selection, locale: guidance.entry.locale, license: guidance.entry.license,
-    attribution: 'Coela', source: guidance.entry.source_url, excerpt: excerpt(guidance) }
+    attribution: 'Coela', source: guidance.entry.source_url, title: title(guidance), excerpt: excerpt(guidance) }
 }
 // This is a service-owned content projection, not a second MCP implementation.
 // Zixcel owns TOML validation, RPC, framing, resource reads and transport limits.

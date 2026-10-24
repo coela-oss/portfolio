@@ -9,6 +9,7 @@
     "license": "CC-BY-4.0",
     "attribution": "Coela",
     "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/en/principles.md",
+    "title": "Engineering principles",
     "excerpt": "I use these principles to explain and review engineering choices."
   },
   {
@@ -21,6 +22,7 @@
     "license": "CC-BY-4.0",
     "attribution": "Coela",
     "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/ja/principles.md",
+    "title": "エンジニアリングの指針",
     "excerpt": "設計の選択を説明し、見直すためのCoelaの指針です。"
   },
   {
@@ -33,6 +35,7 @@
     "license": "CC-BY-4.0",
     "attribution": "Coela",
     "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/en/rust-resource-safety.md",
+    "title": "Rust resource and failure safety",
     "excerpt": "Validate sizes before allocation, then enforce per-item and aggregate byte, entry and nesting budgets while reading."
   },
   {
@@ -45,6 +48,7 @@
     "license": "CC-BY-4.0",
     "attribution": "Coela",
     "source": "https://github.com/coela-oss/engineering/blob/2af18b91fa8ba7aa4e0bd8d586daa388946ea26d/content/ja/rust-resource-safety.md",
+    "title": "Rustの資源制御と異常終了の規約",
     "excerpt": "確保前のサイズ検証に加え、読取り中にも単体・合計のバイト数、件数、深さを制限する。"
   }
 ]

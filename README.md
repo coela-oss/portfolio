@@ -80,3 +80,21 @@ source/archive. They do not turn a blocked hosted probe into a successful check.
 
 See [license scope](LICENSES/README.md). Original extensions use MIT; original
 content uses CC BY 4.0. Existing Apache-2.0 and third-party notices are preserved.
+
+## Updating canonical Engineering presentation
+
+The Web 0.1.0 release owns the validated title, excerpt and provenance. Portfolio
+owns navigation and page composition. Do not edit `site/guidance.json` or the
+vendored reader manually, or infer a heading from a content-ID prefix.
+Download the three assets from the reviewed immutable Engineering Web release,
+independently admit both archive and `release.json` SHA256 values, then run:
+
+```sh
+node scripts/update-engineering.mts /path/to/verified-release ARCHIVE_SHA256 RECEIPT_SHA256
+```
+
+The command makes no network requests. It validates the bounded archive, exact
+11-file closure and file hashes, regenerates rows from the complete admitted
+snapshot and compares the release's rows before updating caller files. The site
+verifier repeats file and row checks; hosted browser acceptance compares rendered
+headings as well as excerpts, versions and source links in both locales.

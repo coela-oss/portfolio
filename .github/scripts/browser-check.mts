@@ -57,11 +57,12 @@ try {
         const shown = await browser.evaluate(`([...document.querySelectorAll('.guidance-card')].map(card => ({
           id:card.getAttribute('data-content-id'),version:card.getAttribute('data-content-version'),
           source:card.querySelector('.guidance-source')?.getAttribute('href'),
+          title:card.querySelector('h2')?.textContent?.trim(),
           excerpt:card.querySelector('blockquote')?.textContent?.trim(),
           license:card.querySelector('.guidance-credit a')?.textContent?.trim()
         })))`)
         if (JSON.stringify(shown) !== JSON.stringify(expected.map(entry => ({ id: entry.contentId,
-          version: entry.version, source: entry.source, excerpt: entry.excerpt, license: entry.license })))) {
+          version: entry.version, source: entry.source, title: entry.title, excerpt: entry.excerpt, license: entry.license })))) {
           throw Error(`Engineering source projection changed: ${path}`)
         }
         await browser.evaluate("document.querySelectorAll('.guidance-card details').forEach(detail=>detail.open=true)")

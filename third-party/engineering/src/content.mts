@@ -78,8 +78,15 @@ export function validateSelection(value: unknown): Selection {
   return selection as unknown as Selection
 }
 export function readGuidance(root: string, expected: Selection): Guidance {
+  return readGuidanceFromSource(expected, (segments, limit) => bytes(root, segments, limit))
+}
+// The caller admits an immutable source. Identity and complete-snapshot content
+// validation stay here; alternate consumers must not copy this implementation.
+export function readGuidanceFromSource(expected: Selection,
+  read: (segments: string[], limit: number) => Uint8Array): Guidance {
   validateSelection(expected)
-  const raw = bytes(root, ['datasets', 'catalog.json'], 65536)
+  const raw = read(['datasets', 'catalog.json'], 65536)
+  requireValue(raw.byteLength <= 65536, 'file_limit')
   requireValue(sha256(raw) === expected.catalogSha256, 'stale_catalog')
   const catalog = validateCatalog(JSON.parse(text(raw)))
   requireValue(catalog.id === expected.catalogId && catalog.version === expected.version, 'stale_version')
@@ -89,7 +96,8 @@ export function readGuidance(root: string, expected: Selection): Guidance {
   // Validate the complete bounded snapshot, including entries not selected by this reader.
   let total = 0, selected = ''
   for (const item of catalog.entries) {
-    const raw = bytes(root, item.path.split('/'), 65536)
+    const raw = read(item.path.split('/'), 65536)
+    requireValue(raw.byteLength <= 65536, 'file_limit')
     total += raw.length
     requireValue(total <= 1048576, 'snapshot_limit')
     requireValue(sha256(raw) === item.sha256, 'altered_content')
