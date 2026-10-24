@@ -303,22 +303,24 @@ def deploy(root, contract, site, output, expected):
         subprocess.run([str(wrangler), 'deploy', '--config', str(output / 'wrangler.json')], cwd=root, check=True)
     def readback_phase(phase):
         (output / 'operation.json').write_text(json.dumps({'state':'readback-pending; do not replay','phase':phase,'site':site['id'],'source':receipt['source'],'deployment_acknowledged':not already,'verify_only':already}) + '\n')
-    readback_phase('bindings-and-dns')
-    if before != domains():
-        raise ValueError('Custom domain binding changed; do not replay deployment')
-    if dns_digest() != original_dns:
-        raise ValueError('DNS changed; do not replay deployment')
-    exposure = request(prefix + '/scripts/' + site['worker'] + '/subdomain', token)
-    if exposure.get('success') is not True or exposure['result'].get('enabled') is not False or exposure['result'].get('previews_enabled') is not False:
-        raise ValueError('Unexpected workers.dev or preview exposure')
-    # Provider preservation and public content are independent observations.
-    # Keep the authenticated provider receipt even when edge challenges block CI.
-    (output / 'provider-acceptance.json').write_text(json.dumps({
-        'site':site['id'],'source':receipt['source'],'version':site['version'],
-        'archive_sha256':expected,'dns_sha256':original_dns,'custom_domains':before,
-        'dns_unchanged':True,'custom_domains_unchanged':True,
-        'workers_dev_enabled':False,'preview_urls_enabled':False,
-        'public_content_verified':False,'verify_only':already}) + '\n')
+    def verify_provider_state(stage):
+        readback_phase('bindings-and-dns')
+        if before != domains():
+            raise ValueError('Custom domain binding changed; do not replay deployment')
+        if dns_digest() != original_dns:
+            raise ValueError('DNS changed; do not replay deployment')
+        exposure = request(prefix + '/scripts/' + site['worker'] + '/subdomain', token)
+        if exposure.get('success') is not True or exposure['result'].get('enabled') is not False or exposure['result'].get('previews_enabled') is not False:
+            raise ValueError('Unexpected workers.dev or preview exposure')
+        # Provider preservation and public content are independent observations.
+        # Keep the authenticated provider receipt even when edge challenges block CI.
+        (output / 'provider-acceptance.json').write_text(json.dumps({
+            'site':site['id'],'source':receipt['source'],'version':site['version'],
+            'archive_sha256':expected,'dns_sha256':original_dns,'custom_domains':before,
+            'dns_unchanged':True,'custom_domains_unchanged':True,
+            'workers_dev_enabled':False,'preview_urls_enabled':False,
+            'public_content_verified':False,'observation_stage':stage,'verify_only':already}) + '\n')
+    verify_provider_state('before-public-readback')
     readback_phase('assets')
     public_files = {name: digest for name, digest in receipt['files'].items() if name != '_redirects'}
     verify_assets(site['origin'], public_files, site.get('edgeScriptHashes', {}))
@@ -326,6 +328,7 @@ def deploy(root, contract, site, output, expected):
     readback_phase('redirects')
     if '_redirects' in receipt['files']:
         redirect_count = verify_redirects(site['origin'], (output / 'verified/assets/_redirects').read_text())
+    verify_provider_state('after-public-readback')
     (output / 'acceptance.json').write_text(json.dumps({'site':site['id'],'source':receipt['source'],'version':site['version'],
         'origin':site['origin'],'matched_assets':len(public_files),'matched_redirects':redirect_count,'archive_sha256':expected,'custom_domains_unchanged':True,
         'dns_unchanged':True,'workers_dev_enabled':False,'preview_urls_enabled':False,'verify_only':already,

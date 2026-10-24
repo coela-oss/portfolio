@@ -153,6 +153,7 @@ class SiteReleaseTests(unittest.TestCase):
         self.assertFalse(provider['workers_dev_enabled'])
         self.assertFalse(provider['preview_urls_enabled'])
         self.assertFalse(provider['public_content_verified'])
+        self.assertEqual(provider['observation_stage'],'before-public-readback')
         self.assertEqual(provider['dns_sha256'], before['dns_sha256'])
         self.assertEqual(provider['custom_domains'], before['custom_domains'])
         self.assertFalse((self.root/'archive/acceptance.json').exists())
@@ -185,6 +186,26 @@ class SiteReleaseTests(unittest.TestCase):
                     assets.assert_not_called();run.assert_not_called()
                 self.assertFalse((output/'provider-acceptance.json').exists())
                 self.assertFalse((output/'acceptance.json').exists())
+
+    def test_drift_during_public_readback_prevents_final_acceptance(self):
+        _,digest=self.prepare()
+        env={**self.env,'GH_TOKEN':'synthetic-test-token','CLOUDFLARE_API_TOKEN':'synthetic-fixture-token',
+             'GITHUB_EVENT_NAME':'workflow_dispatch','GITHUB_RUN_ATTEMPT':'2'}
+        base=self.provider(True)
+        state={'public_read_complete':False}
+        def response(url,token=None):
+            value=base(url,token)
+            if state['public_read_complete'] and '/dns_records?' in url:
+                value['result']=[{'id':'changed-during-public-read'}]
+            return value
+        def public_read(*args):state['public_read_complete']=True
+        with patch.dict('os.environ',env),patch('site_release.request',side_effect=response),patch('site_release.verify_assets',side_effect=public_read),patch('site_release.subprocess.run') as run:
+            with self.assertRaises(ValueError):deploy(self.root,self.contract,self.site,self.root/'archive',digest)
+            run.assert_not_called()
+        self.assertFalse((self.root/'archive/acceptance.json').exists())
+        provider=json.loads((self.root/'archive/provider-acceptance.json').read_text())
+        self.assertEqual(provider['observation_stage'],'before-public-readback')
+        self.assertFalse(provider['public_content_verified'])
 
     def test_redirect_control_file_is_artifact_bound_and_verified_as_behavior(self):
         (self.root/'public').mkdir()
