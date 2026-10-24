@@ -10,13 +10,29 @@ export function object(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>
 }
 const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms))
+export function browserStartupDiagnostic(stderr: string, exitCode: number | null, signal: NodeJS.Signals | null) {
+  // Report fixed signals only; never expose profile paths or DevTools endpoints.
+  return JSON.stringify({ exitCode, signal,
+    sandboxMessage: /sandbox|namespace/i.test(stderr),
+    dbusMessage: /D-Bus|dbus|connect to.*bus/i.test(stderr),
+    fatalMessage: /FATAL|crashpad/i.test(stderr),
+    stderrTruncated: Buffer.byteLength(stderr) > 65536 })
+}
 export async function browserSession() {
   if (process.env.GITHUB_ACTIONS !== 'true') throw Error('Browser acceptance runs only on the hosted CI runner')
   const profile = mkdtempSync(join(tmpdir(), 'portfolio-browser-'))
   const browser = spawn('/usr/bin/google-chrome', ['--headless=new', '--disable-gpu', '--disable-background-networking',
     '--disable-extensions', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], {
-      stdio: 'ignore', env: { PATH: process.env.PATH, HOME: profile, LANG: 'C.UTF-8', XDG_CACHE_HOME: profile }
+      stdio: ['ignore', 'ignore', 'pipe'], env: { PATH: process.env.PATH, HOME: profile, LANG: 'C.UTF-8', XDG_CACHE_HOME: profile }
     })
+  let stderr = '', stderrBytes = 0, spawnError = false
+  browser.stderr.on('data', (bytes: Buffer) => {
+    stderrBytes += bytes.length
+    if (Buffer.byteLength(stderr) < 65536) stderr += bytes.subarray(0, 65536 - Buffer.byteLength(stderr)).toString('utf8')
+  })
+  browser.on('error', () => { spawnError = true })
+  const startupFailure = (reason: string) => Error(`${reason}: ${browserStartupDiagnostic(
+    stderr + (stderrBytes > 65536 ? ' ' : ''), browser.exitCode, browser.signalCode)}`)
   const pending = new Map<number, { resolve: (value: Record<string, unknown>) => void; reject: (error: Error) => void; timer: NodeJS.Timeout }>()
   let socket: WebSocket | undefined, next = 0
   const errors: string[] = []
@@ -33,10 +49,12 @@ export async function browserSession() {
   }
   try {
     const active = join(profile, 'DevToolsActivePort')
-    for (let n = 0; !existsSync(active) && n < 100; n++) {
-      if (browser.exitCode !== null) throw Error('Browser exited before startup')
+    const startupDeadline = performance.now() + 30000
+    while (!existsSync(active) && performance.now() < startupDeadline) {
+      if (spawnError || browser.exitCode !== null) throw startupFailure('Browser exited before startup')
       await sleep(100)
     }
+    if (!existsSync(active)) throw startupFailure('Browser startup deadline exceeded (30 seconds)')
     const port = readFileSync(active, 'utf8').split('\n')[0]!
     if (!/^\d+$/.test(port)) throw Error('Invalid browser port')
     const response: unknown = await (await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(5000) })).json()
