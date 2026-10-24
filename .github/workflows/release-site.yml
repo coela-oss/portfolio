@@ -121,6 +121,7 @@ jobs:
             ${{ runner.temp }}/site-release/rollback.json
             ${{ runner.temp }}/site-release/before.json
             ${{ runner.temp }}/site-release/acceptance.json
+            ${{ runner.temp }}/site-release/provider-acceptance.json
             ${{ runner.temp }}/site-release/operation.json
           retention-days: 90
           if-no-files-found: ignore

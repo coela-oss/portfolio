@@ -147,6 +147,44 @@ class SiteReleaseTests(unittest.TestCase):
         self.assertEqual(operation['phase'],'assets')
         self.assertTrue(operation['verify_only'])
         self.assertFalse(operation['deployment_acknowledged'])
+        provider=json.loads((self.root/'archive/provider-acceptance.json').read_text())
+        self.assertTrue(provider['dns_unchanged'])
+        self.assertTrue(provider['custom_domains_unchanged'])
+        self.assertFalse(provider['workers_dev_enabled'])
+        self.assertFalse(provider['preview_urls_enabled'])
+        self.assertFalse(provider['public_content_verified'])
+        self.assertEqual(provider['dns_sha256'], before['dns_sha256'])
+        self.assertEqual(provider['custom_domains'], before['custom_domains'])
+        self.assertFalse((self.root/'archive/acceptance.json').exists())
+
+
+    def test_provider_drift_or_unobserved_exposure_cannot_create_success_evidence(self):
+        for failure in ['dns', 'binding', 'exposure', 'exposure-unobserved']:
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as temporary:
+                output=Path(temporary)/'output'
+                (self.root/'public').mkdir(exist_ok=True)
+                (self.root/'public/index.html').write_text('<h1>Approved</h1>')
+                digest=pack(self.root,self.site,'b'*40,output)
+                counts={'dns':0,'binding':0}
+                base=self.provider(True)
+                def response(url,token=None):
+                    result=base(url,token)
+                    kind='dns' if '/dns_records?' in url else 'binding' if url.endswith('/domains') else None
+                    if kind:
+                        counts[kind]+=1
+                        if failure==kind and counts[kind]==2:
+                            result['result']=[{'id':'changed'}]
+                    if url.endswith('/subdomain'):
+                        if failure=='exposure':result['result']['enabled']=True
+                        if failure=='exposure-unobserved':raise ValueError('fixture unobserved')
+                    return result
+                env={**self.env,'GH_TOKEN':'synthetic-test-token','CLOUDFLARE_API_TOKEN':'synthetic-fixture-token',
+                     'GITHUB_EVENT_NAME':'workflow_dispatch','GITHUB_RUN_ATTEMPT':'2'}
+                with patch.dict('os.environ',env),patch('site_release.request',side_effect=response),patch('site_release.verify_assets') as assets,patch('site_release.subprocess.run') as run:
+                    with self.assertRaises(ValueError):deploy(self.root,self.contract,self.site,output,digest)
+                    assets.assert_not_called();run.assert_not_called()
+                self.assertFalse((output/'provider-acceptance.json').exists())
+                self.assertFalse((output/'acceptance.json').exists())
 
     def test_redirect_control_file_is_artifact_bound_and_verified_as_behavior(self):
         (self.root/'public').mkdir()

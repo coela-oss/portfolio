@@ -98,3 +98,13 @@ The command makes no network requests. It validates the bounded archive, exact
 snapshot and compares the release's rows before updating caller files. The site
 verifier repeats file and row checks; hosted browser acceptance compares rendered
 headings as well as excerpts, versions and source links in both locales.
+
+Provider-state readback runs before public asset checks and retains a separate
+`provider-acceptance.json`. This proves only authenticated DNS/custom-domain
+preservation and disabled development URLs; `public_content_verified` stays
+false in that receipt. Edge challenge failures still fail the hosted job and
+never create final `acceptance.json`. Independent local public-byte and redirect
+checks may supplement that provider receipt only when exact source, version and
+archive hashes agree. Original pre-deployment receipts remain the comparison
+baseline across any recovery; a later matching snapshot does not erase an older
+unverified change. No Cloudflare defense is disabled to obtain a green job.
