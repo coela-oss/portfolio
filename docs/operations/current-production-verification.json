@@ -1,11 +1,11 @@
 {
   "site": "coela",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "origin": "https://coela.org",
-  "source": "75025a7a269573af240a77744e1002dc6e54caf1",
-  "archiveSha256": "a5553a758077098c5e12619aa8f8cbdd842d262c0bf3001bb31a79dab7f1d049",
+  "source": "89b77cc34c1c0c3210f0f25153b1962541e1cc93",
+  "archiveSha256": "72ef0171e50c7b8033c3bdea3eaf3b1659e15ecc3f10f9b226069447a176593c",
   "verificationContext": "local-public-read-only",
-  "verifiedAt": "2026-10-25T13:34:13.549504+09:00",
+  "verifiedAt": "2026-10-25T16:22:34.893112+09:00",
   "publicAssetsVerified": 104,
   "redirectsVerified": 44,
   "sitemapPages": 40,
@@ -18,21 +18,21 @@
     "@nuxtjp/dependency-security": "0.2.0"
   },
   "localVerifierScriptSha256": "0ea903f8055a3f91d75421f7b1d9de60c384f480cbccf45b6f0d80d15cdacb1e",
-  "localObservationSha256": "3e95af35280efa03aa5f0981e524ed4cc004b9ab3f6b8fd265357f7e0b4bba91",
-  "redirectObservationSha256": "ebd0ef5f7ac9a2d7fe523ae47dfca5a7e7059a0effbe6a3a29e4a3914f558a81",
-  "deploymentRun": "https://github.com/coela-oss/portfolio/actions/runs/40161696145",
+  "localObservationSha256": "d46cea8cc7f1c64b80ee2dadd701f225a849f77b3bb52ff37efb254ebeb1e338",
+  "redirectObservationSha256": "28ce5feb29401f734c7e30ffe2643ff3a4f6cf8454643f0fdc776ed88cf18828",
+  "deploymentRun": "https://github.com/coela-oss/portfolio/actions/runs/40171908614",
   "deploymentJobConclusion": "failure during public readback after deployment; provider acceptance retained",
-  "hostedObservationRun": "https://github.com/coela-oss/portfolio/actions/runs/40162260466",
+  "hostedObservationRun": "https://github.com/coela-oss/portfolio/actions/runs/40172429440",
   "hostedObservation": {
     "state": "public_observation_blocked",
     "matched": 18,
     "observed": 104,
     "http403": 86,
     "claimedAsPassed": false,
-    "reportSha256": "96c06707e6b324265826b4b0c5233e76c6a3d5ab8702ba0a565a50cd9f92763c"
+    "reportSha256": "cbc514bec29128ed9660643fa8804fd4869a4d4d1caefff9ab76fa3669f01921"
   },
   "controlPlaneEvidence": {
-    "providerReceiptSha256": "50b9ff9a4f6647e033b9a64c12a1d719fea4a867fa53eb0d97d6a2924085c8d0",
+    "providerReceiptSha256": "7f948fb94d2e190e66c1e67fb31cb10fcf8ccbdccf1857c606e80c4b8a9c45e6",
     "providerObservationStage": "before-public-readback",
     "providerReceiptDoesNotAssertPublicContent": true,
     "dnsAndBindingsIdenticalAcrossThisDeploymentSnapshots": true,
