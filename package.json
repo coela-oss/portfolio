@@ -1,6 +1,6 @@
 {
   "name": "@coela/portfolio",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -21,7 +21,7 @@
     "test:site-structure": "node site/check.mjs"
   },
   "dependencies": {
-    "@nuxtjp/localized-site": "0.2.7",
+    "@nuxtjp/localized-site": "0.2.8",
     "nuxt": "4.6.2",
     "vue": "3.5.44"
   },
