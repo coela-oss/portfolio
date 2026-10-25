@@ -46,16 +46,18 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Require owned tag on main and successful owner CI
-        id: plan
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 .github/scripts/site_release.py plan
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: '24.22.1'
           package-manager-cache: false
       - run: npm install --global --ignore-scripts --no-audit --no-fund pnpm@10.29.3
+      - name: Resolve the locked public admission verifier before reading the tag target
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Require owned tag on main and successful owner CI
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/site_release.py plan
       - name: Build selected site without deployment credentials
         env:
           SITE_RELEASE_ID: ${{ steps.plan.outputs.site }}
