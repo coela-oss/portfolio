@@ -3,7 +3,6 @@
 No central repository, preview Worker, DNS mutation or secret persistence.
 """
 import concurrent.futures
-import base64
 import hashlib
 import json
 import os
@@ -18,6 +17,7 @@ import urllib.request
 import urllib.error
 import urllib.parse
 from site_redirects import verify_redirects, parse_rules
+from site_edge import edge_hashes, edge_script_digest, origin_html
 
 
 def read(path):
@@ -153,57 +153,6 @@ def unpack(archive, expected, destination):
     if files(destination / 'assets') != receipt['files']:
         raise ValueError('Extracted public assets differ')
     return receipt
-
-
-def edge_hashes(value):
-    if not isinstance(value, dict) or set(value) - {'analytics', 'jsd'} or any(not isinstance(v, str) or not re.fullmatch('[a-f0-9]{64}', v) for v in value.values()) or len(set(value.values())) != len(value):
-        raise ValueError('Invalid pinned edge script hashes')
-    return value
-
-
-def edge_script_digest(tag):
-    # Only the two non-executable, request-specific JSD values may vary.
-    pattern = rb"window\.__CF\$cv\$params=\{r:'([a-f0-9]{16})',t:'([A-Za-z0-9+/]{8,32}={0,2})'\};"
-    matches = list(re.finditer(pattern, tag))
-    if matches:
-        if len(matches) != 1:
-            return None
-        try:
-            stamp = base64.b64decode(matches[0][2], validate=True)
-        except ValueError:
-            return None
-        if not re.fullmatch(rb'[0-9]{10,12}', stamp):
-            return None
-        tag = re.sub(pattern, b"window.__CF$cv$params={r:'RAY_ID',t:'TIMESTAMP'};", tag)
-    return hashlib.sha256(tag).hexdigest()
-
-
-def origin_html(data, approved):
-    """Remove at most one of each exact pinned tag, only at the body end.
-
-    This does not execute scripts or remove arbitrary provider-looking markup.
-    All remaining bytes must still match the prepared artifact's digest.
-    """
-    approved = edge_hashes(approved)
-    if not approved or len(data) > 8 * 1024 * 1024 or b'</body>' not in data:
-        return data
-    head, tail = data.rsplit(b'</body>', 1)
-    seen = set()
-    for _ in range(2):
-        probe = head[:-1] if head.endswith(b'\n') else head
-        start = probe.rfind(b'<script')
-        if start < 0:
-            break
-        tag = probe[start:]
-        if len(tag) > 8192 or not re.fullmatch(rb'<script\b[^>]*>.*?</script>', tag, re.S):
-            break
-        digest = edge_script_digest(tag)
-        kinds = [key for key, value in approved.items() if value == digest]
-        if len(kinds) != 1 or kinds[0] in seen:
-            break
-        seen.add(kinds[0])
-        head = probe[:start]
-    return head + b'</body>' + tail
 
 
 def verify_assets(origin, expected, approved=None):
