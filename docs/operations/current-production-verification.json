@@ -1,39 +1,42 @@
 {
   "site": "coela",
-  "version": "0.1.12",
+  "version": "0.1.14",
   "origin": "https://coela.org",
-  "source": "f50a679eb134868f8378ec9b91752cba3ef73d46",
-  "archiveSha256": "120f670b9f2a64011c33d8e33275b1e7871e33f6775c9be185dbb7f6d7bdb0ac",
+  "source": "75025a7a269573af240a77744e1002dc6e54caf1",
+  "archiveSha256": "a5553a758077098c5e12619aa8f8cbdd842d262c0bf3001bb31a79dab7f1d049",
   "verificationContext": "local-public-read-only",
-  "verifiedAt": "2026-10-24T19:43:15.082450+09:00",
+  "verifiedAt": "2026-10-25T13:34:13.549504+09:00",
   "publicAssetsVerified": 104,
   "redirectsVerified": 44,
   "sitemapPages": 40,
-  "canonicalTitlesVerified": 4,
   "edgeScriptHashes": {
     "analytics": "f542853e69366d59366d2c2abdcec79375a7252e3250902407ea07d2a2cfeee8",
     "jsd": "6a75d68b52efbad75a56e87a7ed4a35db2a3a1eb32339a68733bba7110a10715"
   },
+  "verifierDependencies": {
+    "@zixcel/provider-cloudflare": "0.2.0",
+    "@nuxtjp/dependency-security": "0.2.0"
+  },
   "localVerifierScriptSha256": "0ea903f8055a3f91d75421f7b1d9de60c384f480cbccf45b6f0d80d15cdacb1e",
-  "localObservationSha256": "d38c321f746de33bb8e266d834b95eadd171c536598ae510c2ce2c8bf7cfa3e1",
-  "redirectObservationSha256": "3e026aa30d36ea3f13f21ac7ea4b9526fdae715500dc48a1e9d8208d918f1164",
-  "deploymentRun": "https://github.com/coela-oss/portfolio/actions/runs/40084225016",
-  "hostedObservationRun": "https://github.com/coela-oss/portfolio/actions/runs/40086975185",
+  "localObservationSha256": "3e95af35280efa03aa5f0981e524ed4cc004b9ab3f6b8fd265357f7e0b4bba91",
+  "redirectObservationSha256": "ebd0ef5f7ac9a2d7fe523ae47dfca5a7e7059a0effbe6a3a29e4a3914f558a81",
+  "deploymentRun": "https://github.com/coela-oss/portfolio/actions/runs/40161696145",
+  "deploymentJobConclusion": "failure during public readback after deployment; provider acceptance retained",
+  "hostedObservationRun": "https://github.com/coela-oss/portfolio/actions/runs/40162260466",
   "hostedObservation": {
     "state": "public_observation_blocked",
     "matched": 18,
+    "observed": 104,
     "http403": 86,
-    "claimedAsPassed": false
+    "claimedAsPassed": false,
+    "reportSha256": "96c06707e6b324265826b4b0c5233e76c6a3d5ab8702ba0a565a50cd9f92763c"
   },
   "controlPlaneEvidence": {
-    "providerReceiptSha256": "f701bee18f3e0e39121b2161cd7f2e1ede13b277633a8479b6728b5b9ab7d235",
+    "providerReceiptSha256": "50b9ff9a4f6647e033b9a64c12a1d719fea4a867fa53eb0d97d6a2924085c8d0",
     "providerObservationStage": "before-public-readback",
     "providerReceiptDoesNotAssertPublicContent": true,
-    "dnsAndBindingsIdenticalAcrossOriginal0111AndNewReleaseSnapshots": true,
-    "originalBaselineRun": "https://github.com/coela-oss/portfolio/actions/runs/40082879548",
-    "originalBaselineSha256": "40c50be291f42e695b04330242ab5df838a55f32f74a01218bd1892719676905",
+    "dnsAndBindingsIdenticalAcrossThisDeploymentSnapshots": true,
     "dnsSnapshotSha256": "4d0a90f35c626f8617e42a10fa83bbfc59058b2075399aef8146c9e27dc087db",
-    "bindingsSnapshotSha256": "fe01b0c556c837b8e92eba5bbd307b662b79f5138d4ad4e08468ad4058ff7b82",
     "domainBindingsVerified": 13,
     "workersDevEnabled": false,
     "previewUrlsEnabled": false

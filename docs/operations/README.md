@@ -1,20 +1,18 @@
 # Production verification
 
 `current-production-verification.json` records the latest actual operator check,
-including its context and the reviewed source/archive identity. The public
-response report stays local; its SHA256 is recorded for audit. Use the owner
-observation commands in the repository README to reproduce the public check.
+its reviewed source/archive, verifier dependency identities and evidence hashes.
+Use that record for the current version and counts; they are not repeated here.
+Public response details stay local. Reproduce the read-only check using the
+owner observation commands in the repository README.
 
-For 0.1.9, local observation verified all 103 public assets, 44 redirects and
-40 sitemap entries. The authenticated DNS/domain snapshots from immediately
-before the initial deployment and the subsequent verify-only attempt agree.
-The verify-only attempt did not deploy again.
+Operator public-byte/redirect verification, authenticated provider preservation
+and hosted public observation are separate evidence. The hosted observer may
+encounter Cloudflare HTTP 403 challenges even when the operator's exact-byte
+check succeeds. A failed hosted result remains failed and does not establish
+which particular defense rule caused the challenge. Do not weaken defenses or
+resend a deployment in response to an observer failure.
 
-The hosted probe encountered Cloudflare challenge pages with HTTP 403 on 86 of
-103 requests. It remains blocked; this is not a successful hosted verification.
-The observations do not identify which particular Cloudflare rule caused the
-challenge. Cloudflare defense settings and release acceptance were not relaxed.
-
-Investigate observer reports before retrying a production job. A public probe
-failure does not establish that deployment failed and is not a reason to resend
-an unknown write. Deployment and observation evidence retain separate meanings.
+The read-only observation job resolves the committed Node/pnpm dependency tree
+without lifecycle scripts before using the public pure edge verifier. It has no
+Cloudflare credentials and performs no deployment or provider configuration writes.
