@@ -8,4 +8,4 @@ import { organizationSite } from '@nuxtjp/localized-site/organization'
 const requestedSite = process.env.SITE_ID
 if (requestedSite !== content.siteId) throw new Error('This repository builds only the Coela portfolio')
 const shared = organizationSite(import.meta.url, requestedSite, { theme: 'coela', scope: 'portfolio' })
-export default defineNuxtConfig({ ...shared, modules: [...shared.modules, siteBranding, sitePages, ['@nuxtjp/localized-site/consent', consentConfig], '@nuxtjp/contact-form'], contactForm: contactConfig as ContactOptions })
+export default defineNuxtConfig({ ...shared, modules: [...shared.modules, siteBranding, sitePages, ['@nuxtjp/localized-site/consent', { ...consentConfig, defaultLocale: content.defaultLocale }], '@nuxtjp/contact-form'], contactForm: contactConfig as ContactOptions })
