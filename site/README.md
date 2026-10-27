@@ -43,3 +43,13 @@ local execution; no local browser or product runtime is needed for source checks
 its Markdown alternate. Ignore `.generated-documents/`; edit the source MDC,
 never the generated content snapshot. The removed authored `content.json` and
 PageSections renderer have no compatibility fallback.
+
+
+## Declarative presentation
+
+The route adapter composes `NuxtJpServiceSite` with public document data, local
+experience data and named slots. Shared components and CSS belong to localized-site
+0.5.0. The Nuxt adapter validates that pages contain no style blocks, CSS imports
+or inline style bindings. Product-specific components retain their own behavior
+and scoped styles. Formal package adoption and production acceptance remain
+separate from this source migration.

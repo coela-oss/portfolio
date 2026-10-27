@@ -28,3 +28,5 @@ const story = computed(() => work.value ? (stories[props.locale] as Record<strin
     <CaseDecisions v-if="story" :story="story" :locale="locale" />
   </section>
 </template>
+
+<style src="./portfolio/cases.css"></style>
