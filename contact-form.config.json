@@ -1,5 +1,5 @@
 {
-  "mode": "preview",
+  "mode": "live",
   "endpoint": "https://coela.org/v1/submissions",
   "siteKey": "coela",
   "emailMode": "optional",

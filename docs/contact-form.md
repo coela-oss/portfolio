@@ -2,7 +2,7 @@
 
 The site consumes the published `@nuxtjp/contact-form` package. `contact-form.config.json` selects the same-origin API, registered site identity, reply-address mode and immutable policy version. No provider credential belongs in these files.
 
-`mode: preview` does not submit messages. Keep it until the shared Rust receiver, allowed origins, Turnstile widget, mailbox-scoped Microsoft Graph application authorization, fixed recipient configuration and synthetic mailbox delivery have been verified. Use `mode: live` only with the real public widget key and matching receiver policy version. The public site package never contains the Turnstile secret.
+`mode: preview` does not submit messages. This production candidate uses `mode: live` with the verified public Turnstile widget and matching receiver policy version. Publishing the page does not enable server reception: keep the receiver's `CONTACT_ACCEPTING=false` until the adopted policy is publicly available and the deployed source, routes, secret bindings and fixed recipients have been verified. Then enable the two configured sites and perform one clearly marked synthetic submission per recipient through real Turnstile. Record both provider acceptance and actual mailbox receipt separately; if delivery is unverified or fails, disable receiver admission rather than automatically resending. The public site package never contains provider credentials or the Turnstile secret.
 
 The common policy is adopted at `urn:coela:legal:organization:hat-inc:privacy-policy@b282737cf7f67acc7a714f331c99d8b9b88992ce` and published centrally at https://hat-tech.co.jp/privacy. Reply email is optional for both pilots. IP/CIDR admission and site enable/disable controls belong to receiver configuration, not browser code.
 
