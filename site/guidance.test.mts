@@ -2,7 +2,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { verifyEngineering } from './guidance.mts'
-import pages from './content.json' with { type: 'json' }
+import pages from './content.mjs'
 
 test('portfolio consumes the exact admitted upstream source, excerpt and attribution', () => {
   const entries = verifyEngineering()

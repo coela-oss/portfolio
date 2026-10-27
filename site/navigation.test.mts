@@ -2,7 +2,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import stories from './case-stories.json' with { type: 'json' }
-import data from './content.json' with { type: 'json' }
+import data from './content.mjs'
 import works from './work.en.json' with { type: 'json' }
 import { nextSteps } from './navigation.mts'
 import type { Section } from './types.ts'

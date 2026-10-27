@@ -7,7 +7,7 @@ import english from './work.en.json' with { type: 'json' }
 import japanese from './work.ja.json' with { type: 'json' }
 import captures from './captures.json' with { type: 'json' }
 import redirects from './redirects.json' with { type: 'json' }
-import pages from './content.json' with { type: 'json' }
+import pages from './content.mjs'
 test('each case has the same localized identity, actual evidence and distinct exits', () => {
   assert.deepEqual(english.map(w => w.path), japanese.map(w => w.path))
   for (const [locale, works] of [['en', english], ['ja', japanese]] as const) {

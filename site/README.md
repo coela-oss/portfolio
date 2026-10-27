@@ -1,6 +1,7 @@
 # Portfolio presentation
 
-`content.json` owns reviewed bilingual routes. `work.en.json` and `work.ja.json`
+`documents/{ja,en}/**/*.md` owns reviewed bilingual page bodies.
+`site.json` registers their publication order and public site metadata. `work.en.json` and `work.ja.json`
 provide case-study editorial data; `captures.json` records live screenshot evidence.
 `module.ts` generates public routes, the XML sitemap and the public content JSON
 from the same published page manifest. All internal links must resolve.
@@ -34,3 +35,21 @@ The owner CI runs `.github/scripts/browser-check.mts` against the actual generat
 site with hosted Chrome: both languages, three widths, menu state, page overflow,
 images, headings, case diagrams/tables/exits and screenshots. The script refuses
 local execution; no local browser or product runtime is needed for source checks.
+
+## Generated document outputs
+
+`content.mjs` validates the current MDC source and parses the official MDC AST and renders Vue components,
+`/raw/*.md` and `/llms.txt` from the same published selection. HTML links to
+its Markdown alternate. Ignore `.generated-documents/`; edit the source MDC,
+never the generated content snapshot. The removed authored `content.json` and
+PageSections renderer have no compatibility fallback.
+
+
+## Declarative presentation
+
+The route adapter composes `NuxtJpServiceSite` with public document data, local
+experience data and named slots. Shared components and CSS belong to localized-site
+0.5.0. The Nuxt adapter validates that pages contain no style blocks, CSS imports
+or inline style bindings. Product-specific components retain their own behavior
+and scoped styles. Formal package adoption and production acceptance remain
+separate from this source migration.

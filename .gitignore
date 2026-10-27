@@ -88,3 +88,6 @@ __pycache__/
 
 # Hosted browser acceptance output.
 /browser-results/
+
+# Generated from the current Markdown/MDC sources; never a second authoring source.
+**/.generated-documents/

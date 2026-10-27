@@ -1,14 +1,16 @@
+import { validatePageAdapter } from '@nuxtjp/localized-site/declarative'
+import { documentPublicDirectory } from '@nuxtjp/localized-site/documents'
 import { fileURLToPath } from 'node:url'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { NuxtModule } from 'nuxt/schema'
-import data from './content.json'
+import data from './content.mjs'
 import redirects from './redirects.json'
 import { validateContent } from './check.mjs'
 import { verifyEngineering } from './guidance.mts'
 
-// A site-owned scaffold: no checkout, manager service, or unreleased package required.
-const sitePages: NuxtModule = (_options, nuxt) => {
+// Site-owned declarations require the shared presentation API from localized-site 0.5.0.
+const sitePages: NuxtModule = async (_options, nuxt) => {
   if (process.env.SITE_ID && process.env.SITE_ID !== data.siteId) return
   verifyEngineering()
   validateContent(data)
@@ -18,10 +20,7 @@ const sitePages: NuxtModule = (_options, nuxt) => {
     locale, source: page.path
   })))
   const file = fileURLToPath(new URL('./SitePage.vue', import.meta.url))
-  nuxt.options.css.push(fileURLToPath(new URL('./site.css', import.meta.url)))
-  nuxt.options.css.push(fileURLToPath(new URL('./experience.css', import.meta.url)))
-  nuxt.options.css.push(fileURLToPath(new URL('./portfolio.css', import.meta.url)))
-  nuxt.options.css.push(fileURLToPath(new URL('./cases.css', import.meta.url)))
+  validatePageAdapter(file)
   nuxt.hook('pages:extend', pages => {
     pages.splice(0, pages.length, ...paths.map(({ path, locale, source }) => ({ name: `site-${locale}-${source.replace(/\W/g, '-')}`, path, file, meta: { layout: false } })))
   })
@@ -51,6 +50,7 @@ const sitePages: NuxtModule = (_options, nuxt) => {
     writeFileSync(join(directory, '_redirects'), rules.join('\n') + '\n')
   })
   nuxt.options.nitro.publicAssets ??= []
+  nuxt.options.nitro.publicAssets.push({ dir: await documentPublicDirectory(new URL('./', import.meta.url)), maxAge: 0 })
   nuxt.options.nitro.publicAssets.push({ dir: directory, maxAge: 0 })
   nuxt.options.routeRules ??= {}
   for (const locale of ['', `/${data.defaultLocale === 'en' ? 'ja' : 'en'}`]) {
