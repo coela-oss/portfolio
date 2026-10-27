@@ -50,7 +50,7 @@ useHead(() => ({ htmlAttrs: { lang: locale.value }, link: [
         </div>
         <div v-if="page.kind === 'home'" class="portfolio-signature"><img :src="content.icon" width="240" height="240" alt="Coela"><p>Software · Interfaces · Systems</p></div>
       </section>
-      <div class="site-body">
+      <div class="site-body" :class="{ 'site-body-privacy': path === '/privacy' }">
         <VisitorPaths v-if="page.kind === 'home'" :experience="experience" :local="local" />
         <WorkChooser v-if="path === '/work'" :locale="locale" :local="local" />
         <WorkGallery v-if="page.kind === 'home' || path === '/work'" :locale="locale" :local="local" />
@@ -70,3 +70,7 @@ useHead(() => ({ htmlAttrs: { lang: locale.value }, link: [
     <footer class="site-footer"><div><strong>{{ content.brand }}</strong><p>{{ content.caption }}</p></div><nav :aria-label="locale === 'ja' ? 'フッター' : 'Footer'"><NuxtLink v-for="item in content.navigation" :key="item.href" :to="local(item.href)">{{ item.title }}</NuxtLink><NuxtLink v-if="content.pages.some(item => item.path === '/contact')" :to="local('/contact')">{{ locale === 'ja' ? 'お問い合わせ' : 'Contact' }}</NuxtLink><NuxtLink :to="local('/privacy')">{{ locale === 'ja' ? 'プライバシー' : 'Privacy' }}</NuxtLink><NuxtLink :to="local('/security')">{{ locale === 'ja' ? 'セキュリティ' : 'Security' }}</NuxtLink><NuxtLink :to="local('/sitemap')">{{ locale === 'ja' ? 'サイトマップ' : 'Sitemap' }}</NuxtLink></nav></footer>
   </div>
 </template>
+
+<style scoped>
+.site-body-privacy { min-width: 0; overflow-wrap: anywhere; }
+</style>
