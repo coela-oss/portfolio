@@ -315,7 +315,7 @@ def deploy(root, contract, site, output, expected):
             'public_content_verified':False,'observation_stage':stage,'verify_only':already}) + '\n')
     verify_provider_state('before-public-readback')
     readback_phase('assets')
-    public_files = {name: digest for name, digest in receipt['files'].items() if name != '_redirects'}
+    public_files = {name: digest for name, digest in receipt['files'].items() if name not in ['_redirects', '_headers']}
     verify_assets(site['origin'], public_files, site.get('edgeScriptHashes', {}))
     verify_delivery(site['origin'], receipt)
     redirect_count = 0
