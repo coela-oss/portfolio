@@ -57,7 +57,7 @@ def select(root, contract, tag):
     install = owned(root, site.get('installDirectory', site['appDirectory']))
     if not owned(root, site['appDirectory']).resolve().is_relative_to(install.resolve()):
         raise ValueError('Install root must contain the selected application')
-    for key in ['appDirectory', 'assetDirectory', 'siteConfig']:
+    for key in ['appDirectory', 'assetDirectory', 'siteConfig', 'documentDirectory']:
         owned(root, site[key])
     if read(owned(root, site['siteConfig']))['origin'] != site['origin']:
         raise ValueError('Site configuration origin differs from release target')
@@ -112,6 +112,18 @@ def files(directory):
     return result
 
 
+def build_worker(root, site):
+    code = "import {documentWorker} from '@nuxtjp/localized-site/documents'; import {pathToFileURL} from 'node:url'; console.log(JSON.stringify(await documentWorker(pathToFileURL(process.argv[1]+'/'))))"
+    result = subprocess.run(['node', '--input-type=module', '-e', code, str(owned(root, site['documentDirectory']))],
+                            cwd=owned(root, site['appDirectory']), check=True, capture_output=True, text=True, timeout=120)
+    if len(result.stdout.encode()) > 3 * 1024 * 1024:
+        raise ValueError('Delivery entry exceeds byte budget')
+    worker = json.loads(result.stdout)
+    if set(worker) != {'source','origin','routes'} or worker['origin'] != site['origin'] or not isinstance(worker['source'], str) or len(worker['source'].encode()) > 1024 * 1024 or not isinstance(worker['routes'], list) or not 1 <= len(worker['routes']) <= 100 or len(set(worker['routes'])) != len(worker['routes']) or not all(isinstance(path, str) and re.fullmatch(r'/(?:[a-z0-9-]+/?)*', path) for path in worker['routes']):
+        raise ValueError('Delivery entry selection differs from owned site')
+    return worker
+
+
 def pack(root, site, sha, output):
     if output.exists():
         raise ValueError('New artifact directory required')
@@ -125,9 +137,13 @@ def pack(root, site, sha, output):
     (output / 'assets/.well-known').mkdir(exist_ok=True)
     (output / 'assets/.well-known/release.json').write_text(json.dumps(marker) + '\n')
     receipt = {'site': site, 'source': sha, 'files': files(output / 'assets')}
+    worker = build_worker(root, site)
+    (output / 'worker.mjs').write_text(worker['source'])
+    receipt['worker'] = {'sha256': hashlib.sha256((output / 'worker.mjs').read_bytes()).hexdigest(), 'routes': worker['routes']}
     (output / 'candidate.json').write_text(json.dumps(receipt, sort_keys=True) + '\n')
     with tarfile.open(output / 'site.tgz', 'w:gz') as archive:
         archive.add(output / 'candidate.json', arcname='candidate.json')
+        archive.add(output / 'worker.mjs', arcname='worker.mjs')
         archive.add(output / 'assets', arcname='assets')
     digest = hashlib.sha256((output / 'site.tgz').read_bytes()).hexdigest()
     (output / 'SHA256SUMS').write_text(digest + '  site.tgz\n')
@@ -145,13 +161,16 @@ def unpack(archive, expected, destination):
         for item in data:
             path = Path(item.name)
             total += item.size
-            if total > 1024 * 1024 * 1024 or len(names) > 10002 or item.size > 100 * 1024 * 1024 or item.name in names or path.is_absolute() or '..' in path.parts or not (item.isfile() or item.isdir()) or not (item.name == 'candidate.json' or path.parts[0] == 'assets'):
+            if total > 1024 * 1024 * 1024 or len(names) > 10003 or item.size > 100 * 1024 * 1024 or item.name in names or path.is_absolute() or '..' in path.parts or not (item.isfile() or item.isdir()) or not (item.name in ['candidate.json', 'worker.mjs'] or path.parts[0] == 'assets'):
                 raise ValueError('Unsafe or duplicate archive entry')
             names.add(item.name)
         data.extractall(destination, filter='data')
     receipt = read(destination / 'candidate.json')
     if files(destination / 'assets') != receipt['files']:
         raise ValueError('Extracted public assets differ')
+    entry = destination / 'worker.mjs'
+    if not entry.is_file() or entry.is_symlink() or entry.stat().st_size > 1024 * 1024 or hashlib.sha256(entry.read_bytes()).hexdigest() != receipt['worker']['sha256']:
+        raise ValueError('Extracted delivery entry differs')
     return receipt
 
 
@@ -188,6 +207,30 @@ def deployment_tool(root, site):
     if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version) or not (app / 'pnpm-lock.yaml').is_file() or not binary.is_file() or not os.access(binary, os.X_OK):
         raise ValueError('Pinned Wrangler dependency, lockfile and installed executable are required')
     return binary
+
+
+def verify_delivery(origin, receipt):
+    def read(path, headers=None):
+        req = urllib.request.Request(origin + path, headers={'User-Agent':'owner-site-release-readback', **(headers or {})})
+        try:
+            response = urllib.request.urlopen(req, timeout=20)
+        except urllib.error.HTTPError as error:
+            response = error
+        with response:
+            body = response.read(1024 * 1024 + 1)
+            if len(body) > 1024 * 1024 or not response.url.startswith(origin + '/'):
+                raise ValueError('Unexpected public delivery response')
+            return response.status, response.headers, body
+    status, robot_headers, robots = read('/robots.txt')
+    if status != 200 or not robot_headers.get('Content-Type','').startswith('text/plain') or b'ai-train=yes' not in robots or b'Disallow: /' in robots:
+        raise ValueError('Published AI permission policy is missing or overridden at the edge')
+    def one(route):
+        raw = '/raw' + ('/index' if route == '/' else route.rstrip('/')) + '.md'
+        status, headers, body = read(route, {'Accept':'text/markdown'})
+        if status != 200 or hashlib.sha256(body).hexdigest() != receipt['files'][raw.lstrip('/')] or not headers.get('Content-Type','').startswith('text/markdown') or 'accept' not in headers.get('Vary','').lower() or 'ai-train=yes' not in headers.get('Content-Signal',''):
+            raise ValueError('Negotiated Markdown differs from prepared public bytes')
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        list(pool.map(one, receipt['worker']['routes']))
 
 
 def deploy(root, contract, site, output, expected):
@@ -231,7 +274,8 @@ def deploy(root, contract, site, output, expected):
     (output / 'rollback.json').write_text(json.dumps({'worker':site['worker'],'versions':versions}) + '\n')
     (output / 'before.json').write_text(json.dumps({'dns_sha256':original_dns,'custom_domains':before,'source':receipt['source']}) + '\n')
     config = {'name':site['worker'],'account_id':site['account'],'compatibility_date':'2026-10-15',
-              'workers_dev':False,'preview_urls':False,'assets':{'directory':'./verified/assets'},
+              'workers_dev':False,'preview_urls':False,'main':'./verified/worker.mjs',
+              'assets':{'directory':'./verified/assets','binding':'ASSETS','run_worker_first':receipt['worker']['routes']},
               'routes':[{'pattern':d['hostname'],'custom_domain':True} for d in before if d['service']==site['worker']]}
     (output / 'wrangler.json').write_text(json.dumps(config) + '\n')
     # Uses this repo's committed Wrangler dependency. No install/build receives the CF token.
@@ -273,6 +317,7 @@ def deploy(root, contract, site, output, expected):
     readback_phase('assets')
     public_files = {name: digest for name, digest in receipt['files'].items() if name != '_redirects'}
     verify_assets(site['origin'], public_files, site.get('edgeScriptHashes', {}))
+    verify_delivery(site['origin'], receipt)
     redirect_count = 0
     readback_phase('redirects')
     if '_redirects' in receipt['files']:
@@ -280,7 +325,7 @@ def deploy(root, contract, site, output, expected):
     verify_provider_state('after-public-readback')
     (output / 'acceptance.json').write_text(json.dumps({'site':site['id'],'source':receipt['source'],'version':site['version'],
         'origin':site['origin'],'matched_assets':len(public_files),'matched_redirects':redirect_count,'archive_sha256':expected,'custom_domains_unchanged':True,
-        'dns_unchanged':True,'workers_dev_enabled':False,'preview_urls_enabled':False,'verify_only':already,
+        'dns_unchanged':True,'workers_dev_enabled':False,'preview_urls_enabled':False,'verify_only':already,'markdown_routes_verified':len(receipt['worker']['routes']),'delivery_entry_sha256':receipt['worker']['sha256'],
         'edge_script_hashes':site.get('edgeScriptHashes', {})}) + '\n')
     (output / 'operation.json').write_text('{"state":"complete"}\n')
 

@@ -13,13 +13,16 @@ from subprocess import CompletedProcess
 
 class SiteReleaseTests(unittest.TestCase):
     def setUp(self):
+        worker = patch('site_release.build_worker', return_value={'source':'export default {fetch(){return new Response("fixture")}}', 'origin':'https://example.org','routes':['/']})
+        worker.start(); self.addCleanup(worker.stop)
+        delivery = patch('site_release.verify_delivery'); delivery.start(); self.addCleanup(delivery.stop)
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         (self.root / 'site.json').write_text('{"origin":"https://example.org"}')
         self.site = {'id':'example','version':'0.1.0','account':'a'*32,'zone':'c'*32,'worker':'example-site',
             'environment':'site-production-example','origin':'https://example.org','domain':'example.org',
-            'siteConfig':'site.json','appDirectory':'.','assetDirectory':'public','buildKind':'single'}
+            'siteConfig':'site.json','appDirectory':'.','assetDirectory':'public','documentDirectory':'site','buildKind':'single'}
         self.contract = {'schemaVersion':1,'repository':'example/site','defaultBranch':'main',
                          'requiredWorkflows':['ci.yml'],'sites':[self.site]}
         self.env = {'GITHUB_SHA':'b'*40,'GITHUB_REPOSITORY':'example/site','GITHUB_REF_TYPE':'tag'}
@@ -252,6 +255,51 @@ class SiteReleaseTests(unittest.TestCase):
         with patch('site_release.subprocess.run',return_value=CompletedProcess([],0,b'wrong bytes')) as run,patch('site_release.time.sleep'):
             with self.assertRaises(ValueError):verify_assets('https://example.org',expected)
             self.assertEqual(run.call_count,5)
+
+
+class AgentDeliveryTests(unittest.TestCase):
+    def test_entry_builder_refuses_wrong_origin_and_platform_rule_overflow(self):
+        from site_release import build_worker
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            site = {'appDirectory':'.', 'documentDirectory':'site', 'origin':'https://example.org'}
+            good = {'source':'export default {}', 'origin':'https://example.org', 'routes':['/']}
+            for value in [dict(good, origin='https://other.example'), dict(good, routes=['/p'+str(n) for n in range(101)])]:
+                with patch('site_release.subprocess.run', return_value=CompletedProcess([],0,json.dumps(value),'')):
+                    with self.assertRaises(ValueError):build_worker(root, site)
+
+    def test_inner_entry_hash_is_required_even_if_outer_archive_hash_matches(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'public').mkdir();(root/'public/index.html').write_text('approved')
+            site={'id':'example','domain':'example.org','version':'0.1.0','assetDirectory':'public'}
+            with patch('site_release.build_worker',return_value={'source':'reviewed entry','routes':['/']}):
+                pack(root,site,'b'*40,root/'release')
+            modified=root/'modified.tgz'
+            with tarfile.open(root/'release/site.tgz') as original, tarfile.open(modified,'w:gz') as target:
+                for member in original:
+                    content=b'changed entry' if member.name=='worker.mjs' else original.extractfile(member).read() if member.isfile() else None
+                    if content is not None:member.size=len(content)
+                    target.addfile(member,io.BytesIO(content) if content is not None else None)
+            with self.assertRaises(ValueError):unpack(modified,hashlib.sha256(modified.read_bytes()).hexdigest(),root/'verified')
+
+    def test_negotiated_readback_rejects_html_and_stale_markdown(self):
+        from site_release import verify_delivery
+        body=b'# Public guide'
+        receipt={'files':{'raw/index.md':hashlib.sha256(body).hexdigest()},'worker':{'routes':['/']}}
+        class Reply:
+            status=200
+            def __init__(self,url,text,mime):
+                self.url=url;self.text=text;self.headers={'Content-Type':mime,'Vary':'Accept','Content-Signal':'ai-train=yes'}
+            def read(self,_limit):return self.text
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+        for text,mime,accepted in [(body,'text/markdown',True),(b'<html>fallback</html>','text/html',False),(b'stale','text/markdown',False)]:
+            def read(request,timeout):
+                return Reply(request.full_url,b'User-agent: *\nAllow: /\nContent-Signal: ai-train=yes' if request.full_url.endswith('/robots.txt') else text,'text/plain' if request.full_url.endswith('/robots.txt') else mime)
+            with patch('site_release.urllib.request.urlopen',side_effect=read):
+                if accepted:verify_delivery('https://example.org',receipt)
+                else:
+                    with self.assertRaises(ValueError):verify_delivery('https://example.org',receipt)
 
 
 if __name__ == '__main__':
