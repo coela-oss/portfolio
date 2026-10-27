@@ -21,18 +21,18 @@
     "test:site-structure": "node site/check.mjs"
   },
   "dependencies": {
-    "@nuxtjp/localized-site": "0.3.1",
+    "@nuxtjp/contact-form": "0.1.0",
+    "@nuxtjp/localized-site": "0.4.0",
     "nuxt": "4.6.2",
-    "vue": "3.5.44",
-    "@nuxtjp/contact-form": "0.1.0"
+    "vue": "3.5.44"
   },
   "devDependencies": {
+    "@nuxtjp/dependency-security": "0.2.1",
     "@types/node": "24.19.2",
+    "@zixcel/provider-cloudflare": "0.2.0",
     "typescript": "5.9.3",
     "vue-tsc": "3.3.13",
-    "wrangler": "4.151.1",
-    "@nuxtjp/dependency-security": "0.2.1",
-    "@zixcel/provider-cloudflare": "0.2.0"
+    "wrangler": "4.151.1"
   },
   "pnpm": {
     "overrides": {
