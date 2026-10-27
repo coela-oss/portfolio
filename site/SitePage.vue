@@ -50,13 +50,14 @@ useHead(() => ({ htmlAttrs: { lang: locale.value }, link: [
         </div>
         <div v-if="page.kind === 'home'" class="portfolio-signature"><img :src="content.icon" width="240" height="240" alt="Coela"><p>Software · Interfaces · Systems</p></div>
       </section>
-      <div class="site-body">
+      <div class="site-body" :class="{ 'site-body-privacy': path === '/privacy' }">
         <VisitorPaths v-if="page.kind === 'home'" :experience="experience" :local="local" />
         <WorkChooser v-if="path === '/work'" :locale="locale" :local="local" />
         <WorkGallery v-if="page.kind === 'home' || path === '/work'" :locale="locale" :local="local" />
         <CaseStudy :path="path" :locale="locale" />
         <EngineeringGuidance v-if="path === '/about/principles'" :locale="locale" />
         <PageSections :sections="page.sections" :local="local" />
+        <NuxtContactForm v-if="path === '/contact'" :key="locale" :locale="locale" heading-tag="h2" privacy-url="https://hat-tech.co.jp/privacy" :texts="{ heading: locale === 'ja' ? 'お問い合わせフォーム' : 'Contact form' }" />
         <CaseActions v-if="caseStory" :story="caseStory" :locale="locale" :local="local" />
         <section v-if="page.kind === 'journal'" class="site-journal">
           <NuxtLink v-for="article in articles" :key="article.path" :to="local(article.path)" class="site-story"><span>{{ article.category }}</span><h2>{{ article.title }}</h2><p>{{ article.summary }}</p></NuxtLink>
@@ -69,3 +70,7 @@ useHead(() => ({ htmlAttrs: { lang: locale.value }, link: [
     <footer class="site-footer"><div><strong>{{ content.brand }}</strong><p>{{ content.caption }}</p></div><nav :aria-label="locale === 'ja' ? 'フッター' : 'Footer'"><NuxtLink v-for="item in content.navigation" :key="item.href" :to="local(item.href)">{{ item.title }}</NuxtLink><NuxtLink v-if="content.pages.some(item => item.path === '/contact')" :to="local('/contact')">{{ locale === 'ja' ? 'お問い合わせ' : 'Contact' }}</NuxtLink><NuxtLink :to="local('/privacy')">{{ locale === 'ja' ? 'プライバシー' : 'Privacy' }}</NuxtLink><NuxtLink :to="local('/security')">{{ locale === 'ja' ? 'セキュリティ' : 'Security' }}</NuxtLink><NuxtLink :to="local('/sitemap')">{{ locale === 'ja' ? 'サイトマップ' : 'Sitemap' }}</NuxtLink></nav></footer>
   </div>
 </template>
+
+<style scoped>
+.site-body-privacy { min-width: 0; overflow-wrap: anywhere; }
+</style>

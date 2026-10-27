@@ -1,0 +1,9 @@
+{
+  "mode": "live",
+  "endpoint": "https://coela.org/v1/submissions",
+  "siteKey": "coela",
+  "emailMode": "optional",
+  "turnstileSiteKey": "0x4AAAAAAFn1orcEDL5Y4zot",
+  "privacyUrl": "https://hat-tech.co.jp/privacy",
+  "policyVersion": "urn:coela:legal:organization:hat-inc:privacy-policy@b282737cf7f67acc7a714f331c99d8b9b88992ce"
+}
