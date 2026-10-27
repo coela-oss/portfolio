@@ -470,13 +470,13 @@
         {
           "path": "/privacy",
           "title": "プライバシー",
-          "summary": "株式会社HATが管理する問い合わせ・情報提供フォームの共通ポリシーです。",
+          "summary": "このサイトで受け付ける個人情報は株式会社HATが管理し、同社の共通ポリシーを適用します。",
           "kind": "page",
           "status": "published",
           "sections": [
             {
-              "title": "お問い合わせの管理主体",
-              "text": "Coelaの問い合わせ受付と個人情報管理は株式会社HATが行います。適用文面はHATサイトで一元公開します。管理ID: urn:coela:legal:organization:hat-inc:privacy-policy @ b282737cf7f67acc7a714f331c99d8b9b88992ce",
+              "title": "管理主体と適用ポリシー",
+              "text": "このサイトのお問い合わせ・情報提供に係る個人情報の管理主体は株式会社HATです。受付、保存、対応と権利行使の窓口は、HATサイトで一元公開する共通プライバシーポリシーをご確認ください。",
               "links": [
                 {
                   "title": "共通プライバシーポリシー",
@@ -992,13 +992,13 @@
         {
           "path": "/privacy",
           "title": "Privacy",
-          "summary": "Common policy for inquiries and reports managed by HAT Inc.",
+          "summary": "HAT Inc. is the controller of personal information received through this website. Its common privacy policy applies.",
           "kind": "page",
           "status": "published",
           "sections": [
             {
-              "title": "Inquiry controller",
-              "text": "HAT Inc. manages Coela inquiries and personal information. The adopted policy is published centrally on the HAT website. Policy version: urn:coela:legal:organization:hat-inc:privacy-policy @ b282737cf7f67acc7a714f331c99d8b9b88992ce",
+              "title": "Controller and applicable policy",
+              "text": "HAT Inc. is the controller of personal information submitted through this website. Refer to the common privacy policy published on the HAT website for collection, retention, handling and privacy requests.",
               "links": [
                 {
                   "title": "Common privacy policy",
