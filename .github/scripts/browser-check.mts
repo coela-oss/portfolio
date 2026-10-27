@@ -5,7 +5,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { createServer } from 'node:net'
 import { resolve } from 'node:path'
 import { browserSession, object } from './browser-session.mts'
-import data from '../../site/content.json' with { type: 'json' }
+import data from '../../site/.generated-documents/content.json' with { type: 'json' }
 import guidance from '../../site/guidance.json' with { type: 'json' }
 if (process.env.GITHUB_ACTIONS !== 'true') throw Error('Rendered checks are restricted to hosted CI')
 const probe = createServer(); probe.listen(0, '127.0.0.1'); await once(probe, 'listening')
