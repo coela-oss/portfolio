@@ -451,17 +451,17 @@
         {
           "path": "/contact",
           "title": "連絡先",
-          "summary": "公開内容への提案や不具合は、対応するリポジトリへお寄せください。",
+          "summary": "お問い合わせ・情報提供を受け付けます。返信先は任意です。",
           "kind": "page",
           "status": "published",
           "sections": [
             {
-              "title": "ポートフォリオについて",
-              "text": "公開可能な情報だけを記載してください。",
+              "title": "個人情報の取扱い",
+              "text": "株式会社HATが受付・情報管理を行います。本文に不要な個人情報や秘密情報を記載しないでください。返信先がない場合は返信できません。",
               "links": [
                 {
-                  "title": "GitHub Issues",
-                  "href": "https://github.com/coela-oss/portfolio/issues"
+                  "title": "共通プライバシーポリシー",
+                  "href": "https://hat-tech.co.jp/privacy"
                 }
               ]
             }
@@ -470,10 +470,20 @@
         {
           "path": "/privacy",
           "title": "プライバシー",
-          "summary": "静的サイトの配信と接続情報について。",
+          "summary": "株式会社HATが管理する問い合わせ・情報提供フォームの共通ポリシーです。",
           "kind": "page",
           "status": "published",
           "sections": [
+            {
+              "title": "お問い合わせの管理主体",
+              "text": "Coelaの問い合わせ受付と個人情報管理は株式会社HATが行います。適用文面はHATサイトで一元公開します。管理ID: urn:coela:legal:organization:hat-inc:privacy-policy @ 0336247d68e36a6bb2e99e3cf26b98dce8abc343",
+              "links": [
+                {
+                  "title": "共通プライバシーポリシー",
+                  "href": "https://hat-tech.co.jp/privacy"
+                }
+              ]
+            },
             {
               "title": "配信",
               "text": "Cloudflareを通じて静的ページを配信します。配信事業者は接続情報を配信・セキュリティのために処理し、RUM beaconによってページの表示性能を計測する場合があります。本サイト独自のログインや追加のアクセス解析は設けていません。",
@@ -963,17 +973,17 @@
         {
           "path": "/contact",
           "title": "Get in touch",
-          "summary": "For suggestions and reproducible issues, use the relevant project repository.",
+          "summary": "Send an inquiry or report. Reply email is optional.",
           "kind": "page",
           "status": "published",
           "sections": [
             {
-              "title": "About this portfolio",
-              "text": "Include only information that can be shared publicly.",
+              "title": "Handling of personal information",
+              "text": "HAT Inc. manages inquiries and personal information. Avoid unnecessary personal or confidential information. Without a reply address, we cannot respond.",
               "links": [
                 {
-                  "title": "GitHub Issues",
-                  "href": "https://github.com/coela-oss/portfolio/issues"
+                  "title": "Common privacy policy",
+                  "href": "https://hat-tech.co.jp/privacy"
                 }
               ]
             }
@@ -982,10 +992,20 @@
         {
           "path": "/privacy",
           "title": "Privacy",
-          "summary": "Static delivery and connection information.",
+          "summary": "Common policy for inquiries and reports managed by HAT Inc.",
           "kind": "page",
           "status": "published",
           "sections": [
+            {
+              "title": "Inquiry controller",
+              "text": "HAT Inc. manages Coela inquiries and personal information. The adopted policy is published centrally on the HAT website. Policy version: urn:coela:legal:organization:hat-inc:privacy-policy @ 0336247d68e36a6bb2e99e3cf26b98dce8abc343",
+              "links": [
+                {
+                  "title": "Common privacy policy",
+                  "href": "https://hat-tech.co.jp/privacy"
+                }
+              ]
+            },
             {
               "title": "Delivery",
               "text": "Static pages are served through Cloudflare. The provider processes connection information for delivery and security, and may measure page performance with its RUM beacon. This site adds no separate analytics or login.",

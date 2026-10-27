@@ -57,6 +57,7 @@ useHead(() => ({ htmlAttrs: { lang: locale.value }, link: [
         <CaseStudy :path="path" :locale="locale" />
         <EngineeringGuidance v-if="path === '/about/principles'" :locale="locale" />
         <PageSections :sections="page.sections" :local="local" />
+        <NuxtContactForm v-if="path === '/contact'" :key="locale" :locale="locale" heading-tag="h2" privacy-url="https://hat-tech.co.jp/privacy" :texts="{ heading: locale === 'ja' ? 'お問い合わせフォーム' : 'Contact form' }" />
         <CaseActions v-if="caseStory" :story="caseStory" :locale="locale" :local="local" />
         <section v-if="page.kind === 'journal'" class="site-journal">
           <NuxtLink v-for="article in articles" :key="article.path" :to="local(article.path)" class="site-story"><span>{{ article.category }}</span><h2>{{ article.title }}</h2><p>{{ article.summary }}</p></NuxtLink>
