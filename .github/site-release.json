@@ -24,7 +24,8 @@
       "buildKind": "organization",
       "zone": "de57cf0ec64f1e326f8c93804a4f7cac",
       "deploymentEnabled": true,
-      "zoneName": "coela.org"
+      "zoneName": "coela.org",
+      "documentDirectory": "site"
     }
   ]
 }

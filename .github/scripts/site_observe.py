@@ -90,7 +90,7 @@ def observe(output):
             record.update(error='observation_failed',exception_type=type(error).__name__)
         return record
 
-    expected = [(name, digest) for name, digest in candidate['files'].items() if name != '_redirects']
+    expected = [(name, digest) for name, digest in candidate['files'].items() if name not in ['_redirects', '_headers']]
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
         observed = list(pool.map(one, expected))
     report = {**review,'files':observed,'observed':len(observed),'matched':sum(r['matched'] for r in observed),'cloudflareCredentialsUsed':False,'deploymentAttempted':False}

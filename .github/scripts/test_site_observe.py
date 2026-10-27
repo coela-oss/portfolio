@@ -18,10 +18,12 @@ class ObservationTests(unittest.TestCase):
         self.root = Path(temporary.name)
         (self.root / 'public').mkdir()
         (self.root / 'public/index.html').write_bytes(b'<html><body>Approved</body></html>')
-        self.site = {'id':'example','version':'0.1.9','domain':'example.org','origin':'https://example.org','assetDirectory':'public'}
+        (self.root / 'public/_headers').write_text('/*\n  Content-Signal: ai-train=yes\n')
+        self.site = {'id':'example','version':'0.1.9','domain':'example.org','origin':'https://example.org','assetDirectory':'public','documentDirectory':'site','appDirectory':'.'}
         self.output = self.root / 'observation'
         self.output.mkdir()
-        digest = pack(self.root, self.site, 'a' * 40, self.output / 'input')
+        with patch('site_release.build_worker', return_value={'source':'reviewed fixture delivery entry','origin':'https://example.org','routes':['/']}):
+            digest = pack(self.root, self.site, 'a' * 40, self.output / 'input')
         from site_release import unpack
         unpack(self.output / 'input/site.tgz', digest, self.output / 'verified')
         (self.output / 'review.json').write_text(json.dumps({'source':'a' * 40,'archive_sha256':digest,'run':'123'}))
