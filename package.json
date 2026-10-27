@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@nuxtjp/contact-form": "0.1.0",
-    "@nuxtjp/localized-site": "0.4.0",
+    "@nuxtjp/localized-site": "0.5.0",
     "nuxt": "4.6.2",
     "vue": "3.5.44"
   },
