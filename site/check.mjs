@@ -1,3 +1,4 @@
+import documentContent from './content.mjs'
 import { validateExperience } from './experience.mts'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -41,5 +42,5 @@ export function validateContent(data) {
   return { site: data.siteId, locales: 2, pages: paths.length * 2, brokenInternalLinks: 0, bundledDrafts: 0 }
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  console.log(JSON.stringify(validateContent(JSON.parse(readFileSync(new URL('./content.json', import.meta.url), 'utf8')))))
+  console.log(JSON.stringify(validateContent(documentContent)))
 }

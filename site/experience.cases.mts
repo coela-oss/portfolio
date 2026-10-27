@@ -1,3 +1,4 @@
+import documentContent from './content.mjs'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
@@ -5,7 +6,7 @@ import { validateExperience } from './experience.mts'
 import type { Experience } from './experience-types'
 import type { Locale, SiteContent } from './types'
 
-const data = JSON.parse(readFileSync(new URL('./content.json', import.meta.url), 'utf8'))
+const data = documentContent
 const experiences = JSON.parse(readFileSync(new URL('./experience.json', import.meta.url), 'utf8')) as Record<Locale, Experience>
 for (const locale of ['ja', 'en'] as const) {
   const experience = experiences[locale]

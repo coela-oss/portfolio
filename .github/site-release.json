@@ -8,7 +8,7 @@
   "sites": [
     {
       "id": "coela",
-      "version": "0.1.17",
+      "version": "0.1.18",
       "edgeScriptHashes": {
         "analytics": "f542853e69366d59366d2c2abdcec79375a7252e3250902407ea07d2a2cfeee8",
         "jsd": "6a75d68b52efbad75a56e87a7ed4a35db2a3a1eb32339a68733bba7110a10715"

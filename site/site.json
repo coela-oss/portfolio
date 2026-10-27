@@ -1,0 +1,113 @@
+{
+  "siteId": "coela",
+  "origin": "https://coela.org",
+  "defaultLocale": "en",
+  "locales": {
+    "ja": {
+      "brand": "Coela",
+      "caption": "シーラカンス / ソフトウェア設計",
+      "origin": "https://coela.org",
+      "locale": "ja",
+      "accent": "#007b76",
+      "navigation": [
+        {
+          "title": "作品",
+          "href": "/work"
+        },
+        {
+          "title": "OSS",
+          "href": "/oss"
+        },
+        {
+          "title": "設計ノート",
+          "href": "/journal"
+        },
+        {
+          "title": "プロフィール",
+          "href": "/about"
+        }
+      ],
+      "resources": [],
+      "icon": "/brand/icon.png",
+      "secondaryAction": {
+        "title": "プロフィール",
+        "href": "/about"
+      },
+      "pageOrder": [
+        "/",
+        "/work",
+        "/work/zix-cli",
+        "/work/nuxtjp",
+        "/work/ihat",
+        "/work/sem-lang",
+        "/oss",
+        "/oss/web",
+        "/oss/tools",
+        "/oss/systems",
+        "/oss/language",
+        "/about",
+        "/about/principles",
+        "/journal",
+        "/journal/interface-and-authority",
+        "/docs",
+        "/contact",
+        "/privacy",
+        "/security",
+        "/sitemap"
+      ]
+    },
+    "en": {
+      "brand": "Coela",
+      "caption": "Coelacanth / Software engineering",
+      "origin": "https://coela.org",
+      "locale": "en",
+      "accent": "#007b76",
+      "navigation": [
+        {
+          "title": "Work",
+          "href": "/work"
+        },
+        {
+          "title": "OSS",
+          "href": "/oss"
+        },
+        {
+          "title": "Notes",
+          "href": "/journal"
+        },
+        {
+          "title": "About",
+          "href": "/about"
+        }
+      ],
+      "resources": [],
+      "icon": "/brand/icon.png",
+      "secondaryAction": {
+        "title": "About",
+        "href": "/about"
+      },
+      "pageOrder": [
+        "/",
+        "/work",
+        "/work/zix-cli",
+        "/work/nuxtjp",
+        "/work/ihat",
+        "/work/sem-lang",
+        "/oss",
+        "/oss/web",
+        "/oss/tools",
+        "/oss/systems",
+        "/oss/language",
+        "/about",
+        "/about/principles",
+        "/journal",
+        "/journal/interface-and-authority",
+        "/docs",
+        "/contact",
+        "/privacy",
+        "/security",
+        "/sitemap"
+      ]
+    }
+  }
+}

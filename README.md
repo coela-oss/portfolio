@@ -27,7 +27,7 @@ This site consumes published references; it is not a central job runner or MCP h
 
 ## Case studies and evidence
 
-Edit `site/work.en.json`, `site/work.ja.json` and `site/content.json` together.
+Edit `site/work.en.json`, `site/work.ja.json` and `site/documents/{ja,en}/**/*.md` and `site/site.json` together.
 Each case contains a problem, architecture, trade-off, verification and direct
 source/live exits. `site/captures.json` records actual URLs, dates, source versions
 and screenshot hashes; tests reject invented paths or changed image bytes.

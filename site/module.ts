@@ -1,14 +1,15 @@
+import { documentPublicDirectory } from '@nuxtjp/localized-site/documents'
 import { fileURLToPath } from 'node:url'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { NuxtModule } from 'nuxt/schema'
-import data from './content.json'
+import data from './content.mjs'
 import redirects from './redirects.json'
 import { validateContent } from './check.mjs'
 import { verifyEngineering } from './guidance.mts'
 
-// A site-owned scaffold: no checkout, manager service, or unreleased package required.
-const sitePages: NuxtModule = (_options, nuxt) => {
+// Site-owned presentation; the documents API requires the reviewed 0.4.0 module release.
+const sitePages: NuxtModule = async (_options, nuxt) => {
   if (process.env.SITE_ID && process.env.SITE_ID !== data.siteId) return
   verifyEngineering()
   validateContent(data)
@@ -51,6 +52,7 @@ const sitePages: NuxtModule = (_options, nuxt) => {
     writeFileSync(join(directory, '_redirects'), rules.join('\n') + '\n')
   })
   nuxt.options.nitro.publicAssets ??= []
+  nuxt.options.nitro.publicAssets.push({ dir: await documentPublicDirectory(new URL('./', import.meta.url)), maxAge: 0 })
   nuxt.options.nitro.publicAssets.push({ dir: directory, maxAge: 0 })
   nuxt.options.routeRules ??= {}
   for (const locale of ['', `/${data.defaultLocale === 'en' ? 'ja' : 'en'}`]) {
