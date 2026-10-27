@@ -4,7 +4,7 @@ The site consumes the published `@nuxtjp/contact-form` package. `contact-form.co
 
 `mode: preview` does not submit messages. Keep it until the shared Rust receiver, allowed origins, Turnstile widget, mailbox-scoped Microsoft Graph application authorization, fixed recipient configuration and synthetic mailbox delivery have been verified. Use `mode: live` only with the real public widget key and matching receiver policy version. The public site package never contains the Turnstile secret.
 
-The common policy is adopted at `urn:coela:legal:organization:hat-inc:privacy-policy@0336247d68e36a6bb2e99e3cf26b98dce8abc343` and published centrally at https://hat-tech.co.jp/privacy. Reply email is optional for both pilots. IP/CIDR admission and site enable/disable controls belong to receiver configuration, not browser code.
+The common policy is adopted at `urn:coela:legal:organization:hat-inc:privacy-policy@b282737cf7f67acc7a714f331c99d8b9b88992ce` and published centrally at https://hat-tech.co.jp/privacy. Reply email is optional for both pilots. IP/CIDR admission and site enable/disable controls belong to receiver configuration, not browser code.
 
 The consent module controls only explicitly registered optional services. It cannot stop Cloudflare's automatic RUM insertion. Complete the separately approved provider configuration correction before treating automatic analytics as disabled. The English-default Coela site also requires the shared consent module's default-locale correction before production rollout.
 

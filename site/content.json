@@ -476,7 +476,7 @@
           "sections": [
             {
               "title": "お問い合わせの管理主体",
-              "text": "Coelaの問い合わせ受付と個人情報管理は株式会社HATが行います。適用文面はHATサイトで一元公開します。管理ID: urn:coela:legal:organization:hat-inc:privacy-policy @ 0336247d68e36a6bb2e99e3cf26b98dce8abc343",
+              "text": "Coelaの問い合わせ受付と個人情報管理は株式会社HATが行います。適用文面はHATサイトで一元公開します。管理ID: urn:coela:legal:organization:hat-inc:privacy-policy @ b282737cf7f67acc7a714f331c99d8b9b88992ce",
               "links": [
                 {
                   "title": "共通プライバシーポリシー",
@@ -998,7 +998,7 @@
           "sections": [
             {
               "title": "Inquiry controller",
-              "text": "HAT Inc. manages Coela inquiries and personal information. The adopted policy is published centrally on the HAT website. Policy version: urn:coela:legal:organization:hat-inc:privacy-policy @ 0336247d68e36a6bb2e99e3cf26b98dce8abc343",
+              "text": "HAT Inc. manages Coela inquiries and personal information. The adopted policy is published centrally on the HAT website. Policy version: urn:coela:legal:organization:hat-inc:privacy-policy @ b282737cf7f67acc7a714f331c99d8b9b88992ce",
               "links": [
                 {
                   "title": "Common privacy policy",
