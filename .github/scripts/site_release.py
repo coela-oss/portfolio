@@ -279,6 +279,27 @@ def deployment_config(site, receipt):
                        'run_worker_first': receipt['worker']['routes']}}
 
 
+def verify_main_protection(contract, token):
+    expected = contract.get('requiredChecks')
+    if not isinstance(expected, list) or not expected or not all(isinstance(c, str) and c for c in expected):
+        raise ValueError('Required main checks must be declared')
+    rules = request(f"https://api.github.com/repos/{contract['repository']}/rules/branches/{contract['defaultBranch']}", token)
+    if not isinstance(rules, list) or not any(r.get('type') == 'pull_request' for r in rules):
+        raise ValueError('Main pull-request rule missing')
+    checks = {c.get('context') for rule in rules if rule.get('type') == 'required_status_checks'
+              for c in rule.get('parameters', {}).get('required_status_checks', [])}
+    if not set(expected).issubset(checks):
+        raise ValueError('Main required checks are incomplete')
+    for rule in rules:
+        if rule.get('type') not in ('pull_request', 'required_status_checks'):
+            continue
+        if rule.get('ruleset_source_type') != 'Repository' or rule.get('ruleset_source') != contract['repository'] or not isinstance(rule.get('ruleset_id'), int):
+            raise ValueError('Unreviewed inherited main protection')
+        details = request(f"https://api.github.com/repos/{contract['repository']}/rulesets/{rule['ruleset_id']}", token)
+        if details.get('enforcement') != 'active' or details.get('bypass_actors'):
+            raise ValueError('Main ruleset permits unreviewed bypass')
+
+
 def deploy(root, contract, site, output, expected):
     receipt = unpack(output / 'site.tgz', expected, output / 'verified')
     is_main = os.environ.get('SITE_RELEASE_MODE') == 'main'
@@ -286,9 +307,12 @@ def deploy(root, contract, site, output, expected):
     if receipt['site'] != site or receipt['source'] != source:
         raise ValueError('Prepared artifact owner/source mismatch')
     # A configured Environment alone does not prove that review is enforced.
-    environment = request(f"https://api.github.com/repos/{contract['repository']}/environments/{site['environment']}", os.environ['GH_TOKEN'])
-    if not any(p['type'] == 'required_reviewers' and p.get('reviewers') for p in environment.get('protection_rules', [])):
-        raise ValueError('Effective required reviewers missing; local-only release remains necessary')
+    if is_main:
+        verify_main_protection(contract, os.environ['GH_TOKEN'])
+    else:
+        environment = request(f"https://api.github.com/repos/{contract['repository']}/environments/{site['environment']}", os.environ['GH_TOKEN'])
+        if not any(p['type'] == 'required_reviewers' and p.get('reviewers') for p in environment.get('protection_rules', [])):
+            raise ValueError('Effective required reviewers missing; local-only release remains necessary')
     token = os.environ['CLOUDFLARE_API_TOKEN']
     prefix = f"https://api.cloudflare.com/client/v4/accounts/{site['account']}/workers"
     zone_url = f"https://api.cloudflare.com/client/v4/zones/{site['zone']}"
@@ -385,6 +409,7 @@ def main():
     site = selected_site(root, contract, os.environ)
     if is_main:
         admit_main(root, contract, os.environ)
+        verify_main_protection(contract, os.environ['GH_TOKEN'])
     if mode == 'plan':
         if not is_main:
             admit(root, contract, os.environ)

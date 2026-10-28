@@ -7,7 +7,7 @@ import tarfile
 import tempfile
 import unittest
 from unittest.mock import patch
-from site_release import select, selected_site, pack, unpack, admit, admit_main, deploy, deployment_config, verify_assets, deployment_tool
+from site_release import select, selected_site, pack, unpack, admit, admit_main, deploy, deployment_config, verify_main_protection, verify_assets, deployment_tool
 from subprocess import CompletedProcess
 
 
@@ -113,11 +113,26 @@ class SiteReleaseTests(unittest.TestCase):
                'GH_TOKEN': 'synthetic', 'CLOUDFLARE_API_TOKEN': 'synthetic',
                'GITHUB_EVENT_NAME': 'workflow_run', 'GITHUB_RUN_ATTEMPT': '1'}
         with patch.dict('os.environ', env), patch('site_release.request', side_effect=response), \
-                patch('site_release.admit_main') as admission, patch('site_release.verify_assets'), \
+                patch('site_release.admit_main') as admission, patch('site_release.verify_main_protection'), patch('site_release.verify_assets'), \
                 patch('site_release.deployment_tool', return_value=self.root/'wrangler'), \
                 patch('site_release.subprocess.run') as run:
             deploy(self.root, self.contract, self.site, self.root/'archive', digest)
             admission.assert_called_once(); run.assert_called_once()
+
+
+    def test_automatic_release_requires_pull_requests_and_all_declared_checks(self):
+        contract = {**self.contract, 'requiredChecks': ['policy', 'site']}
+        metadata = {'ruleset_id': 1, 'ruleset_source_type': 'Repository', 'ruleset_source': 'example/site'}
+        rules = [{**metadata, 'type': 'pull_request'}, {**metadata, 'type': 'required_status_checks', 'parameters': {
+            'required_status_checks': [{'context': 'policy'}, {'context': 'site'}]}}]
+        with patch('site_release.request', side_effect=[rules, {'enforcement': 'active', 'bypass_actors': []}, {'enforcement': 'active', 'bypass_actors': []}]):
+            verify_main_protection(contract, 'synthetic')
+        for bad in [[], rules[:1], [rules[1]], [rules[0], {'type': 'required_status_checks', 'parameters': {'required_status_checks': [{'context': 'policy'}]}}]]:
+            with patch('site_release.request', return_value=bad), self.assertRaises(ValueError):
+                verify_main_protection(contract, 'synthetic')
+        with self.assertRaises(ValueError): verify_main_protection(self.contract, 'synthetic')
+        with patch('site_release.request', side_effect=[rules, {'enforcement': 'active', 'bypass_actors': [{'actor_id': 1}]}]), self.assertRaises(ValueError):
+            verify_main_protection(contract, 'synthetic')
 
 
     def test_output_traversal_symlink_and_environment_output_injection_rejected(self):
