@@ -27,5 +27,8 @@
       "zoneName": "coela.org",
       "documentDirectory": "site"
     }
+  ],
+  "requiredChecks": [
+    "site (coela)"
   ]
 }
