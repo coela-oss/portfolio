@@ -64,6 +64,15 @@ def select(root, contract, tag):
     return site
 
 
+def selected_site(root, contract, environment):
+    if environment.get('SITE_RELEASE_MODE') != 'main':
+        return select(root, contract, environment['GITHUB_REF_NAME'])
+    if len(contract['sites']) != 1:
+        raise ValueError('Main release must select exactly one registered site')
+    registered = contract['sites'][0]
+    return select(root, contract, f"site/{registered['id']}/v{registered['version']}")
+
+
 def request(url, token=None):
     headers = {'User-Agent': 'owner-site-release', 'Accept': 'application/json'}
     if token:
@@ -94,6 +103,34 @@ def admit(root, contract, environment):
     for workflow in contract['requiredWorkflows']:
         matches = [r for r in runs if r.get('path', '').split('@')[0] == '.github/workflows/' + workflow and r['event'] == 'push' and r['head_branch'] == contract['defaultBranch']]
         if not matches or matches[0]['status'] != 'completed' or matches[0]['conclusion'] != 'success':
+            raise ValueError('Required source CI has not succeeded')
+
+
+def admit_main(root, contract, environment):
+    """Bind a completed main CI run to the current main commit before release."""
+    sha = environment['SITE_RELEASE_SOURCE_SHA']
+    event = read(environment['GITHUB_EVENT_PATH'])
+    run = event.get('workflow_run', {})
+    if (environment['GITHUB_REPOSITORY'] != contract['repository'] or
+            environment.get('GITHUB_EVENT_NAME') != 'workflow_run' or
+            not re.fullmatch('[a-f0-9]{40}', sha) or
+            event.get('repository', {}).get('full_name') != contract['repository'] or
+            run.get('head_repository', {}).get('full_name') != contract['repository'] or
+            run.get('head_sha') != sha or run.get('head_branch') != contract['defaultBranch'] or
+            run.get('event') != 'push' or run.get('status') != 'completed' or run.get('conclusion') != 'success' or
+            run.get('run_attempt') != 1 or
+            run.get('path', '').split('@')[0] != '.github/workflows/site.yml'):
+        raise ValueError('Untrusted main CI event')
+    head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+    ref = request(f"https://api.github.com/repos/{contract['repository']}/git/ref/heads/{contract['defaultBranch']}", environment['GH_TOKEN'])
+    if head != sha or ref.get('object', {}).get('sha') != sha:
+        raise ValueError('Main advanced or checkout differs')
+    runs = request(f"https://api.github.com/repos/{contract['repository']}/actions/runs?head_sha={sha}&per_page=100", environment['GH_TOKEN'])['workflow_runs']
+    if not contract['requiredWorkflows']:
+        raise ValueError('Source CI required')
+    for workflow in contract['requiredWorkflows']:
+        matches = [r for r in runs if r.get('path', '').split('@')[0] == '.github/workflows/' + workflow and r.get('event') == 'push' and r.get('head_branch') == contract['defaultBranch']]
+        if not matches or matches[0].get('status') != 'completed' or matches[0].get('conclusion') != 'success':
             raise ValueError('Required source CI has not succeeded')
 
 
@@ -233,9 +270,20 @@ def verify_delivery(origin, receipt):
         list(pool.map(one, receipt['worker']['routes']))
 
 
+def deployment_config(site, receipt):
+    # Existing custom domains are managed separately and checked before/after.
+    # Omitting routes lets the deploy token avoid route-write permissions.
+    return {'name': site['worker'], 'account_id': site['account'], 'compatibility_date': '2026-10-15',
+            'workers_dev': False, 'preview_urls': False, 'main': './verified/worker.mjs',
+            'assets': {'directory': './verified/assets', 'binding': 'ASSETS',
+                       'run_worker_first': receipt['worker']['routes']}}
+
+
 def deploy(root, contract, site, output, expected):
     receipt = unpack(output / 'site.tgz', expected, output / 'verified')
-    if receipt['site'] != site or receipt['source'] != os.environ['GITHUB_SHA']:
+    is_main = os.environ.get('SITE_RELEASE_MODE') == 'main'
+    source = os.environ['SITE_RELEASE_SOURCE_SHA'] if is_main else os.environ['GITHUB_SHA']
+    if receipt['site'] != site or receipt['source'] != source:
         raise ValueError('Prepared artifact owner/source mismatch')
     # A configured Environment alone does not prove that review is enforced.
     environment = request(f"https://api.github.com/repos/{contract['repository']}/environments/{site['environment']}", os.environ['GH_TOKEN'])
@@ -273,10 +321,7 @@ def deploy(root, contract, site, output, expected):
     versions = rollback['result']['deployments'][0]['versions']
     (output / 'rollback.json').write_text(json.dumps({'worker':site['worker'],'versions':versions}) + '\n')
     (output / 'before.json').write_text(json.dumps({'dns_sha256':original_dns,'custom_domains':before,'source':receipt['source']}) + '\n')
-    config = {'name':site['worker'],'account_id':site['account'],'compatibility_date':'2026-10-15',
-              'workers_dev':False,'preview_urls':False,'main':'./verified/worker.mjs',
-              'assets':{'directory':'./verified/assets','binding':'ASSETS','run_worker_first':receipt['worker']['routes']},
-              'routes':[{'pattern':d['hostname'],'custom_domain':True} for d in before if d['service']==site['worker']]}
+    config = deployment_config(site, receipt)
     (output / 'wrangler.json').write_text(json.dumps(config) + '\n')
     # Uses this repo's committed Wrangler dependency. No install/build receives the CF token.
     wrangler = owned(root, site.get('installDirectory', site['appDirectory'])) / 'node_modules/.bin/wrangler'
@@ -284,11 +329,13 @@ def deploy(root, contract, site, output, expected):
     if current.get('site') != site['id'] or current.get('purpose') != 'production':
         raise ValueError('Existing production is not this owned static site')
     already = current.get('source_sha') == receipt['source'] and current.get('version') == site['version']
-    if current.get('version') and not already and tuple(map(int, current['version'].split('.'))) >= tuple(map(int, site['version'].split('.'))):
+    if not is_main and current.get('version') and not already and tuple(map(int, current['version'].split('.'))) >= tuple(map(int, site['version'].split('.'))):
         raise ValueError('Version already used or newer production exists; use explicit rollback procedure')
     if not already:
-        if os.environ.get('GITHUB_EVENT_NAME') != 'push' or os.environ.get('GITHUB_RUN_ATTEMPT') != '1':
+        if os.environ.get('GITHUB_EVENT_NAME') != ('workflow_run' if is_main else 'push') or os.environ.get('GITHUB_RUN_ATTEMPT') != '1':
             raise ValueError('Only initial tag push may deploy; later runs verify existing bytes only')
+        if is_main:
+            admit_main(root, contract, os.environ)
         # A fresh run is not evidence that an earlier deployment failed. Refuse
         # replay after a matching source/version; only verify those bytes above.
         wrangler = deployment_tool(root, site)
@@ -334,14 +381,18 @@ def main():
     root = Path.cwd()
     contract = read(root / '.github/site-release.json')
     mode = sys.argv[1]
-    site = select(root, contract, os.environ['GITHUB_REF_NAME'])
+    is_main = os.environ.get('SITE_RELEASE_MODE') == 'main'
+    site = selected_site(root, contract, os.environ)
+    if is_main:
+        admit_main(root, contract, os.environ)
     if mode == 'plan':
-        admit(root, contract, os.environ)
+        if not is_main:
+            admit(root, contract, os.environ)
         for key, value in {'site':site['id'],'app':site['appDirectory'],'install':site.get('installDirectory', site['appDirectory']),'environment':site['environment'],'deploy-enabled':'true' if site.get('deploymentEnabled', True) else 'false'}.items():
             with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
                 out.write(key + '=' + value + '\n')
     elif mode == 'pack':
-        digest = pack(root, site, os.environ['GITHUB_SHA'], Path(sys.argv[2]).resolve())
+        digest = pack(root, site, os.environ['SITE_RELEASE_SOURCE_SHA'] if is_main else os.environ['GITHUB_SHA'], Path(sys.argv[2]).resolve())
         with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
             out.write('sha256=' + digest + '\n')
     elif mode == 'deploy':
