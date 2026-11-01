@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@nuxtjp/dependency-security": "0.2.1",
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.6",
     "@zixcel/provider-cloudflare": "0.2.0",
     "typescript": "5.9.3",
     "vue-tsc": "3.3.13",
